@@ -1,0 +1,114 @@
+.Win
+{
+	position: absolute;
+	border: solid 1px #666699;
+	box-shadow:0px 25px 50px rgba(0,0,0,0.5);
+	border-radius:5px;
+}
+
+.Win .content
+{
+	position: absolute;
+	background-color: #ffffff;
+}
+
+.Win .closeBt
+{
+	position: absolute;
+	width: 40px;
+	height: 22px;
+	background-color: #fb6266;
+}
+
+.Win .closeBt .icon
+{
+	width: 22px;
+	height: 22px;
+	background-image: url(../images/close.png);
+	margin-left: 9px;
+}
+
+.Win .closeBt_over
+{
+	background-color: #ffaa00;
+}
+
+.Win .closeBt_down
+{
+	background-color: #ff3300;
+}
+
+.Win .minBt .icon
+{
+	width: 22px;
+	height: 22px;
+	background-image: url(../images/min_b.png);
+	margin-left: 4px;
+}
+
+.Win .minBt .icon_over
+{
+	background-image: url(../images/min_w.png);
+}
+
+.Win .maxBt .icon
+{
+	width: 22px;
+	height: 22px;
+	background-image: url(../images/max_b.png);
+	margin-left: 4px;
+}
+
+.Win .minBt,.maxBt
+{
+	position: absolute;
+	width: 30px;
+	height: 22px;
+}
+
+.Win .minBt_over,.maxBt_over
+{
+	background-color: #5555ff;
+}
+
+.Win .minBt_down,.maxBt_down
+{
+	background-color: #222299;
+}
+
+.Win .minBt_disable,.maxBt_disable
+{
+	opacity: 0.2;
+}
+
+.Win .title
+{
+	position: absolute;
+	font-size: 16px;
+	overflow: hidden;
+}
+
+.Win .winIcon
+{
+	position: absolute;
+	left: 5px;
+	top: 5px;
+}
+
+.Win .winMask
+{
+	position: absolute;
+	background-color: #000000;
+	opacity: 0.3;
+}
+
+/*拖动框*/
+.DragFrame
+{
+	position: absolute;
+}
+
+.DragFrame .bar
+{
+	position: absolute;
+}

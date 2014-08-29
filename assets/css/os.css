@@ -1,0 +1,9 @@
+body
+{
+	margin: 0;
+	background: #333333;
+	font-family: 黑体;
+	/*font-family:微软雅黑;*/
+	-webkit-user-select:none;
+	overflow: hidden;
+}

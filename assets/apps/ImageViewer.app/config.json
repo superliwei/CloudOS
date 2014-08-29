@@ -1,0 +1,9 @@
+{
+	"name":"ImageViewer",
+	"win":{
+		"width":600,
+		"height":450,
+		"title":"图片查看器"
+	},
+	"index":"http://www.cnbeta.com"
+}
