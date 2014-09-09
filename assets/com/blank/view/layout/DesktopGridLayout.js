@@ -18,7 +18,7 @@ DesktopGridLayout.prototype = new BasicLayout();
 
 DesktopGridLayout.prototype.resize = function(_w,_h)
 {
-	var lastSize = {"width":this.view.width(),"height":this.view.height()};
+	var lastSize = {width:this.view.width(),height:this.view.height()};
 	BasicLayout.prototype.resize.call(this,_w,_h);
 	this.fixLayout(lastSize);
 }
@@ -48,7 +48,7 @@ DesktopGridLayout.prototype.layout = function()
 		var item = this.items[i];
 		var tx = Math.floor(i/row)*w;
 		var ty = (i-Math.floor(i/row)*row)*h;
-		tx = mw - tx;
+		tx = mw - tx -w;
 		item.view.css("left",tx+(w-item.view.width())*0.5);
 		item.view.css("top",ty+(h-item.view.height())*0.5);
 	}

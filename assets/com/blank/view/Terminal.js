@@ -19,15 +19,15 @@ var Terminal = function(_option)
 	this.win.content.css("overflow","hidden");
 	this.win.content.css("background-color","#000");
 
-	this.ct = $("<div>",{"style":"overflow:auto"});
+	this.ct = $("<div>",{style:"overflow:auto"});
 	this.ct.appendTo(this.win.content);
 
-	this.inputCt = $("<div>",{"style":"background-color:#222;height:30px;position:absolute;"});
+	this.inputCt = $("<div>",{style:"background-color:#222;height:30px;position:absolute;"});
 	this.inputCt.appendTo(this.win.content);
-	$("<div style='position:absolute;font-size:18px;font-weight:bolid;color:#fff;left:5px;top:5px;'>&gt;</div>").appendTo(this.inputCt);
+	$("<div style='font-size:18px;font-weight:bolid;color:#fff;line-height:30px;margin-left:5px;'>&gt;</div>").appendTo(this.inputCt);
 	this.inputField = $("<input>",{
-		"type":"text",
-		"style":"border:none;margin-left:18px;font-size:16px;position:absolute;background:none;color:#fff;"
+		type:"text",
+		style:"border:none;margin-left:18px;font-size:16px;position:absolute;background:none;color:#fff;"
 	});
 	this.inputField.appendTo(this.inputCt);
 
@@ -63,8 +63,8 @@ Terminal.run = function(cmd)
 Terminal.newTerminal = function()
 {
 	var terminal = new Terminal({
-		"win":{
-			"parentView":Desktop.instance().winLayer
+		win:{
+			parentView:Desktop.instance().winLayer
 		}
 	});
 	terminal.open();
@@ -86,7 +86,7 @@ Terminal.open = function(cmd)
 			SettingPannel.newSettingPannel();
 			break;
 		default:
-			Folder.newOpen(arr[1]);
+			Folder.run(cmd);
 	}
 }
 

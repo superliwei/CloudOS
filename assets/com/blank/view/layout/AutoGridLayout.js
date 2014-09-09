@@ -22,7 +22,7 @@ AutoGridLayout.prototype.loadStart = function()
 {
 	for(i=0;i<30;i++)
 	{
-		var item = new FileItem({"mode":"B","flag":"TipBox"});
+		var item = new FileItem({mode:"B",flag:"TipBox"});
 		item.view.appendTo(this.itemLayer);
 		this.items.push(item);
 	}

@@ -5,7 +5,7 @@
 var BasicLayout = function()
 {
 	this.view = $("<div>",{
-		"style":"position:absolute"
+		style:"position:absolute"
 	});
 }
 

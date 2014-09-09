@@ -1,14 +1,14 @@
 var Background = function()
 {
 	this.view = $("<div>",{
-		"style":"position:absolute"
+		style:"position:absolute"
 	});
 
 	this.img = null;
 	var self = this;
 	
 	var imgLoader = new ImageLoader("assets/images/bg/0.jpg",{
-		"onComplete":function(){
+		onComplete:function(){
 			self.img = $(imgLoader.image);
 			self.img.css("position","absolute");
 			self.resizeImg();

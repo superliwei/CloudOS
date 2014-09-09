@@ -9,7 +9,7 @@ var MenuBar = function()
 
 MenuBar.prototype.init = function()
 {
-	this.view = $("<div>",{"style":"position:absolute;"});
+	this.view = $("<div>",{style:"position:absolute;"});
 	this.items = [];
 	this.selectedItem = null;
 	$(document).mousedown(this,mousedownHandler);
@@ -17,18 +17,16 @@ MenuBar.prototype.init = function()
 
 	function mousedownHandler(e,from)
 	{
-		if(from == "MenuBar")return;
+        if(from == "Menu")return;
 		if(e.data.selectedItem!=null)
 		{
 			e.data.selectItem(null);
 		}
 	}
 
-	var self = this;
-	BroadcastCenter.addEventListener(Menu.ITEM_CLICK,function(e,data){
-		self.selectItem(null);
-		trace(data);
-	});
+    this.view.bind(Menu.ITEM_CLICK,this,function(e,item){
+        e.data.selectItem(null);
+    });
 }
 
 MenuBar.prototype.selectItem = function(_item)
@@ -102,12 +100,12 @@ MenuBar.IconItem = function(_data,_menuBar)
 	this.data = _data;
 	this.menuBar = _menuBar;
 	this.view = $("<div>",{
-		"style":"float:left;"
+		style:"float:left;"
 	});
 	this.icon = $("<img>",{
-		"src":this.data.img,
-		"style":"max-width:20px;max-height:20px;",
-		"onDragStart":"return false;"
+		src:this.data.img,
+		style:"max-width:20px;max-height:20px;",
+		onDragStart:"return false;"
 	}).appendTo(this.view);
 	this.view.height(this.menuBar.source.height);
 	this.icon.css("margin-top",(this.menuBar.source.height - 20)*0.5);
@@ -129,7 +127,7 @@ MenuBar.LabelItem = function(_data,_menuBar)
 	this.data = _data;
 	this.menuBar = _menuBar;
 	this.view = $("<div>",{
-		"style":"float:left;"
+		style:"float:left;"
 	});
 	this.view.text(this.data.label);
 	this.view.css("line-height",this.menuBar.source.height+"px");
@@ -170,6 +168,9 @@ MenuBar.BasicItem.prototype.select = function(value)
 			var tx = this.view.offset().left;
 			var ty = this.view.offset().top+this.view.height();
 			this.submenu.moveTo(tx,ty);
+            this.submenu.view.bind(Menu.ITEM_CLICK,this,function(e,item){
+                e.data.menuBar.view.trigger(Menu.ITEM_CLICK,item);
+            });
 		}
 		else
 		{

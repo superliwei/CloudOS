@@ -125,10 +125,10 @@ Win.prototype.maximize = function()
 	this.maximizing = true;
 	this.maxBt.icon.css("background-image","url(assets/images/max_b0.png)");
 	this.tmp = {
-		"x":this.x,
-		"y":this.y,
-		"width":this.width,
-		"height":this.height
+		x:this.x,
+		y:this.y,
+		width:this.width,
+		height:this.height
 	};
 	this.resizeHandler();
 	$(window).bind("resize",this,this.windowResizeHandler);
@@ -202,7 +202,7 @@ Win.prototype.setIcon = function(_icon)
 	if(_icon!=null)
 	{
 		var img = $("<img>",{
-			"src":_icon
+			src:_icon
 		});
 		img.appendTo(this.iconCt);
 	}
@@ -377,17 +377,17 @@ Win.DragFrame = function(_win)
 
 Win.DragFrame.prototype.init = function()
 {
-	this.view = $("<div class='DragFrame'>");
-	this.frame = $("<div>",{"style":"position:absolute;"});
+	this.view = $("<div>",{style:"position:absolute;"});
+	this.frame = $("<div>",{style:"position:absolute;"});
 	this.frame.appendTo(this.view);
-	this.leftBar = $("<div class='bar'>");
-	this.rightBar = $("<div class='bar'>");
-	this.topBar = $("<div class='bar'>");
-	this.downBar = $("<div class='bar'>");
-	this.topLeftBox = $("<div class='bar'>");
-	this.topRightBox = $("<div class='bar'>");
-	this.downLeftBox = $("<div class='bar'>");
-	this.downRightBox = $("<div class='bar'>");
+	this.leftBar = $("<div>",{style:"position:absolute;"});
+	this.rightBar = $("<div>",{style:"position:absolute;"});
+	this.topBar = $("<div>",{style:"position:absolute;"});
+	this.downBar = $("<div>",{style:"position:absolute;"});
+	this.topLeftBox = $("<div>",{style:"position:absolute;"});
+	this.topRightBox = $("<div>",{style:"position:absolute;"});
+	this.downLeftBox = $("<div>",{style:"position:absolute;"});
+	this.downRightBox = $("<div>",{style:"position:absolute;"});
 	this.leftBar.appendTo(this.frame);
 	this.rightBar.appendTo(this.frame);
 	this.topBar.appendTo(this.frame);
@@ -409,7 +409,7 @@ Win.DragFrame.prototype.init = function()
 	this.downRightBox.width(this.thick);
 	this.downRightBox.height(this.thick);
 	
-	this.dragBar = $("<div class='bar'>");
+	this.dragBar = $("<div>",{style:"position:absolute;"});
 	this.dragBar.appendTo(this.view);
 	this.dragBar.height(this.dragBarHeight);
 

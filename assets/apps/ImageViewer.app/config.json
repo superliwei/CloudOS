@@ -5,5 +5,5 @@
 		"height":450,
 		"title":"图片查看器"
 	},
-	"index":"http://www.cnbeta.com"
+	"index":"assets/apps/ImageViewer.app/index.html"
 }

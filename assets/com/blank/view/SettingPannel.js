@@ -13,28 +13,35 @@ var SettingPannel = function(_option)
 	}
 	this.win = new Win(this.option.win);
 
-	this.toolBar = $("<div>",{"style":"position:absolute;overflow:hidden"});
+	this.toolBar = $("<div>",{style:"position:absolute;overflow:hidden;"});
 	this.toolBar.css("left",this.win.thick);
 	this.toolBar.css("top",30);
 	this.toolBar.height(24);
 	
 	this.leftBt = new Button({
-		"icon":"assets/images/arrowL.png",
-		"width":24,
-		"height":24
+		icon:"assets/images/arrowL.png",
+		width:24,
+		height:24
 	});
 
 	this.rightBt = new Button({
-		"icon":"assets/images/arrowR.png",
-		"width":24,
-		"height":24
+		icon:"assets/images/arrowR.png",
+		width:24,
+		height:24
 	});
 	this.rightBt.moveTo(26,0);
 
 	this.searchBar = new SearchBar();
 
+    this.showAllBt = new Button({
+        text:"显示所有",
+        height:24
+    });
+    this.showAllBt.moveTo(60,0)
+
 	this.leftBt.view.appendTo(this.toolBar);
 	this.rightBt.view.appendTo(this.toolBar);
+    this.showAllBt.view.appendTo(this.toolBar);
 	this.searchBar.view.appendTo(this.win.view);
 	this.toolBar.appendTo(this.win.view);
 
@@ -54,10 +61,10 @@ SettingPannel.prototype.open = function()
 SettingPannel.newSettingPannel = function()
 {
 	var settingPannel = new SettingPannel({
-		"win":{
-			"parentView":Desktop.instance().winLayer,
-			"maximizeAble":false,
-			"resizeAble":false
+		win:{
+			parentView:Desktop.instance().winLayer,
+			maximizeAble:false,
+			resizeAble:false
 		}
 	});
 	settingPannel.open();
@@ -65,7 +72,7 @@ SettingPannel.newSettingPannel = function()
 
 SettingPannel.prototype.resizeHandler = function()
 {
-	var tw = this.rightBt.view.position().left + this.rightBt.view.width();
+	var tw = this.showAllBt.view.position().left + this.showAllBt.view.outerWidth();
 	this.toolBar.width(tw+this.win.thick*2>this.win.width?this.win.width-this.win.thick*2:tw);
 	this.searchBar.moveTo(this.win.width-this.searchBar.view.width() - this.win.thick,30);
 }

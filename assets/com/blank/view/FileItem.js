@@ -7,11 +7,11 @@ var FileItem = function(_option)
 	this.option = _option == undefined?{}:_option;
 	this.mode = this.option.mode !=undefined?this.option.mode:"A";
 	this.view = $("<div>",{
-		"style":"position:absolute;width:100px;height:100px;"
+		style:"position:absolute;width:100px;height:100px;"
 	});
 
 	this.imgBox = $("<div>",{
-		"style":"position:absolute;"
+		style:"position:absolute;border:solid 1px transparent;"
 	});
 	var maxSize = 70;
 	this.imgBox.css("width",maxSize);
@@ -19,7 +19,7 @@ var FileItem = function(_option)
 	this.imgBox.css("left",(this.view.width()-maxSize)*0.5);
 	this.imgBox.appendTo(this.view);
 
-	this.imgPlaceHolder = $("<div>",{"style":"position:absolute"});
+	this.imgPlaceHolder = $("<div>",{style:"position:absolute"});
 	var padding = 5;
 	this.imgPlaceHolder.css("width",maxSize-padding*2);
 	this.imgPlaceHolder.css("height",maxSize-padding*2);
@@ -33,25 +33,19 @@ var FileItem = function(_option)
 	img.src = "assets/images/icons/64/folder.png";
 	img.onload = function()
 	{
+        $(img).attr("onDragStart","return false;");
 		$(img).css("max-width",self.imgPlaceHolder.width());
 		$(img).css("max-height",self.imgPlaceHolder.height());
 		$(img).appendTo(self.imgPlaceHolder);
 		self.imgPlaceHolder.css("border","none");
 	}
 
-	var imgMask = $("<div>",{
-		"style":"position:absolute;"
-	});
-	imgMask.css("width",maxSize);
-	imgMask.css("height",maxSize);
-	imgMask.appendTo(this.imgBox);
-
 	this.labelBox = $("<div>",{
-		"style":"position:absolute;font-size:14px;display:none;padding-top:3px;padding-bottom:3px;padding-left:6px;padding-right:6px;"
+		style:"position:absolute;font-size:14px;display:none;padding-top:3px;padding-bottom:3px;padding-left:6px;padding-right:6px;"
 	}).appendTo("body");
 
 	this.label = $("<div>",{
-		"style":"position:absolute;font-size:14px;padding-top:3px;padding-bottom:3px;padding-left:6px;padding-right:6px;text-align:center;"
+		style:"position:absolute;font-size:14px;padding-top:3px;padding-bottom:3px;padding-left:6px;padding-right:6px;text-align:center;"
 	});
 	this.label.css("color",this.option.color!=undefined?this.option.color:"#ffffff");
 	this.label.css("text-shadow",this.option.textShadow!=undefined?this.option.textShadow:"1px 1px 2px #000");
@@ -141,6 +135,8 @@ FileItem.prototype.initEventsA = function()
 
 	this.view.dblclick(function(){
 		trace("双击");
+        var cmd = self.option.target == "_parent"?"open /a _parent":"open /a";
+        Terminal.run(cmd);
 	});
 }
 
@@ -152,17 +148,15 @@ FileItem.prototype.initEventsB = function()
 	this.view.mousedown(function(e){
 		mousedownEffect();
 		moved = false;
-		dp = {"x":e.clientX,"y":e.clientY};
+		dp = {x:e.clientX,y:e.clientY};
 		$(document).bind("mousemove",mousemoveHandler);
 		$(document).bind("mouseup",mouseupHandler);
 	});
 
 	function mousemoveHandler(e)
 	{
-		if(Math.abs(e.clientX - dp.x)>0 || Math.abs(e.clientY - dp.y)>0)
-		{
-			move = true;
-		}
+        if(e.clientX - dp.x == 0 && e.clientY - dp.y == 0)return;
+		move = true;
 	}
 
 	function mouseupHandler(e)
@@ -202,11 +196,23 @@ FileItem.prototype.select = function(value)
 	else
 	{
 		this.imgBox.css("background-image","none");
-		this.imgBox.css("border","none");
+		this.imgBox.css("border","solid 1px transparent");
 		this.label.css("background","none");
 		this.label.css("color",this.option.color!=undefined?this.option.color:"#ffffff");
 		this.label.css("text-shadow",this.option.textShadow!=undefined?this.option.textShadow:"1px 1px 2px #000");
 	}
+}
+
+FileItem.prototype.destroy = function()
+{
+    this.view.remove();
+}
+
+FileItem.prototype.getSelectRect = function()
+{
+    var target = this.imgBox;
+    var rect = new Rect(target.offset().left,target.offset().top,target.width(),target.height());
+    return rect;
 }
 
 

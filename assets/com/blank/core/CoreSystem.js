@@ -1,17 +1,14 @@
 var CoreSystem = {};
 
-CoreSystem.start = function()
+CoreSystem.start = function(_onComplete)
 {
-	//解决body滚动的问题
-	document.body.onmousewheel = function(){
-		$(document.body).scrollTop(0);
-	};
-	
-	//LoginScene.instance().view.appendTo("body");
-	Desktop.instance().appendTo($(document.body));
-}
-
-function trace(obj)
-{
-	console.log(obj);
+	LoginScene.instance().ready(_onComplete);
+	BroadcastCenter.addEventListener(LoginScene.LOGIN_SUCCESS,function(){
+		Desktop.instance().ready(function(){
+			LoginScene.instance().loading.hide();
+			LoginScene.instance().view.hide("fast",function(){
+				Desktop.instance().appendTo($(document.body));
+			});
+		});
+	});
 }

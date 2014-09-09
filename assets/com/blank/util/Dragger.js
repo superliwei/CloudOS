@@ -28,7 +28,7 @@ Dragger.mousemoveHandler = function(e)
 	{
 		var tx = Dragger.dps[i].offset.left + e.clientX - Dragger.dps[i].x;
 		var ty = Dragger.dps[i].offset.top + e.clientY - Dragger.dps[i].y;
-		Dragger.target[i].offset({"left":tx,"top":ty});
+		Dragger.target[i].offset({left:tx,top:ty});
 	}
 }
 

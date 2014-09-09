@@ -1,23 +1,33 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-  <head>
+<head>
     <title>Zoolon CloudOS</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="assets/css/os.css" />
-    <link rel="stylesheet" type="text/css" href="assets/css/LoginScene.css" />
-    <link rel="stylesheet" type="text/css" href="assets/css/Win.css" />
-    <link rel="stylesheet" type="text/css" href="assets/css/QuickBar.css" />
-
     <script src="assets/libs/jquery/jquery-1.11.1.min.js"></script>
     <script src="assets/libs/greensock-v12-js/src/minified/jquery.gsap.min.js"></script>
     <script src="assets/libs/greensock-v12-js/src/minified/TweenLite.min.js"></script>
+    <script src="assets/libs/greensock-v12-js/src/minified/easing/EasePack.min.js"></script>
+    <script src="assets/libs/greensock-v12-js/src/minified/plugins/CSSPlugin.min.js"></script>
+
+</head>
+<body>
+    <script src="assets/com/blank/core/Preloader.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="assets/css/os.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/Win.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/QuickBar.css"/>
 
     <script src="assets/com/blank/util/Dragger.js"></script>
     <script src="assets/com/blank/util/ImageLoader.js"></script>
+    <script src="assets/com/blank/util/Rect.js"></script>
 
     <script src="assets/com/blank/event/BroadcastCenter.js"></script>
     <script src="assets/com/blank/event/Event.js"></script>
     <script src="assets/com/blank/event/CoreEvent.js"></script>
+
+    <script src="assets/com/blank/net/File.js"></script>
+    <script src="assets/com/blank/net/User.js"></script>
+    <script src="assets/com/blank/net/Session.js"></script>
 
     <script src="assets/com/blank/component/Win.js"></script>
     <script src="assets/com/blank/component/Button.js"></script>
@@ -31,6 +41,7 @@
 
     <script src="assets/com/blank/manager/PopUpManager.js"></script>
     <script src="assets/com/blank/manager/SelectManager.js"></script>
+    <script src="assets/com/blank/manager/HistoryManager.js"></script>
 
     <script src="assets/com/blank/view/QuickBar.js"></script>
     <script src="assets/com/blank/view/TopBar.js"></script>
@@ -39,6 +50,7 @@
     <script src="assets/com/blank/view/LoginScene.js"></script>
     <script src="assets/com/blank/view/Desktop.js"></script>
     <script src="assets/com/blank/view/FileItem.js"></script>
+    <script src="assets/com/blank/view/FileItemTypeC.js"></script>
     <script src="assets/com/blank/view/Terminal.js"></script>
     <script src="assets/com/blank/view/SettingPannel.js"></script>
     <script src="assets/com/blank/view/TipBox.js"></script>
@@ -46,15 +58,11 @@
 
     <script src="assets/com/blank/view/layout/BasicLayout.js"></script>
     <script src="assets/com/blank/view/layout/GridLayout.js"></script>
+    <script src="assets/com/blank/view/layout/DetailLayout.js"></script>
     <script src="assets/com/blank/view/layout/AutoGridLayout.js"></script>
     <script src="assets/com/blank/view/layout/DesktopGridLayout.js"></script>
 
     <script src="assets/com/blank/core/AppStatus.js"></script>
-    <script src="assets/com/blank/core/CoreSystem.js"></script>
-  </head>
-  <body> 
-    <script>
-        CoreSystem.start();
-    </script>
-  </body>
+	<script src="assets/com/blank/core/CoreSystem.js"></script>
+</body>
 </html>

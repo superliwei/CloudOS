@@ -17,9 +17,9 @@ var AppStatus = function(_app,_class)
 	});
 	win.view.bind(Win.MINIMIZE,function(){
 		QuickBar.instance().addIcon({
-			"title":win.title,
-			"img":"assets/images/icons/128/minWin.png",
-			"app":self.app
+			title:win.title,
+			img:"assets/images/icons/128/minWin.png",
+			app:self.app
 		});
 	});
 	win.view.bind(Win.SELECT,function(){

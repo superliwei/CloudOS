@@ -94,21 +94,3 @@
 	left: 5px;
 	top: 5px;
 }
-
-.Win .winMask
-{
-	position: absolute;
-	background-color: #000000;
-	opacity: 0.3;
-}
-
-/*拖动框*/
-.DragFrame
-{
-	position: absolute;
-}
-
-.DragFrame .bar
-{
-	position: absolute;
-}

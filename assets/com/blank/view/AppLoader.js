@@ -19,12 +19,12 @@ AppLoader.prototype.init = function()
 	this.config.win.parentView = this.option.parentView;
 	this.win = new Win(this.config.win);
 	this.frame = $("<iframe>",{
-		"src":this.config.index,
-		"style":"border:none;position:absolute;"
+		src:this.config.index,
+		style:"border:none;position:absolute;"
 	});
 	this.frame.appendTo(this.win.content);
 
-	this.frameMask = $("<div>",{"style":"position:absolute;"});
+	this.frameMask = $("<div>",{style:"position:absolute;"});
 	this.frameMask.appendTo(this.win.content);
 	this.frameMask.hide();
 
@@ -70,8 +70,8 @@ AppLoader.loaders = [];
 AppLoader.newLoader = function(_url)
 {
 	var loader = new AppLoader({
-		"url":_url,
-		"parentView":Desktop.instance().winLayer
+		url:_url,
+		parentView:Desktop.instance().winLayer
 	});
 	AppLoader.loaders.push(loader);
 }

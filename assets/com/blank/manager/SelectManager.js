@@ -10,7 +10,7 @@ SelectManager.selectBox = function()
 	if(SelectManager._selectBox == null)
 	{
 		SelectManager._selectBox = $("<div>",{
-			"style":"position:absolute;border:solid 1px;"
+			style:"position:absolute;border:solid 1px;"
 		});
 		SelectManager._selectBox.css("background-image","url(assets/images/blueAlphaBg0.png)");
 	}
@@ -25,8 +25,10 @@ SelectManager.regist = function(_layout)
 	layout.view.mousedown(function(e){
 		dp.x = e.clientX;
 		dp.y = e.clientY;
+        dp.scrollLeft = layout.view.scrollLeft();
+        dp.scrollTop = layout.view.scrollTop();
 		box.appendTo(layout.view);
-		box.offset({"left":dp.x,"top":dp.y});
+		box.offset({left:dp.x,top:dp.y});
 		$(document).bind("mousemove",mousemoveHandler);
 		$(document).bind("mouseup",mouseupHandler);
 		FileItem.selectItems([]);
@@ -34,8 +36,8 @@ SelectManager.regist = function(_layout)
 
 	function mousemoveHandler(e)
 	{
-		var tw = e.clientX - dp.x;
-		var th = e.clientY - dp.y;
+		var tw = e.clientX - dp.x + layout.view.scrollLeft() - dp.scrollLeft;
+		var th = e.clientY - dp.y + layout.view.scrollTop() - dp.scrollTop;
 		if(tw>=0)
 		{
 			box.width(tw);
@@ -44,7 +46,7 @@ SelectManager.regist = function(_layout)
 		{
 			tw = Math.abs(tw);
 			box.width(tw);
-			box.offset({"left":dp.x - tw});
+			box.offset({left: e.clientX});
 		}
 		if(th>=0)
 		{
@@ -54,7 +56,7 @@ SelectManager.regist = function(_layout)
 		{
 			th = Math.abs(th);
 			box.height(th);
-			box.offset({"top":dp.y - th});
+            box.offset({top: e.clientY});
 		}
 		selectItem();
 	}
@@ -73,36 +75,27 @@ SelectManager.regist = function(_layout)
 		var items = layout.items;
 		for(var i=0,len=items.length;i<len;i++)
 		{
-			var item = items[i];
-			var item_center = {
-				"x":item.view.offset().left + item.view.width()*0.5,
-				"y":item.view.offset().top + item.view.height()*0.5
-			};
-			var rect = {
-				"x":box.offset().left,
-				"y":box.offset().top,
-				"width":box.width(),
-				"height":box.height()
-			};
-			var a = item_center.x>rect.x && item_center.x<rect.x+rect.width;
-			var b = item_center.y>rect.y && item_center.y<rect.y+rect.height;
-			var idx = FileItem.selectedItems.indexOf(item);
-			if(a&&b)
-			{
-				if(idx == -1)
-				{
-					item.select(true);
-					FileItem.selectedItems.push(item);
-				}
-			}
-			else
-			{
-				if(idx>-1)
-				{
-					item.select(false);
-					FileItem.selectedItems.splice(idx,1);
-				}
-			}
+            var item = items[i];
+            var rect0 = item.getSelectRect();
+            var rect1 = new Rect(box.offset().left,box.offset().top,box.width(),box.height());
+            var idx = FileItem.selectedItems.indexOf(item);
+            var crossed = Rect.testRectCross(rect0,rect1);
+            if(crossed)
+            {
+                if(idx == -1)
+                {
+                    item.select(true);
+                    FileItem.selectedItems.push(item);
+                }
+            }
+            else
+            {
+                if(idx>-1)
+                {
+                    item.select(false);
+                    FileItem.selectedItems.splice(idx,1);
+                }
+            }
 		}
 	}
 }

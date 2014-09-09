@@ -20,13 +20,25 @@ GridLayout.prototype = new BasicLayout();
 
 GridLayout.prototype.loadStart = function()
 {
-	for(i=0;i<30;i++)
+    this.clear();
+    var len = Math.ceil(Math.random()*50);
+	for(i=0;i<len;i++)
 	{
-		var item = new FileItem({"color":"#000","textShadow":"1px 1px 2px #fff"});
+		var item = new FileItem({color:"#000",textShadow:"1px 1px 2px #fff",target:"_parent"});
 		item.view.appendTo(this.itemLayer);
 		this.items.push(item);
 	}
 	this.layout();
+}
+
+GridLayout.prototype.clear = function()
+{
+    while(this.items.length>0)
+    {
+        var item = this.items[0];
+        item.destroy();
+        this.items.shift();
+    }
 }
 
 GridLayout.prototype.layout = function()
@@ -46,4 +58,10 @@ GridLayout.prototype.layout = function()
 		item.view.css("left",tx+(w-item.view.width())*0.5);
 		item.view.css("top",ty+(h-item.view.height())*0.5);
 	}
+}
+
+GridLayout.prototype.destroy = function()
+{
+    this.clear();
+    this.view.remove();
 }

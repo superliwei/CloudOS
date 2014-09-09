@@ -1,7 +1,7 @@
 var Menu = function(_data)
 {
 	this.data = _data;
-	this.view = $("<div>",{"style":"position:absolute;border:solid 1px #666666;background-color:#fff;border-radius:5px;padding-top:5px;padding-bottom:5px;font-size:15px;"});
+	this.view = $("<div>",{style:"position:absolute;border:solid 1px #666666;background-color:#fff;border-radius:5px;padding-top:5px;padding-bottom:5px;font-size:15px;"});
 	this.view.css("box-shadow","0px 10px 15px rgba(0,0,0,0.5)");
 	this.init();
 }
@@ -19,7 +19,7 @@ Menu.prototype.init = function()
 	}
 	this.view.mousedown(function(e){
 		e.stopPropagation();
-		$(document).trigger(CoreEvent.DOCUMENT_DOWN,"MenuBar");
+		$(document).trigger(CoreEvent.DOCUMENT_DOWN,"Menu");
 	});
 }
 
@@ -40,7 +40,7 @@ Menu.prototype.show = function()
 
 Menu.prototype.moveTo = function(_x,_y)
 {
-	this.view.offset({"left":_x,"top":_y});
+	this.view.offset({left:_x,top:_y});
 }
 
 Menu.prototype.destroy = function()
@@ -72,24 +72,42 @@ Menu.ITEM_CLICK = "Menu_itemClick";
 
 Menu.Separator = function()
 {
-	this.view = $("<div>",{"style":"border-top:solid 1px #e3e3e3;margin:2px;"});
+	this.view = $("<div>",{style:"border-top:solid 1px #e3e3e3;margin:2px;"});
 }
 
 Menu.LabelItem = function(_data,_menu)
 {
 	this.data = _data;
 	this.menu = _menu;
-	this.view = $("<div>",{"style":"line-height:24px;padding-left:24px;padding-right:24px;"});
+	this.view = $("<div>",{style:"line-height:24px;padding-left:24px;padding-right:24px;"});
 	this.view.text(this.data.label);
+    if(this.data.icon!=undefined)
+    {
+        this.setIcon(this.data.icon);
+    }
 	if(this.data.children!=undefined)
 	{
-		this.arrow = $("<div>",{"style":"float:right;width:7px;height:10px;margin-top:7px;margin-right:-17px;"});
+		this.arrow = $("<div>",{style:"float:right;width:7px;height:10px;margin-top:7px;margin-right:-17px;"});
 		this.arrow.css("background-image","url(assets/images/arrowR0.png)");
 		this.arrow.appendTo(this.view);
 		this.arrow.css("left",0);
 		this.arrow.css("top",0);
 	}
 	this.initEvents();
+}
+
+Menu.LabelItem.prototype.setIcon = function(_url)
+{
+    if(this.icon!=undefined)
+    {
+        this.icon.remove();
+    }
+    this.icon = $("<img>",{
+        src:_url,
+        style:"float:left;margin-left:-20px;margin-top:4px;max-width:16px;max-height:16px;",
+        onDragStart:"return false;"
+    });
+    this.icon.appendTo(this.view);
 }
 
 Menu.LabelItem.prototype.initEvents = function()
@@ -100,7 +118,7 @@ Menu.LabelItem.prototype.initEvents = function()
 	if(this.data.children == undefined)
 	{
 		this.view.click(this,function(e){
-			BroadcastCenter.dispatchEvent(new Event(Menu.ITEM_CLICK,e.data.data));
+            e.data.menu.view.trigger(Menu.ITEM_CLICK, e.data);
 		});
 	}
 }
@@ -129,6 +147,9 @@ Menu.BasicItem.prototype.select = function(value)
 			var tx = this.view.offset().left + this.menu.ct.width();
 			var ty = this.view.offset().top;
 			this.submenu.moveTo(tx,ty);
+            this.submenu.view.bind(Menu.ITEM_CLICK,this,function(e,item){
+                e.data.menu.view.trigger(Menu.ITEM_CLICK,item);
+            });
 		}
 		else
 		{

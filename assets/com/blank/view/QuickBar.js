@@ -15,9 +15,9 @@ QuickBar.prototype.init = function()
 	this.minH = 30;
 	this.maxH = 64;
 	this.padding = 5;
-	this.itemLayer = $("<div>",{"style":"position:absolute"});
-	this.iconLayer = $("<div>",{"style":"position:absolute"});
-	QuickBar.tip = $("<div>",{"style":"position:absolute;border-radius:15px;background-color:#000;color:#fff;padding-top:5px;padding-bottom:5px;padding-left:8px;padding-right:8px;font-size:14px;font-weight:bold;text-align:center;"});
+	this.itemLayer = $("<div>",{style:"position:absolute"});
+	this.iconLayer = $("<div>",{style:"position:absolute"});
+	QuickBar.tip = $("<div>",{style:"position:absolute;border-radius:15px;background-color:#000;color:#fff;padding-top:5px;padding-bottom:5px;padding-left:8px;padding-right:8px;font-size:14px;font-weight:bold;text-align:center;"});
 	this.itemLayer.appendTo(this.view);
 	this.iconLayer.appendTo(this.view);
 	this.items = [];
@@ -176,7 +176,7 @@ QuickBar.Item = function()
 {
 	this.icon = null;
 	this.view = $("<div>",{
-		"style":"position:absolute;"
+		style:"position:absolute;"
 	});
 	this.light = $("<div class='light'>");
 	this.lightState = "off";
@@ -229,9 +229,9 @@ QuickBar.Item.prototype.lightOff = function()
 QuickBar.Separator = function()
 {
 	this.view = $("<div>",{
-		"style":"position:absolute;width:10px"
+		style:"position:absolute;width:10px"
 	});
-	this.line = $("<div>",{"style":"position:absolute;background-color:#000000;width:1px;opacity:0.5;"});
+	this.line = $("<div>",{style:"position:absolute;background-color:#000000;width:1px;opacity:0.5;"});
 	this.line.appendTo(this.view);
 }
 
@@ -257,10 +257,10 @@ QuickBar.ImageItem = function(_data)
 	this.data = _data;
 	this.item = null;
 	this.view = $("<div>",{
-		"style":"position:absolute"
+		style:"position:absolute"
 	});
 	this.imgMask = this.view.clone();
-	this.imgPlaceHolder = $("<div>",{"style":"position:absolute"});
+	this.imgPlaceHolder = $("<div>",{style:"position:absolute"});
 	this.imgPlaceHolder.css("border","dashed 1px #666666");
 	this.imgPlaceHolder.css("border-radius",10);
 	this.imgPlaceHolder.appendTo(this.view);
@@ -273,7 +273,7 @@ QuickBar.ImageItem = function(_data)
 	if(this.data.img!=undefined) //图片
 	{
 		var imgLoader = new ImageLoader(this.data.img,{
-			"onComplete":function(){
+			onComplete:function(){
 				self.img= $(imgLoader.image);
 				self.updateImg();
 				self.img.appendTo(self.imgPlaceHolder);
@@ -285,7 +285,7 @@ QuickBar.ImageItem = function(_data)
 	if(this.data.app!=undefined)
 	{
 		var iconLoader = new ImageLoader(this.data.app.win.icon,{
-			"onComplete":function(){
+			onComplete:function(){
 				self.icon = $(iconLoader.image);
 				self.icon.appendTo(self.imgPlaceHolder);
 				self.icon.css("position","absolute");
@@ -355,11 +355,12 @@ QuickBar.ImageItem.prototype.initDragAction = function()
 	var moved,thisGroup,sortableItems;
 
 	this.view.mousedown(function(e){
+        dp = {x:e.clientX,y:e.clientY};
 		thisGroup = QuickBar.instance().getGroupIdx(self.item);
 		self.mousedownEffect();
-		dp.offset = $(this).offset();
+        var offset = $(this).offset();
 		$(this).appendTo("body");
-		$(this).offset(dp.offset);
+        $(this).offset(offset);
 
 		moved = false;
 		Dragger.startDrag($(this),e);
@@ -370,7 +371,8 @@ QuickBar.ImageItem.prototype.initDragAction = function()
 
 	function mousemoveHandler(e)
 	{
-		moved = true;
+        if(e.clientX - dp.x == 0 && e.clientY - dp.y == 0)return;
+        moved = true;
 		self.hideTip();
 		if(self.item!=null)self.item.lightOff();
 		var ty = self.view.offset().top;
@@ -498,7 +500,7 @@ QuickBar.ImageItem.prototype.initDragAction = function()
 		}
 		else
 		{
-			self.clickHandler();
+            self.clickHandler();
 		}
 	}
 }
@@ -511,17 +513,15 @@ QuickBar.ImageItem.prototype.initClickAction = function()
 	this.view.mousedown(function(e){
 		self.mousedownEffect();
 		moved = false;
-		dp = {"x":e.clientX,"y":e.clientY};
+		dp = {x:e.clientX,y:e.clientY};
 		$(document).bind("mousemove",mousemoveHandler);
 		$(document).bind("mouseup",mouseupHandler);
 	});
 
 	function mousemoveHandler(e)
 	{
-		if(Math.abs(e.clientX - dp.x)>0 || Math.abs(e.clientY - dp.y)>0)
-		{
-			move = true;
-		}
+        if(e.clientX - dp.x == 0 && e.clientY - dp.y == 0)return;
+		moved = true;
 	}
 
 	function mouseupHandler(e)
@@ -697,7 +697,7 @@ QuickBar.ImageItem.prototype.showTip = function()
 	tip.outerHeight(h);
 	var tx = this.view.offset().left + (this.view.outerWidth() - w)*0.5;
 	var ty = QuickBar.instance().view.offset().top - h - 5;
-	tip.offset({"left":tx,"top":ty});
+	tip.offset({left:tx,top:ty});
 }
 
 QuickBar.ImageItem.prototype.hideTip = function()
@@ -724,8 +724,8 @@ QuickBar.ImageItem.prototype.destroy = function()
 QuickBar.ImageItem.prototype.popFolder = function()
 {
 	new TipBox({
-		"parentView":Desktop.instance().barLayer,
-		"target":this
+		parentView:Desktop.instance().barLayer,
+		target:this
 	});
 }
 
@@ -737,49 +737,49 @@ QuickBar.Data = function()
 {
 	this.items = [
 		{
-			"title":"Folder",
-			"img":"assets/images/icons/128/folder.png",
-			"fixed":true,
-			"cmd":"open Root",
-			"class":Folder
+			title:"Folder",
+			img:"assets/images/icons/128/folder.png",
+			fixed:true,
+			cmd:"open Root",
+			class:Folder
 		},
 		{
-			"title":"终端",
-			"img":"assets/images/icons/128/terminal.png",
-			"cmd":"open Terminal",
-			"class":Terminal
+			title:"终端",
+			img:"assets/images/icons/128/terminal.png",
+			cmd:"open Terminal",
+			class:Terminal
 		},
 		{
-			"title":"图片查看器",
-			"img":"assets/apps/ImageViewer.app/icon.png",
-			"cmd":"load assets/apps/ImageViewer.app",
-			"class":AppLoader,
-			"name":"ImageViewer"
+			title:"图片查看器",
+			img:"assets/apps/ImageViewer.app/icon.png",
+			cmd:"load assets/apps/ImageViewer.app",
+			class:AppLoader,
+			name:"ImageViewer"
 		},
 		{
-			"title":"偏好设置",
-			"img":"assets/images/icons/128/setting.png",
-			"cmd":"open SettingPannel",
-			"class":SettingPannel
+			title:"偏好设置",
+			img:"assets/images/icons/128/setting.png",
+			cmd:"open SettingPannel",
+			class:SettingPannel
 		},
 		{
-			"type":"separator"
+			type:"separator"
 		},
 		{
-			"title":"我的音乐",
-			"img":"assets/images/icons/128/musicFolder.png",
-			"list":"/music"
+			title:"我的音乐",
+			img:"assets/images/icons/128/musicFolder.png",
+			list:"/music"
 		},
 		{
-			"title":"应用程序",
-			"img":"assets/images/icons/128/app.png",
-			"list":"/apps"
+			title:"应用程序",
+			img:"assets/images/icons/128/app.png",
+			list:"/apps"
 		},
 		{
-			"title":"废纸篓",
-			"img":"assets/images/icons/128/trash0.png",
-			"fixed":true,
-			"cmd":"open 废纸篓"
+			title:"废纸篓",
+			img:"assets/images/icons/128/trash0.png",
+			fixed:true,
+			cmd:"open 废纸篓"
 		}
 	];
 }
