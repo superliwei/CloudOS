@@ -7,7 +7,7 @@ var Background = function()
 	this.img = null;
 	var self = this;
 	
-	var imgLoader = new ImageLoader("assets/images/bg/0.jpg",{
+	var imgLoader = new ImageLoader(User.currentUser.config.backgroundImage,{
 		onComplete:function(){
 			self.img = $(imgLoader.image);
 			self.img.css("position","absolute");

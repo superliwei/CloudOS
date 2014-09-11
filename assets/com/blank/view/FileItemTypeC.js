@@ -6,6 +6,7 @@ var FileItemTypeC = function(_option)
 {
     var self = this;
     this.option = _option == undefined?{}:_option;
+    this.file = new File(this.option);
     this.view = $("<div>",{
         style:"padding:3px;"
     });
@@ -22,7 +23,7 @@ var FileItemTypeC = function(_option)
     this.imgBox.appendTo(this.view);
 
     var img = new Image();
-    img.src = "assets/images/icons/64/folder.png";
+    img.src = IconMap.getIcon(this.file.type);
     img.onload = function()
     {
         $(img).attr("onDragStart","return false;");
@@ -37,7 +38,7 @@ var FileItemTypeC = function(_option)
     });
     this.label.css("color",this.option.color!=undefined?this.option.color:"#ffffff");
     this.label.css("text-shadow",this.option.textShadow!=undefined?this.option.textShadow:"1px 1px 2px #000");
-    this.label.text("我是文件名我很长的abc");
+    this.label.text(this.file.name);
     this.label.appendTo(this.view);
 
     $("<div>",{style:"clear:both;"}).appendTo(this.view);

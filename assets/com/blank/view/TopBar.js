@@ -39,7 +39,9 @@ TopBar.prototype.updateMenuBar = function(_target)
 		{label:"关于Zoolon CloudOS"},
         {type:"separator"},
 		{label:"终端",icon:"assets/images/icons/16/Terminal.png"},
-        {label:"系统偏好设置",icon:"assets/images/icons/16/setting.png"}
+        {label:"系统偏好设置",icon:"assets/images/icons/16/setting.png"},
+        {type:"separator"},
+        {label:"清空废纸篓"}
 	]});
 	if(_target.menu!=undefined)
 	{

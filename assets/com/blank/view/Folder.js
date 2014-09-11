@@ -57,6 +57,7 @@ Folder.prototype.init = function()
             {label:"整理"},
             {type:"separator"},
             {label:"全选"},
+            {label:"反选"},
             {label:"取消选择"},
             {type:"separator"},
             {label:"复制"},
@@ -92,13 +93,13 @@ Folder.prototype.init = function()
     var self = this;
     this.historyManager = new HistoryManager({
         controlBts:[this.leftBt,this.rightBt],
-        handler:function(){
-            self.layout.loadStart();
+        handler:function(_url){
+            self.layout.loadStart(_url);
         }
     });
 
 	this.win.view.bind(Win.ADD,function(){
-		self.load();
+		self.load(self.option.url);
 	});
 	this.win.view.bind(Win.RESIZE,function(){
 		self.resizeHandler();
@@ -176,6 +177,7 @@ Folder.menu = [
     ]},
 	{label:"编辑",children:[
         {label:"全选"},
+        {label:"反选"},
         {label:"取消选择"},
         {type:"separator"},
         {label:"复制"},
@@ -221,6 +223,7 @@ Folder.run = function(cmd)
 Folder.newOpen = function(_url)
 {
 	var folder = new Folder({
+        url:_url,
 		win:{
 			parentView:Desktop.instance().winLayer,
 			title:_url

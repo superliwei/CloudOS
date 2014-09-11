@@ -84,7 +84,7 @@ HistoryManager.prototype.next = function()
 
 HistoryManager.prototype.go = function(_idx)
 {
-    this.option.handler();
+    this.option.handler(this.list[_idx]);
     this.index = _idx;
     this.updateControlBts();
 }

@@ -6,6 +6,7 @@ var FileItem = function(_option)
 	var self = this;
 	this.option = _option == undefined?{}:_option;
 	this.mode = this.option.mode !=undefined?this.option.mode:"A";
+    this.file = new File(this.option);
 	this.view = $("<div>",{
 		style:"position:absolute;width:100px;height:100px;"
 	});
@@ -30,7 +31,7 @@ var FileItem = function(_option)
 	this.imgPlaceHolder.appendTo(this.imgBox);
 
 	var img = new Image();
-	img.src = "assets/images/icons/64/folder.png";
+    img.src = IconMap.getIcon(this.file.type);
 	img.onload = function()
 	{
         $(img).attr("onDragStart","return false;");
@@ -49,7 +50,7 @@ var FileItem = function(_option)
 	});
 	this.label.css("color",this.option.color!=undefined?this.option.color:"#ffffff");
 	this.label.css("text-shadow",this.option.textShadow!=undefined?this.option.textShadow:"1px 1px 2px #000");
-	this.label.text(this.getCurrentLabelStr(this.labelBox,"我是文件名我很长的",this.view.width()));
+	this.label.text(this.getCurrentLabelStr(this.labelBox,this.file.name,this.view.width()));
 	this.label.css("left",(this.view.outerWidth()-this.labelBox.outerWidth())*0.5);
 	this.label.css("top",maxSize+(this.view.outerHeight()-maxSize-this.labelBox.outerHeight())*0.5);
 	this.label.appendTo(this.view);
@@ -134,9 +135,8 @@ FileItem.prototype.initEventsA = function()
 	}
 
 	this.view.dblclick(function(){
-		trace("双击");
-        var cmd = self.option.target == "_parent"?"open /a _parent":"open /a";
-        Terminal.run(cmd);
+		//trace("双击");
+        self.file.openWithDefaultApplication();
 	});
 }
 
@@ -163,7 +163,8 @@ FileItem.prototype.initEventsB = function()
 	{
 		if(!moved)
 		{
-			trace("点击");
+			//trace("点击");
+            self.file.openWithDefaultApplication();
 		}
 		mouseupEffect();
 		$(document).unbind("mousemove",mousemoveHandler);
@@ -206,6 +207,7 @@ FileItem.prototype.select = function(value)
 FileItem.prototype.destroy = function()
 {
     this.view.remove();
+    this.file.destroy();
 }
 
 FileItem.prototype.getSelectRect = function()

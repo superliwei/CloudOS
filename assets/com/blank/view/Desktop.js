@@ -28,10 +28,19 @@ var Desktop = function()
 Desktop.prototype.ready = function(_onReady)
 {
 	var self = this;
+
 	//开始读取桌面必须数据
-	setTimeout(function(){
-		_onReady();
-	},2000);
+    //1.读取用户数据
+    User.currentUser.read(function(){
+        //2.读取桌面文件列表
+        var file = new File({url:"/desktop"});
+        file.dispatcher.bind(File.COMPLETE,function(e,_data){
+            self.fileList = _data;
+            file.destroy();
+            _onReady();
+        });
+        file.getDirectoryListing();
+    });
 }
 
 Desktop.prototype.appendTo = function(_parentView)
@@ -52,7 +61,7 @@ Desktop.prototype.init = function()
 	this.gridLayout.moveTo(0,TopBar.instance().height);
 
 	this.resizeHandler();
-	this.gridLayout.loadStart();
+	this.gridLayout.setSource(this.fileList);
 	this.show();
 	
 	$(window).resize(this,function(e){

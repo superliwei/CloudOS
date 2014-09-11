@@ -1,0 +1,12 @@
+[
+    {
+        "url":"/desktop/文件夹A",
+        "name":"文件夹A",
+        "type":"directory"
+    },
+    {
+        "url":"/desktop/a.jpg",
+        "name":"a.jpg",
+        "type":"jpg"
+    }
+]

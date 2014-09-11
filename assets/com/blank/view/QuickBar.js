@@ -735,53 +735,32 @@ QuickBar.ImageItem.prototype.popFolder = function()
 
 QuickBar.Data = function()
 {
-	this.items = [
-		{
-			title:"Folder",
-			img:"assets/images/icons/128/folder.png",
-			fixed:true,
-			cmd:"open Root",
-			class:Folder
-		},
-		{
-			title:"终端",
-			img:"assets/images/icons/128/terminal.png",
-			cmd:"open Terminal",
-			class:Terminal
-		},
-		{
-			title:"图片查看器",
-			img:"assets/apps/ImageViewer.app/icon.png",
-			cmd:"load assets/apps/ImageViewer.app",
-			class:AppLoader,
-			name:"ImageViewer"
-		},
-		{
-			title:"偏好设置",
-			img:"assets/images/icons/128/setting.png",
-			cmd:"open SettingPannel",
-			class:SettingPannel
-		},
-		{
-			type:"separator"
-		},
-		{
-			title:"我的音乐",
-			img:"assets/images/icons/128/musicFolder.png",
-			list:"/music"
-		},
-		{
-			title:"应用程序",
-			img:"assets/images/icons/128/app.png",
-			list:"/apps"
-		},
-		{
-			title:"废纸篓",
-			img:"assets/images/icons/128/trash0.png",
-			fixed:true,
-			cmd:"open 废纸篓"
-		}
-	];
+    this.items = [];
+    var folder = {
+        title:"Folder",
+        img:"assets/images/icons/128/folder.png",
+        fixed:true,
+        cmd:"open /",
+        class:Folder
+    };
+    this.items.push(folder);
+    var len = User.currentUser.config.quickBar.items.length;
+    for(var i= 0;i<len;i++)
+    {
+        var item = User.currentUser.config.quickBar.items[i];
+        if(item.class != undefined)
+        {
+            item.class = eval(item.class);
+        }
+        this.items.push(item);
+    }
+    var trash = {
+        title:"废纸篓",
+        img:"assets/images/icons/128/trash0.png",
+        fixed:true,
+        cmd:"open 废纸篓"
+    };
+    this.items.push(trash);
 }
 
 /**

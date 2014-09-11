@@ -18,13 +18,21 @@ var DetailLayout = function()
 
 DetailLayout.prototype = new BasicLayout();
 
-DetailLayout.prototype.loadStart = function()
+DetailLayout.prototype.loadStart = function(_url)
 {
-    this.clear();
-    var len = Math.ceil(Math.random()*50);
-    for(i=0;i<len;i++)
+    GridLayout.prototype.loadStart.call(this,_url);
+}
+
+DetailLayout.prototype.createItems = function(_ds)
+{
+    var len = _ds.length;
+    for(var i=0;i<len;i++)
     {
-        var item = new FileItemTypeC({color:"#000",textShadow:"1px 1px 2px #fff",target:"_parent"});
+        var option = _ds[i];
+        option.color = "#000";
+        option.textShadow = "1px 1px 2px #fff";
+        option.target = "_parent";
+        var item = new FileItemTypeC(option);
         item.view.appendTo(this.itemLayer);
         this.items.push(item);
     }
@@ -44,12 +52,7 @@ DetailLayout.prototype.layout = function()
 
 DetailLayout.prototype.clear = function()
 {
-    while(this.items.length>0)
-    {
-        var item = this.items[0];
-        item.destroy();
-        this.items.shift();
-    }
+    GridLayout.prototype.clear.call(this);
 }
 
 DetailLayout.prototype.destroy = function()

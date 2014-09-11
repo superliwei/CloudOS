@@ -29,6 +29,12 @@ LoginScene.prototype.init = function()
     this.layoutState = 0;
     this.selectedItem = null;
 
+    this.titleLabel = $("<div>",{
+        style:"position:absolute;color:#fff;font-size:35px;font-family:vijaya;color:#aaa;"
+    });
+    this.titleLabel.text("Zoolon CloudOS");
+    this.titleLabel.appendTo(this.view);
+
     var newLoginUser = new LoginScene.LoginUser({
         icon:"assets/images/avatar/a.png",
         nickname:"新登录用户"
@@ -76,7 +82,8 @@ LoginScene.prototype.init = function()
 	
 	this.loading = $("<img>",{
 		src:"assets/images/loading.gif",
-		style:"position:absolute;"
+		style:"position:absolute;",
+        onDragStart:"return false;"
 	});
 	this.loading.appendTo(this.view);
 	this.loading.hide();
@@ -142,7 +149,10 @@ LoginScene.prototype.itemClickHandler = function(e)
             if(idx == 0)self.emailInput.show();
             self.passwordInput.show();
             self.backBt.view.show();
+            var _ttx = self.titleLabel.offset().left;
+            var _tty = self.titleLabel.offset().top;
             self.layout1();
+            TweenLite.from(self.titleLabel,1,{left:_ttx,top:_tty,ease:Cubic.easeInOut});
             TweenLite.from(item.view,1,{left:tx,top:ty,ease:Cubic.easeInOut,onComplete:function(){
                 self.selectedItem.label.fadeIn("fast");
             }});
@@ -219,8 +229,11 @@ LoginScene.prototype.backHandler = function(e)
 
     tx = self.selectedItem.view.offset().left;
     ty = self.selectedItem.view.offset().top;
+    var _ttx = self.titleLabel.offset().left;
+    var _tty = self.titleLabel.offset().top;
     self.layout0();
 
+    TweenLite.from(self.titleLabel,1,{left:_ttx,top:_tty,ease:Cubic.easeInOut,delay:(idx==0)?0.5:0.3});
     TweenLite.from(self.selectedItem.view,1,{left:tx,top:ty,ease:Cubic.easeInOut,delay:(idx==0)?0.5:0.3,onStart:function(){
         self.selectedItem.label.fadeOut("fast");
     }});
@@ -253,6 +266,9 @@ LoginScene.prototype.layout0 = function()
         var ty = ($(window).height() - item.ct.height())*0.5;
         item.view.offset({left:tx,top:ty});
     }
+    tx = ($(window).width() - this.titleLabel.width())*0.5;
+    ty -= this.titleLabel.height() + 60;
+    this.titleLabel.offset({left:tx,top:ty});
 }
 
 LoginScene.prototype.layout1 = function()
@@ -260,6 +276,10 @@ LoginScene.prototype.layout1 = function()
     var tx = ($(window).width() - this.selectedItem.ct.width())*0.5;
     var ty = ($(window).height() - this.selectedItem.ct.height())*0.3;
     this.selectedItem.view.offset({left:tx,top:ty});
+
+    var _tx = ($(window).width() - this.titleLabel.width())*0.5;
+    var _ty = ty - this.titleLabel.height() - 60;
+    this.titleLabel.offset({left:_tx,top:_ty});
 
     var idx = this.items.indexOf(this.selectedItem);
     if(idx == 0)
@@ -297,6 +317,8 @@ LoginScene.prototype.show = function()
         var item = this.items[i];
         TweenLite.from(item.view,1,{opacity:0,delay:0.05*i});
     }
+
+    TweenLite.from(this.titleLabel,0.5,{opacity:0});
 }
 
 LoginScene.prototype.resizeHandler = function(e)

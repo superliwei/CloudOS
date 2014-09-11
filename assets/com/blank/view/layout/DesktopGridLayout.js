@@ -23,15 +23,17 @@ DesktopGridLayout.prototype.resize = function(_w,_h)
 	this.fixLayout(lastSize);
 }
 
-DesktopGridLayout.prototype.loadStart = function()
+DesktopGridLayout.prototype.setSource = function(_source)
 {
-	for(i=0;i<30;i++)
-	{
-		var item = new FileItem();
-		item.view.appendTo(this.itemLayer);
-		this.items.push(item);
-	}
-	this.layout();
+    GridLayout.prototype.clear.call(this);
+    var len = _source.length;
+    for(i=0;i<len;i++)
+    {
+        var item = new FileItem(_source[i]);
+        item.view.appendTo(this.itemLayer);
+        this.items.push(item);
+    }
+    this.layout();
 }
 
 DesktopGridLayout.prototype.layout = function()

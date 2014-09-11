@@ -47,7 +47,22 @@ var SettingPannel = function(_option)
 
 	this.status = new AppStatus(this,SettingPannel);
 
+    this.module = new Module();
+    this.module.view.appendTo(this.win.content);
+
 	var self = this;
+
+    this.historyManager = new HistoryManager({
+        controlBts:[this.leftBt,this.rightBt],
+        handler:function(_url){
+            self.module.load(_url);
+        }
+    });
+
+    this.win.view.bind(Win.ADD,function(){
+        self.historyManager.add("assets/com/blank/module/setting/all.html");
+    });
+
 	this.win.view.bind(Win.RESIZE,function(){
 		self.resizeHandler();
 	});

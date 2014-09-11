@@ -18,17 +18,32 @@ var GridLayout = function()
 
 GridLayout.prototype = new BasicLayout();
 
-GridLayout.prototype.loadStart = function()
+GridLayout.prototype.loadStart = function(_url)
 {
     this.clear();
-    var len = Math.ceil(Math.random()*50);
-	for(i=0;i<len;i++)
-	{
-		var item = new FileItem({color:"#000",textShadow:"1px 1px 2px #fff",target:"_parent"});
-		item.view.appendTo(this.itemLayer);
-		this.items.push(item);
-	}
-	this.layout();
+    var self = this;
+    var file = new File({url:_url});
+    file.dispatcher.bind(File.COMPLETE,function(e,_data){
+        self.createItems(_data);
+        self.layout();
+        file.destroy();
+    });
+    file.getDirectoryListing();
+}
+
+GridLayout.prototype.createItems = function(_ds)
+{
+    var len = _ds.length;
+    for(var i=0;i<len;i++)
+    {
+        var option = _ds[i];
+        option.color = "#000";
+        option.textShadow = "1px 1px 2px #fff";
+        option.target = "_parent";
+        var item = new FileItem(option);
+        item.view.appendTo(this.itemLayer);
+        this.items.push(item);
+    }
 }
 
 GridLayout.prototype.clear = function()

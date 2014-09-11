@@ -18,15 +18,28 @@ AutoGridLayout.prototype.resize = function(_w,_h)
 	this.layout();
 }
 
-AutoGridLayout.prototype.loadStart = function()
+AutoGridLayout.prototype.loadStart = function(_url)
 {
-	for(i=0;i<30;i++)
-	{
-		var item = new FileItem({mode:"B",flag:"TipBox"});
-		item.view.appendTo(this.itemLayer);
-		this.items.push(item);
-	}
-	this.layout();
+    GridLayout.prototype.loadStart.call(this,_url);
+}
+
+AutoGridLayout.prototype.createItems = function(_ds)
+{
+    var len = _ds.length;
+    for(var i=0;i<len;i++)
+    {
+        var option = _ds[i];
+        option.mode = "B";
+        option.flag = "TipBox";
+        var item = new FileItem(option);
+        item.view.appendTo(this.itemLayer);
+        this.items.push(item);
+    }
+}
+
+AutoGridLayout.prototype.clear = function()
+{
+    GridLayout.prototype.clear.call(this);
 }
 
 AutoGridLayout.prototype.layout = function()

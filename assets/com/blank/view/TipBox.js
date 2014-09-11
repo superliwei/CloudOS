@@ -47,7 +47,7 @@ TipBox.prototype.init = function()
 	this.target.view.css("opacity",0);
 
 	this.resize();
-	this.gridLayout.loadStart();
+    this.gridLayout.loadStart(this.option.target.data.list);
 	
 	$(window).bind("resize",this,this.resizeHandler);
 	$(document).bind("mousedown",this,this.destroy);
