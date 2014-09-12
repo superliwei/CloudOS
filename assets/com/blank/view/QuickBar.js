@@ -17,7 +17,7 @@ QuickBar.prototype.init = function()
 	this.padding = 5;
 	this.itemLayer = $("<div>",{style:"position:absolute"});
 	this.iconLayer = $("<div>",{style:"position:absolute"});
-	QuickBar.tip = $("<div>",{style:"position:absolute;border-radius:15px;background-color:#000;color:#fff;padding-top:5px;padding-bottom:5px;padding-left:8px;padding-right:8px;font-size:14px;font-weight:bold;text-align:center;"});
+	QuickBar.tip = $("<div>",{style:"position:absolute;border-radius:15px;background-color:#000;color:#fff;padding-top:5px;padding-bottom:5px;padding-left:8px;padding-right:8px;font-size:14px;font-weight:bold;text-align:center;word-break:keep-all;white-space:nowrap;"});
 	this.itemLayer.appendTo(this.view);
 	this.iconLayer.appendTo(this.view);
 	this.items = [];
@@ -198,8 +198,9 @@ QuickBar.Item.prototype.moveTo = function(_x,_y)
 {
 	this.view.css("left",_x);
 	this.view.css("top",_y);
-	if(this.icon!=null)
+	if(this.icon!=null && !Dragger.isDragging(this.icon.view))
 	{
+        TweenLite.killTweensOf(this.icon.view);
 		this.icon.view.offset(this.view.offset());
 	}
 }
@@ -448,7 +449,10 @@ QuickBar.ImageItem.prototype.initDragAction = function()
 				}
 				if(switchItem!=null)
 				{
-					switchItem.icon.view.offset(self.item.view.offset());
+                    var switchView = switchItem.icon.view;
+                    var tx = self.item.view.css("left");
+                    TweenLite.to(switchView,0.5,{left:tx,ease:Cubic.easeOut});
+
 					self.item.put(switchItem.icon);
 					self.item.icon.updataLightState();
 					switchItem.put(self);
@@ -666,8 +670,7 @@ QuickBar.ImageItem.prototype.clickHandler = function()//点击运行
 	function showMinimizedWin(_imageItem)
 	{
 		_imageItem.hideTip();
-		_imageItem.data.app.win.view.show();
-		_imageItem.data.app.win.resizeHandler();
+        _imageItem.data.app.win.normalize();
 		PopUpManager.selectPop(_imageItem.data.app);
 		var items = QuickBar.instance().items;
 		var idx = items.indexOf(_imageItem.item);
@@ -688,11 +691,10 @@ QuickBar.ImageItem.prototype.showTip = function()
 	var tip = QuickBar.tip;
 	tip.css("width","auto");
 	tip.css("height","auto");
-	tip.appendTo("body");
+    tip.appendTo(QuickBar.instance().view);
 	tip.text(String(this.data.title));
 	var w = tip.outerWidth() + 4;
 	var h = tip.outerHeight();
-	tip.appendTo(QuickBar.instance().view);
 	tip.outerWidth(w);
 	tip.outerHeight(h);
 	var tx = this.view.offset().left + (this.view.outerWidth() - w)*0.5;

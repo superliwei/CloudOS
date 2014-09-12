@@ -38,3 +38,13 @@ Dragger.stopDrag = function()
 	Dragger.dps = null;
 	Dragger.target = null;
 }
+
+Dragger.isDragging = function(_view)
+{
+    var result = false;
+    if(Dragger.target!=null && Dragger.target[0].get(0) == _view.get(0))
+    {
+        result = true;
+    }
+    return result;
+}

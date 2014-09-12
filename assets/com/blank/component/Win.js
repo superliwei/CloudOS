@@ -97,6 +97,11 @@ Win.prototype.resizeHandler = function()
 	this.minBt.view.css("left",this.maxBt.view.position().left - this.minBt.view.width());
 	this.dragFrame.resize();
 	this.titleTf.resize();
+    if(this.mask!=undefined)
+    {
+        this.mask.width(this.view.outerWidth());
+        this.mask.height(this.view.outerHeight());
+    }
 	this.view.trigger(new Event(Win.RESIZE));
 }
 
@@ -104,7 +109,31 @@ Win.prototype.open = function()
 {
 	this.view.appendTo(this.parentView);
 	this.resizeHandler();
+    var self = this;
+    TweenLite.from(this.view,0.5,{alpha:0,rotationX:30,z:-300,ease:Cubic.easeInOut,onStart:function(){
+        self.mouseEnable(false);
+    },onComplete:function(){
+        self.mouseEnable(true);
+    }});
 	this.view.trigger(new Event(Win.ADD));
+}
+
+Win.prototype.mouseEnable = function(value)
+{
+    if(!value)
+    {
+        if(this.mask == undefined)
+        {
+            this.mask = $("<div>",{style:"position:absolute;left:-1px;top:-1px;"});
+        }
+        this.mask.width(this.view.outerWidth());
+        this.mask.height(this.view.outerHeight());
+        this.mask.appendTo(this.view);
+    }
+    else
+    {
+        if(this.mask!=undefined)this.mask.remove();
+    }
 }
 
 Win.prototype.moveTo = function(_x,_y)
@@ -116,13 +145,19 @@ Win.prototype.moveTo = function(_x,_y)
 
 Win.prototype.close = function()
 {
-	this.destroy();
-	this.view.trigger(new Event(Win.CLOSE));
+	var self = this;
+    TweenLite.to(this.view,0.5,{alpha:0,rotationX:30,z:-300,ease:Cubic.easeInOut,onStart:function(){
+        self.mouseEnable(false);
+    },onComplete:function(){
+        self.mouseEnable(true);
+        self.destroy();
+        self.view.trigger(new Event(Win.CLOSE));
+    }});
 }
 
 Win.prototype.maximize = function()
 {
-	this.maximizing = true;
+    var self = this;
 	this.maxBt.icon.css("background-image","url(assets/images/max_b0.png)");
 	this.tmp = {
 		x:this.x,
@@ -130,9 +165,20 @@ Win.prototype.maximize = function()
 		width:this.width,
 		height:this.height
 	};
-	this.resizeHandler();
-	$(window).bind("resize",this,this.windowResizeHandler);
-	this.dragFrame.enableResize(false);
+	var obj = {x:this.tmp.x,y:this.tmp.y,width:this.tmp.width,height:this.tmp.height};
+    TweenLite.to(obj,0.5,{x:0,y:26,width:$(window).width(),height:$(window).height()-26,onStart:function(){
+        self.mouseEnable(false);
+    },onUpdate:function(){
+        self.width = obj.width;
+        self.height = obj.height;
+        self.moveTo(obj.x,obj.y);
+        self.resizeHandler();
+    },onComplete:function(){
+        self.mouseEnable(true);
+        self.maximizing = true;
+        $(window).bind("resize",self,self.windowResizeHandler);
+        self.dragFrame.enableResize(false);
+    },ease:Cubic.easeInOut});
 }
 
 Win.prototype.windowResizeHandler = function(e)
@@ -141,24 +187,78 @@ Win.prototype.windowResizeHandler = function(e)
 	self.resizeHandler();
 }
 
-Win.prototype.restore = function()
+Win.prototype.restore = function(drag)
 {
+    var self = this;
 	this.maximizing = false;
 	this.maxBt.icon.css("background-image","url(assets/images/max_b.png)");
-	this.width = this.tmp.width;
-	this.height = this.tmp.height;
-	this.dragFrame.enableResize(true);
-	this.resizeHandler();
-	this.moveTo(this.tmp.x,this.tmp.y);
 	$(window).unbind("resize",this.windowResizeHandler);
+
+    var time = drag == undefined?0.5:0;
+
+    var obj = {x:0,y:26,width:$(window).width(),height:$(window).height()-26};
+    TweenLite.to(obj,time,{x:this.tmp.x,y:this.tmp.y,width:this.tmp.width,height:this.tmp.height,onStart:function(){
+        self.mouseEnable(false);
+    },onUpdate:function(){
+        self.width = obj.width;
+        self.height = obj.height;
+        if(drag == undefined)self.moveTo(obj.x,obj.y);
+        self.resizeHandler();
+    },onComplete:function(){
+        self.dragFrame.enableResize(true);
+        self.mouseEnable(true);
+    },ease:Cubic.easeInOut});
+
 	delete this.tmp;
 
 }
 
 Win.prototype.minimize = function()
 {
-	this.view.hide();
-	this.view.trigger(new Event(Win.MINIMIZE));
+    this.tmp0 = {
+        x:this.x,
+        y:this.y
+    };
+    var self = this;
+    var items = QuickBar.instance().items;
+    var trash = items[items.length-1];
+    var tx = trash.view.offset().left - this.width*0.5;
+    var ty = trash.view.offset().top - this.height*0.5;
+    TweenLite.to(this.view,0.5,{left:tx,top:ty,scaleX:0.1,scaleY:0.1,alpha:0,onStart:function(){
+        self.mouseEnable(false);
+    },onComplete:function(){
+        self.view.hide();
+        self.mouseEnable(true);
+        self.view.trigger(new Event(Win.MINIMIZE));
+    },ease:Cubic.easeInOut});
+}
+
+Win.prototype.normalize = function()
+{
+    var items = QuickBar.instance().getSortableItems(1);
+    var tx,ty;
+    for(var i=0;i<items.length;i++)
+    {
+        var item = items[i];
+        if(item.icon.data.app!=undefined && item.icon.data.app.win == this)
+        {
+            this.view.show();
+            tx = item.view.offset().left + item.view.width()*0.5 - this.width*0.5;
+            ty = item.view.offset().top - this.height*0.5;
+            TweenLite.to(this.view,0,{left:tx,top:ty});
+            break;
+        }
+    }
+    var self = this;
+    tx = this.tmp0.x;
+    ty = this.tmp0.y;
+    delete this.tmp0;
+    TweenLite.to(this.view,0.5,{left:tx,top:ty,alpha:1,scaleX:1,scaleY:1,onStart:function(){
+        self.mouseEnable(false);
+    },onComplete:function(){
+        self.mouseEnable(true);
+        self.resizeHandler();
+    },ease:Cubic.easeInOut});
 }
 
 Win.prototype.destroy = function()
@@ -240,6 +340,7 @@ Win.CloseBt = function(_win)
 
 Win.MinBt = function(_win)
 {
+    var self = this;
 	this.win = _win;
 	this.view = $("<div class='minBt'><div class='icon'></div></div>");
 
@@ -254,20 +355,21 @@ Win.MinBt = function(_win)
 		$(this).addClass("minBt_over");
 		$(this).children(".icon").addClass("icon_over");
 	});
-	this.view.mouseout(function(){
-		$(this).removeClass("minBt_over");
-		$(this).removeClass("minBt_down");
-		$(this).children(".icon").removeClass("icon_over");
-	});
+	this.view.mouseout(mouseoutHandler);
+    function mouseoutHandler()
+    {
+        self.view.removeClass("minBt_over");
+        self.view.removeClass("minBt_down");
+        self.view.children(".icon").removeClass("icon_over");
+    }
 	this.view.mousedown(function(){
 		$(this).addClass("minBt_down");
 	});
 	this.view.mouseup(function(){
 		$(this).removeClass("minBt_down");
 	});
-
-	var self = this;
 	this.view.click(function(){
+        mouseoutHandler();
 		self.win.minimize();
 	});
 }
@@ -291,32 +393,34 @@ Win.MaxBt = function(_win)
 	{
 		$(this).addClass("maxBt_over");
 		self.icon.css("background-image",self.win.maximizing?"url(assets/images/max_w0.png)":"url(assets/images/max_w.png)");
+        self.view.unbind("mouseout");
+        self.view.bind("mouseout",mouseoutHandler);
 	});
-	this.view.mouseout(function(){
-		$(this).removeClass("maxBt_over");
-		self.icon.css("background-image",self.win.maximizing?"url(assets/images/max_b0.png)":"url(assets/images/max_b.png)");
-	});
+
+    function mouseoutHandler()
+    {
+        self.view.removeClass("maxBt_over");
+        self.view.removeClass("maxBt_down");
+        self.icon.css("background-image",self.win.maximizing?"url(assets/images/max_b0.png)":"url(assets/images/max_b.png)");
+    }
 	this.view.mousedown(function(){
 		$(this).addClass("maxBt_down");
 	});
 	this.view.mouseup(function(){
 		$(this).removeClass("maxBt_down");
 	});
-	this.view.mouseout(function(){
-		$(this).removeClass("maxBt_down");
-	});
 
 	var self = this;
 	this.view.click(function(){
+        mouseoutHandler();
 		if(!self.win.maximizing)
 		{
-			self.win.maximize();
-			self.icon.css("background-image","url(assets/images/max_w0.png)");
+            self.view.unbind("mouseout");
+            self.win.maximize();
 		}
 		else
 		{
-			self.win.restore();
-			self.icon.css("background-image","url(assets/images/max_w.png)");
+            self.win.restore();
 		}
 	});
 }
@@ -484,7 +588,7 @@ Win.DragFrame.prototype.initDragAction = function()
 					dp.initX = dp.x - dp.x/self.win.width*self.win.tmp.width;
 				}
 				dp.initY = self.win.y;
-				self.win.restore();
+				self.win.restore(true);
 			}
 		}
 		var tx = dp.initX + e.clientX - dp.x;

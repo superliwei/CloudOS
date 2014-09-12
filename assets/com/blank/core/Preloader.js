@@ -5,19 +5,18 @@ function trace(obj)
 
 var Preloader = function()
 {
+    var self = this;
     this.view = $("<div>");
-    this.logo = $("<div>",{style:"position:absolute;"});
+    this.logo = $("<div>",{style:"position:absolute;display:none;"});
     this.img = $("<img>",{
         src:"assets/images/logo.png",
         style:"position:absolute;left:-22px;top:-24px;"
     }).appendTo(this.logo);
     this.logo.appendTo(this.view);
     $(window).bind("resize",this,this.resizeHandler);
-
-    var self = this;
     this.img.get(0).onload = function()
     {
-        TweenLite.from(self.logo,0.5,{opacity:0});
+        self.logo.fadeIn("slow");
     }
 
     //解决body滚动的问题
@@ -25,14 +24,13 @@ var Preloader = function()
         $(document.body).scrollTop(0);
     };
 
-    var self = this;
     document.body.onload = function()
     {
         CoreSystem.start(function(){
-			TweenLite.to(self.logo,0.5,{opacity:0,onComplete:function(){
-	            self.destroy();
-	        }});
-		});
+            self.logo.fadeOut("fast",function(){
+                self.destroy();
+            });
+        });
     }
 }
 

@@ -6,6 +6,7 @@ var Button =  function(_option)
 }
 
 Button.CLICK = "Button_click";
+Button.MOUSE_DOWN = "Button_mousedown";
 
 Button.prototype.init = function()
 {
@@ -34,6 +35,18 @@ Button.prototype.init = function()
 		this.view.height(this.option.height);
         this.view.css("line-height",this.option.height+"px");
 	}
+    this.view.css("background-color","#ffffff");
+    this.view.css("border-radius",3);
+
+    this.bt = $("<div>",{
+        style:"position:absolute;border-radius:3;"
+    });
+    this.bt.width(this.view.width());
+    this.bt.height(this.view.height());
+    this.bt.appendTo(this.view);
+
+    this.mask = this.bt.clone();
+
     if(this.option.enabled!=undefined)
     {
         this.enable(this.option.enabled);
@@ -42,8 +55,9 @@ Button.prototype.init = function()
     {
         this.enable(true);
     }
-	this.view.css("background-color","#ffffff");
-	this.view.css("border-radius",3);
+
+    this.bt.bind("click",this,this.clickHandler);
+    this.bt.bind("mousedown",this,this.mousedownHandler);
 }
 
 Button.prototype.setIcon = function(_url)
@@ -57,7 +71,7 @@ Button.prototype.setIcon = function(_url)
         style:"position:absolute",
         onDragStart:"return false;"
     });
-    this.icon.appendTo(this.view);
+    this.icon.prependTo(this.view);
 }
 
 Button.prototype.clickHandler = function(e)
@@ -70,6 +84,7 @@ Button.prototype.mousedownHandler = function(e)
 {
     var self = e.data;
     self.view.css("-webkit-filter","brightness(0.5)");
+    self.view.trigger(Button.MOUSE_DOWN,self);
     $(document).bind("mouseup",mouseupHandler);
 
     function mouseupHandler()
@@ -87,17 +102,13 @@ Button.prototype.moveTo = function(_x,_y)
 
 Button.prototype.enable = function (value)
 {
-    if(this._enabled == value)return;
     this.view.css("opacity",value?1:0.5);
     if(value)
     {
-        this.view.bind("click",this,this.clickHandler);
-        this.view.bind("mousedown",this,this.mousedownHandler);
+        this.mask.remove();
     }
     else
     {
-        this.view.unbind("click",this.clickHandler);
-        this.view.unbind("mousedown",this.mousedownHandler);
+        this.mask.appendTo(this.view);
     }
-    this._enabled = value;
 }

@@ -1,3 +1,7 @@
+/**
+ * 模块加载器
+ */
+
 var Module = function()
 {
 	this.view = $("<div>");
