@@ -11,6 +11,9 @@ var GridLayout = function()
 
 	this.view.css("overflow","auto");
 
+    this.loading = new SimulateLoading();
+    this.loading.view.appendTo(this.view);
+
 	this.items = [];
 
 	SelectManager.regist(this);
@@ -23,10 +26,12 @@ GridLayout.prototype.loadStart = function(_url)
     this.clear();
     var self = this;
     var file = new File({url:_url});
+    this.loading.show();
     file.dispatcher.bind(File.COMPLETE,function(e,_data){
         self.createItems(_data);
         self.layout();
         file.destroy();
+        self.loading.hide();
     });
     file.getDirectoryListing();
 }
@@ -44,6 +49,12 @@ GridLayout.prototype.createItems = function(_ds)
         item.view.appendTo(this.itemLayer);
         this.items.push(item);
     }
+}
+
+GridLayout.prototype.resize = function(_w,_h)
+{
+    BasicLayout.prototype.resize.call(this,_w,_h);
+    this.loading.resize(_w);
 }
 
 GridLayout.prototype.clear = function()

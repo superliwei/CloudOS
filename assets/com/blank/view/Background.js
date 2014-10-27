@@ -1,7 +1,7 @@
 var Background = function()
 {
 	this.view = $("<div>",{
-		style:"position:absolute"
+		style:"position:absolute;overflow:hidden;"
 	});
 
 	this.img = null;

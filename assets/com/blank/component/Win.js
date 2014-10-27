@@ -114,6 +114,7 @@ Win.prototype.open = function()
         self.mouseEnable(false);
     },onComplete:function(){
         self.mouseEnable(true);
+        self.view.get(0).style.transform = null;
     }});
 	this.view.trigger(new Event(Win.ADD));
 }
@@ -257,6 +258,7 @@ Win.prototype.normalize = function()
         self.mouseEnable(false);
     },onComplete:function(){
         self.mouseEnable(true);
+        self.view.get(0).style.transform = null;
         self.resizeHandler();
     },ease:Cubic.easeInOut});
 }

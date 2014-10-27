@@ -10,7 +10,7 @@ var Module = function()
 
 Module.list = [];
 
-Module.prototype.load = function(_url)
+Module.prototype.load = function(_url,_complete)
 {
 	this.unload();
 	this.url = _url;
@@ -18,6 +18,7 @@ Module.prototype.load = function(_url)
 	$.get(_url,function(_data){
 		self.content = self.inject(_data);
 		$(self.content).appendTo(self.view);
+        if(_complete!=undefined)_complete();
 	});
 }
 

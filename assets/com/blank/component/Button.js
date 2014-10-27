@@ -13,14 +13,15 @@ Button.prototype.init = function()
 	this.view = $("<div>",{
 		style:"position:absolute"
 	});
+    this.label = $("<div>",{
+        style:"position:absolute;word-break:keep-all;white-space:nowrap;font-size:14px;padding-left:5px;padding-right:5px;"
+    });
     if(this.option.text!=undefined)
     {
-        this.view.css("word-break","keep-all");
-        this.view.css("white-space","nowrap");
-        this.view.css("font-size",14);
-        this.view.css("padding-left",5);
-        this.view.css("padding-right",5);
-        this.view.text(this.option.text);
+        this.label.appendTo("body");
+        this.label.text(this.option.text);
+        this.view.width(this.label.outerWidth());
+        this.label.appendTo(this.view);
     }
 	if(this.option.icon!=undefined)
 	{
@@ -33,7 +34,7 @@ Button.prototype.init = function()
 	if(this.option.height!=undefined)
 	{
 		this.view.height(this.option.height);
-        this.view.css("line-height",this.option.height+"px");
+        this.label.css("line-height",this.option.height+"px");
 	}
     this.view.css("background-color","#ffffff");
     this.view.css("border-radius",3);
@@ -41,20 +42,14 @@ Button.prototype.init = function()
     this.bt = $("<div>",{
         style:"position:absolute;border-radius:3;"
     });
+
     this.bt.width(this.view.width());
     this.bt.height(this.view.height());
     this.bt.appendTo(this.view);
 
     this.mask = this.bt.clone();
 
-    if(this.option.enabled!=undefined)
-    {
-        this.enable(this.option.enabled);
-    }
-    else
-    {
-        this.enable(true);
-    }
+    this.enable(this.option.enabled!=undefined?this.option.enabled:true);
 
     this.bt.bind("click",this,this.clickHandler);
     this.bt.bind("mousedown",this,this.mousedownHandler);
@@ -83,13 +78,13 @@ Button.prototype.clickHandler = function(e)
 Button.prototype.mousedownHandler = function(e)
 {
     var self = e.data;
-    self.view.css("-webkit-filter","brightness(0.5)");
+    self.view.addClass("mousedown");
     self.view.trigger(Button.MOUSE_DOWN,self);
     $(document).bind("mouseup",mouseupHandler);
 
     function mouseupHandler()
     {
-        self.view.css("-webkit-filter","brightness(1)");
+        self.view.removeClass("mousedown");
         $(document).unbind("mouseup",mouseupHandler);
     }
 }

@@ -11,6 +11,9 @@ var DetailLayout = function()
 
     this.view.css("overflow","auto");
 
+    this.loading = new SimulateLoading();
+    this.loading.view.appendTo(this.view);
+
     this.items = [];
 
     SelectManager.regist(this);
@@ -36,6 +39,11 @@ DetailLayout.prototype.createItems = function(_ds)
         item.view.appendTo(this.itemLayer);
         this.items.push(item);
     }
+}
+
+DetailLayout.prototype.resize = function(_w,_h)
+{
+    GridLayout.prototype.resize.call(this,_w,_h);
 }
 
 DetailLayout.prototype.layout = function()

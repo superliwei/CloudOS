@@ -2,8 +2,12 @@ body
 {
 	margin: 0;
 	background: #333333;
-	font-family: 黑体;
-	/*font-family:微软雅黑;*/
+	font-family: "Arial","Helvetica","黑体","微软雅黑","华文细黑","幼圆";
 	-webkit-user-select:none;
 	overflow: hidden;
+}
+
+.mousedown
+{
+    -webkit-filter:brightness(0.5);
 }

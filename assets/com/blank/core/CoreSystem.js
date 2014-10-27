@@ -4,7 +4,6 @@ CoreSystem.start = function(_onComplete)
 {
     CSSPlugin.defaultTransformPerspective = 1000;
 
-    /*
     LoginScene.instance().ready(_onComplete);
 	BroadcastCenter.addEventListener(LoginScene.LOGIN_SUCCESS,function(){
 		Desktop.instance().ready(function(){
@@ -14,10 +13,11 @@ CoreSystem.start = function(_onComplete)
 			});
 		});
 	});
-	*/
+    /*
     _onComplete();
     User.currentUser = new User("heroblank@gmail.com","_#sfdsfsdfsefkjoiaenlksdjfls");
     Desktop.instance().ready(function(){
         Desktop.instance().appendTo($(document.body));
     });
+    */
 }

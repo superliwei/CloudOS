@@ -50,12 +50,17 @@ var SettingPannel = function(_option)
     this.module = new Module();
     this.module.view.appendTo(this.win.content);
 
+    this.loading = new SimulateLoading();
+    this.loading.view.appendTo(this.win.content);
+    this.loading.view.offset({top:0});
+
 	var self = this;
 
     this.historyManager = new HistoryManager({
         controlBts:[this.leftBt,this.rightBt],
-        handler:function(_url){
-            self.module.load(_url);
+        handler:function(_url)
+        {
+            self.load(_url);
         }
     });
 
@@ -66,6 +71,15 @@ var SettingPannel = function(_option)
 	this.win.view.bind(Win.RESIZE,function(){
 		self.resizeHandler();
 	});
+}
+
+SettingPannel.prototype.load = function(_url)
+{
+    var self = this;
+    this.loading.show();
+    this.module.load(_url,function(){
+        self.loading.hide();
+    });
 }
 
 SettingPannel.prototype.open = function()
@@ -90,4 +104,5 @@ SettingPannel.prototype.resizeHandler = function()
 	var tw = this.showAllBt.view.position().left + this.showAllBt.view.outerWidth();
 	this.toolBar.width(tw+this.win.thick*2>this.win.width?this.win.width-this.win.thick*2:tw);
 	this.searchBar.moveTo(this.win.width-this.searchBar.view.width() - this.win.thick,30);
+    this.loading.resize(this.win.content.width());
 }

@@ -173,12 +173,12 @@ FileItem.prototype.initEventsB = function()
 
 	function mousedownEffect()
 	{
-		self.view.css("-webkit-filter","brightness(0.2)");
+		self.view.addClass("mousedown");
 	}
 
 	function mouseupEffect()
 	{
-		self.view.css("-webkit-filter","brightness(1)");
+		self.view.removeClass("mousedown");
 	}
 }
 

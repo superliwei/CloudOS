@@ -7,6 +7,9 @@ var AutoGridLayout = function()
 
 	this.view.css("overflow","auto");
 
+    this.loading = new SimulateLoading({color:"#999999"});
+    this.loading.view.appendTo(this.view);
+
 	this.items = [];
 }
 
@@ -14,7 +17,7 @@ AutoGridLayout.prototype = new BasicLayout();
 
 AutoGridLayout.prototype.resize = function(_w,_h)
 {
-	BasicLayout.prototype.resize.call(this,_w,_h);
+	GridLayout.prototype.resize.call(this,_w,_h);
 	this.layout();
 }
 

@@ -17,7 +17,7 @@ QuickBar.prototype.init = function()
 	this.padding = 5;
 	this.itemLayer = $("<div>",{style:"position:absolute"});
 	this.iconLayer = $("<div>",{style:"position:absolute"});
-	QuickBar.tip = $("<div>",{style:"position:absolute;border-radius:15px;background-color:#000;color:#fff;padding-top:5px;padding-bottom:5px;padding-left:8px;padding-right:8px;font-size:14px;font-weight:bold;text-align:center;word-break:keep-all;white-space:nowrap;"});
+	QuickBar.tip = $("<div>",{style:"position:absolute;border-radius:15px;background-color:#000;color:#fff;padding-top:5px;padding-bottom:5px;padding-left:8px;padding-right:8px;font-size:14px;font-weight:bold;text-align:center;word-break:keep-all;white-space:nowrap;opacity:0"});
 	this.itemLayer.appendTo(this.view);
 	this.iconLayer.appendTo(this.view);
 	this.items = [];
@@ -178,16 +178,12 @@ QuickBar.Item = function()
 	this.view = $("<div>",{
 		style:"position:absolute;"
 	});
-	this.light = $("<div class='light'>");
-	this.lightState = "off";
 }
 
 QuickBar.Item.prototype.resize = function(_w,_h)
 {
 	this.view.width(_w);
 	this.view.height(_h);
-	this.light.css("top",_w-2);
-	this.light.css("left",(_w-this.light.width())*0.5);
 	if(this.icon!=null)
 	{
 		this.icon.resize(_w,_w);
@@ -209,18 +205,6 @@ QuickBar.Item.prototype.put = function(_icon)
 {
 	this.icon = _icon;
 	_icon.item = this;
-}
-
-QuickBar.Item.prototype.lightOn = function()
-{
-	this.light.appendTo(this.view);
-	this.lightState = "on";
-}
-
-QuickBar.Item.prototype.lightOff = function()
-{
-	this.light.remove();
-	this.lightState = "off";
 }
 
 /**
@@ -295,9 +279,24 @@ QuickBar.ImageItem = function(_data)
 		});
 	}
 
+    this.light = $("<div class='light'>");
+    this.lightState = "off";
+
 	this.initEvents();
 
 	QuickBar.ImageItem.depth++;
+}
+
+QuickBar.ImageItem.prototype.lightOn = function()
+{
+    this.light.appendTo(this.view);
+    this.lightState = "on";
+}
+
+QuickBar.ImageItem.prototype.lightOff = function()
+{
+    this.light.remove();
+    this.lightState = "off";
 }
 
 QuickBar.ImageItem.depth = 0;
@@ -313,6 +312,8 @@ QuickBar.ImageItem.prototype.resize = function(_w,_h)
 	this.imgPlaceHolder.css("top",0);
 	this.imgMask.width(_w);
 	this.imgMask.height(_h);
+    this.light.css("top",_h-2);
+    this.light.css("left",(_w-this.light.width())*0.5);
 	this.updateImg();
 	this.updateIcon();
 }
@@ -375,7 +376,7 @@ QuickBar.ImageItem.prototype.initDragAction = function()
         if(e.clientX - dp.x == 0 && e.clientY - dp.y == 0)return;
         moved = true;
 		self.hideTip();
-		if(self.item!=null)self.item.lightOff();
+        self.lightOff();
 		var ty = self.view.offset().top;
 		var tx = self.view.offset().left;
 		var minY = QuickBar.instance().view.offset().top - self.view.height()*0.6;
@@ -544,10 +545,10 @@ QuickBar.ImageItem.prototype.initClickAction = function()
 QuickBar.ImageItem.prototype.initOverAction = function()
 {
 	var self = this;
-	this.view.mouseover(function(e){
+	this.view.mouseenter(function(e){
 		self.showTip();
 	});
-	this.view.mouseout(function(e){
+	this.view.mouseleave(function(e){
 		self.hideTip();
 	});
 }
@@ -572,7 +573,7 @@ QuickBar.ImageItem.prototype.initLightUpdate = function()
 				_on = (self.data.class.instances == undefined || self.data.class.instances.length == 0)?false:true;
 			}
 
-			_on?self.item.lightOn():self.item.lightOff();
+            _on?self.lightOn():self.lightOff();
 		}
 	}
 
@@ -593,7 +594,7 @@ QuickBar.ImageItem.prototype.clickHandler = function()//点击运行
 		return;
 	}
 	if(this.data.cmd == undefined)return;
-	if(this.item.lightState == "off")
+    if(this.lightState == "off")
 	{
 		var trash = getFolderByTitle(this.data.title);
 		if(trash == null) //废纸篓不能重复打开
@@ -700,21 +701,24 @@ QuickBar.ImageItem.prototype.showTip = function()
 	var tx = this.view.offset().left + (this.view.outerWidth() - w)*0.5;
 	var ty = QuickBar.instance().view.offset().top - h - 5;
 	tip.offset({left:tx,top:ty});
+    TweenLite.to(tip,0.3,{alpha:1});
 }
 
 QuickBar.ImageItem.prototype.hideTip = function()
 {
-	QuickBar.tip.remove();
+    TweenLite.to(QuickBar.tip,0.3,{alpha:0,onComplete:function(){
+        QuickBar.tip.remove();
+    }});
 }
 
 QuickBar.ImageItem.prototype.mousedownEffect = function()
 {
-	this.view.css("-webkit-filter","brightness(0.5)");
+    this.view.addClass("mousedown");
 }
 
 QuickBar.ImageItem.prototype.mouseupEffect = function()
 {
-	this.view.css("-webkit-filter","brightness(1)");
+    this.view.removeClass("mousedown");
 }
 
 QuickBar.ImageItem.prototype.destroy = function()
