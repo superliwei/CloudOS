@@ -1,9 +1,9 @@
 /**
  * 桌面
  */
-
-var Desktop = function()
+CloudOS.Desktop = function()
 {
+	var self = this;
 	this.view = $("<div>",{
 		style:"position:absolute;"
 	});
@@ -23,86 +23,51 @@ var Desktop = function()
 	this.winLayer.appendTo(this.view);
 	this.barLayer.appendTo(this.view);
 	this.menuLayer.appendTo(this.view);
-}
-
-Desktop.prototype.ready = function(_onReady)
-{
-	var self = this;
-
-	//开始读取桌面必须数据
-    //1.读取用户数据
-    User.currentUser.read(function(){
-        //2.读取桌面文件列表
-        var file = new File({url:"/desktop"});
-        file.dispatcher.bind(File.COMPLETE,function(e,_data){
-            self.fileList = _data;
-            file.destroy();
-            _onReady();
-        });
-        file.getDirectoryListing();
-    });
-}
-
-Desktop.prototype.appendTo = function(_parentView)
-{
-	this.view.appendTo(_parentView);
-	this.init();
-	this.test();
-}
-
-Desktop.prototype.init = function()
-{
-	Background.instance().appendTo(this.bgLayer);
-	TopBar.instance().appendTo(this.barLayer);
-	QuickBar.instance().appendTo(this.barLayer);
-
-	this.gridLayout = new DesktopGridLayout();
-	this.gridLayout.view.appendTo(this.bgLayer);
-	this.gridLayout.moveTo(0,TopBar.instance().height);
-
-	this.resizeHandler();
-	this.gridLayout.setSource(this.fileList);
-	this.show();
 	
-	$(window).resize(this,function(e){
-		e.data.resizeHandler();
-	});
-}
-
-Desktop.prototype.show = function()
-{
-	var ty = TopBar.instance().view.offset().top - TopBar.instance().view.height();
-	TweenLite.from(TopBar.instance().view,1,{top:ty,ease:Cubic.easeInOut});
-	ty = QuickBar.instance().view.offset().top + QuickBar.instance().view.outerHeight();
-	TweenLite.from(QuickBar.instance().view,1,{top:ty,ease:Cubic.easeInOut});
-}
-
-Desktop.prototype.resizeHandler = function()
-{
-	this.gridLayout.resize($(window).width(),$(window).height() - TopBar.instance().height);
-	this.menuLayer.width($(window).width());
-}
-
-Desktop._instance = null;
-
-Desktop.instance = function()
-{
-	if(Desktop._instance == null)
+	var super_appendTo = this.view.appendTo;
+	this.view.appendTo = function(container)
 	{
-		Desktop._instance = new Desktop();
+		super_appendTo.call(this,container);
+		self.init();
+		test();
 	}
-	return Desktop._instance;
-}
-
-/**
- * 测试----------------------------------------------------------------------------------------
- */
-Desktop.prototype.test = function()
-{
-    //this.test_folder();
-}
-
-Desktop.prototype.test_folder = function()
-{
-    Folder.newOpen("/");
+	
+	this.init = function()
+	{
+		this.bg = new CloudOS.Background();
+		this.bg.view.appendTo(this.bgLayer);
+		
+		this.topBar = new CloudOS.TopBar();
+		this.topBar.view.appendTo(this.barLayer);
+		
+		this.quickBar = CloudOS.QuickBar.instance();
+		this.quickBar.view.appendTo(this.barLayer);
+		
+		this.gridLayout = new CloudOS.DesktopGridLayout();
+		this.gridLayout.view.appendTo(this.bgLayer);
+		this.gridLayout.moveTo(0,this.topBar.height);
+		this.gridLayout.loadStart("/");
+		
+		resizeHandler();
+		$(window).resize(resizeHandler);
+	}
+	
+	function resizeHandler(e)
+	{
+		var w = $(window).width();
+		var h = $(window).height();
+		self.bg.setSize(w,h);
+		self.topBar.setWidth(w);
+		self.gridLayout.resize(w,h - self.topBar.height);
+	}
+	
+	function test()
+	{
+		$(window).keydown(function(e){
+			if(e.keyCode == 32)
+			{
+				CloudOS.Folder.newOpen("/");
+			}
+		});
+	}
 }

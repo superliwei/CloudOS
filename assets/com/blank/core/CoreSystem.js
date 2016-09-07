@@ -1,23 +1,24 @@
-var CoreSystem = {};
-
-CoreSystem.start = function(_onComplete)
-{
-    CSSPlugin.defaultTransformPerspective = 1000;
-
-    LoginScene.instance().ready(_onComplete);
-	BroadcastCenter.addEventListener(LoginScene.LOGIN_SUCCESS,function(){
-		Desktop.instance().ready(function(){
-			LoginScene.instance().loading.hide();
-			LoginScene.instance().view.hide("fast",function(){
-				Desktop.instance().appendTo($(document.body));
-			});
-		});
-	});
-    /*
-    _onComplete();
-    User.currentUser = new User("heroblank@gmail.com","_#sfdsfsdfsefkjoiaenlksdjfls");
-    Desktop.instance().ready(function(){
-        Desktop.instance().appendTo($(document.body));
-    });
-    */
-}
+/**
+ * 核心
+ */
+CloudOS.CoreSystem = (function(){
+	var CoreSystem = {};
+	CoreSystem.start = function()
+	{
+		CloudOS.User.currentUser = new CloudOS.User("heroblank@hotmail.com","123456");
+		CloudOS.User.currentUser.read(function(){
+	        //读取桌面文件列表
+	        var file = new CloudOS.File({url:"/desktop"});
+	        file.dispatcher.bind(CloudOS.File.COMPLETE,function(e,_data){
+	            self.fileList = _data;
+	            file.destroy();
+	            
+				CSSPlugin.defaultTransformPerspective = 1000;
+				CoreSystem.desktop = new CloudOS.Desktop();
+				CoreSystem.desktop.view.appendTo('body');
+	        });
+	        file.getDirectoryListing();
+	    });
+	}
+	return CoreSystem;
+})();

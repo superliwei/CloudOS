@@ -1,4 +1,4 @@
-var CheckBox = function()
+CloudOS.CheckBox = function()
 {
 	
 }

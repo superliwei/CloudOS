@@ -6,20 +6,20 @@
             	"title":"终端",
             	"img":"assets/images/icons/128/terminal.png",
             	"cmd":"open Terminal",
-            	"class":"Terminal"
+            	"class":"CloudOS.Terminal"
             },
             {
             	"title":"图片查看器",
             	"img":"assets/apps/ImageViewer.app/icon.png",
             	"cmd":"load assets/apps/ImageViewer.app",
-            	"class":"AppLoader",
+            	"class":"CloudOS.AppLoader",
             	"name":"ImageViewer"
             },
             {
             	"title":"偏好设置",
             	"img":"assets/images/icons/128/setting.png",
             	"cmd":"open SettingPannel",
-            	"class":"SettingPannel"
+            	"class":"CloudOS.SettingPannel"
             },
             {
             	"type":"separator"

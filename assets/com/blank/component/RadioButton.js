@@ -1,4 +1,4 @@
-var RadioButton = function()
+CloudOS.RadioButton = function()
 {
 	
 }
