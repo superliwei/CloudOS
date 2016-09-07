@@ -11,7 +11,7 @@ CloudOS.MenuBar = (function(){
 	
 	MenuBar.prototype.init = function()
 	{
-		this.view = $("<div>",{style:"position:absolute;"});
+		this.view = $("<div>",{'class':"CloudOS MenuBar"});
 		this.items = [];
 		this.selectedItem = null;
 		$(document).mousedown(this,mousedownHandler);
@@ -101,17 +101,13 @@ CloudOS.MenuBar = (function(){
 	{
 		this.data = _data;
 		this.menuBar = _menuBar;
-		this.view = $("<div>",{
-			style:"float:left;"
-		});
+		this.view = $("<div>",{'class':"IconItem"});
 		this.icon = $("<img>",{
 			src:this.data.img,
-			style:"max-width:20px;max-height:20px;",
 			onDragStart:"return false;"
 		}).appendTo(this.view);
 		this.view.height(this.menuBar.source.height);
 		this.icon.css("margin-top",(this.menuBar.source.height - 20)*0.5);
-		MenuBar.BasicItem.prototype.init.call(this);
 	}
 	
 	MenuBar.IconItem.prototype.select = function(value)
@@ -124,22 +120,20 @@ CloudOS.MenuBar = (function(){
 		MenuBar.BasicItem.prototype.destroy.call(this);
 	}
 	
+	//---------------------------------------------------
+	
 	MenuBar.LabelItem = function(_data,_menuBar)
 	{
 		this.data = _data;
 		this.menuBar = _menuBar;
-		this.view = $("<div>",{
-			style:"float:left;"
-		});
+		this.view = $("<div>",{'class':"LabelItem"});
 		this.view.text(this.data.label);
 		this.view.css("line-height",this.menuBar.source.height+"px");
 		if(this.data.bold)this.view.css("font-weight","bold");
-		MenuBar.BasicItem.prototype.init.call(this);
 	}
 	
 	MenuBar.LabelItem.prototype.select = function(value)
 	{
-		this.view.css("color",value?"#fff":"#000");
 		MenuBar.BasicItem.prototype.select.call(this,value);
 	}
 	
@@ -150,15 +144,9 @@ CloudOS.MenuBar = (function(){
 	
 	MenuBar.BasicItem = function(){}
 	
-	MenuBar.BasicItem.prototype.init = function()
-	{
-		this.view.css("padding-left",10);
-		this.view.css("padding-right",10);
-	}
-	
 	MenuBar.BasicItem.prototype.select = function(value)
 	{
-		this.view.css("background-image",value?"url(assets/images/blueAlphaBg1.png)":"none");
+		this.view[value ? "addClass" : "removeClass"]("selected");
 		if(this.data.children!=undefined)
 		{
 			if(value)

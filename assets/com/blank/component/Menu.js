@@ -2,8 +2,7 @@ CloudOS.Menu = (function(){
 	function Menu(_data)
 	{
 		this.data = _data;
-		this.view = $("<div>",{style:"position:absolute;border:solid 1px #666666;background-color:#fff;border-radius:5px;padding-top:5px;padding-bottom:5px;font-size:15px;white-space:nowrap;"});
-		this.view.css("box-shadow","0px 10px 15px rgba(0,0,0,0.5)");
+		this.view = $("<div>",{'class':"CloudOS Menu"})
 		this.init();
 	}
 	
@@ -73,14 +72,14 @@ CloudOS.Menu = (function(){
 	
 	Menu.Separator = function()
 	{
-		this.view = $("<div>",{style:"border-top:solid 1px #e3e3e3;margin:2px;"});
+		this.view = $("<div>",{'class':"Separator"});
 	}
 	
 	Menu.LabelItem = function(_data,_menu)
 	{
 		this.data = _data;
 		this.menu = _menu;
-		this.view = $("<div>",{style:"line-height:24px;padding-left:24px;padding-right:24px;"});
+		this.view = $("<div>",{'class':"LabelItem"});
 		this.view.text(this.data.label);
 	    if(this.data.icon!=undefined)
 	    {
@@ -88,11 +87,8 @@ CloudOS.Menu = (function(){
 	    }
 		if(this.data.children!=undefined)
 		{
-			this.arrow = $("<div>",{style:"float:right;width:7px;height:10px;margin-top:7px;margin-right:-17px;"});
-			this.arrow.css("background-image","url(assets/images/arrowR0.png)");
+			this.arrow = $("<div>",{'class':"arrow"});
 			this.arrow.appendTo(this.view);
-			this.arrow.css("left",0);
-			this.arrow.css("top",0);
 		}
 		this.initEvents();
 	}
@@ -104,10 +100,9 @@ CloudOS.Menu = (function(){
 	        this.icon.remove();
 	    }
 	    this.icon = $("<img>",{
-	        src:_url,
-	        style:"float:left;margin-left:-20px;margin-top:4px;max-width:16px;max-height:16px;",
-	        onDragStart:"return false;"
-	    });
+	   		src:_url,
+	   		onDragStart:"return false;"
+	   	});
 	    this.icon.appendTo(this.view);
 	}
 	
@@ -133,12 +128,8 @@ CloudOS.Menu = (function(){
 	
 	Menu.BasicItem.prototype.select = function(value)
 	{
-		this.view.css("background-image",value?"url(assets/images/blueAlphaBg1.png)":"none");
-		this.view.css("color",value?"#fff":"#000");
-		if(this.arrow!=undefined)
-		{
-			this.arrow.css("background-image",value?"url(assets/images/arrowR1.png)":"url(assets/images/arrowR0.png)");
-		}
+		this.view[value ? "addClass" : "removeClass"]("selected");
+		
 		if(this.data.children!=undefined)
 		{
 			if(value)

@@ -11,3 +11,114 @@ html,body
 {
     -webkit-filter:brightness(0.5);
 }
+
+/**
+ * 顶部工具条
+ */
+.CloudOS.TopBar
+{
+	position:absolute;
+	height:26px;
+	background:url(../images/bar.png);
+	box-shadow:0px 0px 25px rgba(0,0,0,0.5);
+	overflow: hidden;
+}
+
+/**
+ * 菜单工具条
+ */
+.CloudOS.MenuBar
+{
+	position:absolute;
+}
+
+.CloudOS.MenuBar .IconItem
+{
+	float:left;
+	padding-left:10px;
+	padding-right:10px;
+	vertical-align: middle;
+	display: table-cell;
+}
+
+.CloudOS.MenuBar .IconItem img
+{
+	max-width:20px;
+	max-height:20px;
+}
+
+.CloudOS.MenuBar .LabelItem
+{
+	float:left;
+	padding-left:10px;
+	padding-right:10px;
+	cursor: default;
+}
+
+.CloudOS.MenuBar .IconItem.selected,.CloudOS.MenuBar .LabelItem.selected
+{
+	color: #fff;
+	background-image:url(../images/blueAlphaBg1.png);
+}
+
+/**
+ * 菜单
+ */
+.CloudOS.Menu
+{
+	position:absolute;
+	border:solid 1px #666666;
+	background-color:#fff;
+	border-radius:5px;
+	padding-top:5px;
+	padding-bottom:5px;
+	font-size:15px;
+	white-space:nowrap;
+	box-shadow:0px 10px 15px rgba(0,0,0,0.5);
+}
+
+.CloudOS.Menu .Separator
+{
+	border-top:solid 1px #e3e3e3;
+	margin:2px;
+}
+
+.CloudOS.Menu .LabelItem
+{
+	line-height:24px;
+	padding-left:24px;
+	padding-right:24px;
+	cursor: default;
+}
+
+.CloudOS.Menu .LabelItem .arrow
+{
+	float:right;
+	width:7px;
+	height:10px;
+	margin-top:7px;
+	margin-right:-17px;
+	background-image:url(../images/arrowR0.png);
+	left:0px;
+	top:0px;
+}
+
+.CloudOS.Menu .LabelItem img
+{
+	float:left;
+	margin-left:-20px;
+	margin-top:4px;
+	max-width:16px;
+	max-height:16px;
+}
+
+.CloudOS.Menu .LabelItem.selected
+{
+	background-image:url(../images/blueAlphaBg1.png);
+	color: #fff;
+}
+
+.CloudOS.Menu .LabelItem.selected .arrow
+{
+	background-image:url(../images/arrowR1.png);
+}

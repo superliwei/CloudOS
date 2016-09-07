@@ -5,14 +5,13 @@
 CloudOS.TopBar = (function(){
 	function TopBar()
 	{
-		this.view = $("<div>",{style:"position:absolute;height:26px;background:url(assets/images/bar.png);"});
-		this.view.css("box-shadow","0px 0px 25px rgba(0,0,0,0.5)");
+		this.view = $("<div>",{'class':"CloudOS TopBar"});
 	
 		this.menuBar = new CloudOS.MenuBar();
 		this.menuBar.view.appendTo(this.view);
 		this.menuBar.view.css("margin-left",5);
-	    this.menuBar.view.bind(CloudOS.Menu.ITEM_CLICK,this,function(e,item){
-	        trace(item.data);
+		this.menuBar.view.on(CloudOS.Menu.ITEM_CLICK,function(e,item){
+	   		trace(item.data);
 	    });
 	
 		this.updateMenuBar(null);
@@ -21,13 +20,11 @@ CloudOS.TopBar = (function(){
 		CloudOS.BroadcastCenter.addEventListener(CloudOS.PopUpManager.CHANGE,function(){
 			self.updateMenuBar(CloudOS.PopUpManager.currentPop);
 		});
-	
-		this.height = this.view.height();
 	}
 	
 	TopBar.prototype.updateMenuBar = function(_target)
 	{
-		_target = _target == null?CloudOS.Folder:_target;
+		_target = _target || CloudOS.Folder;
 		var source = {
 			items:[],
 			height:26
