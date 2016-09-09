@@ -9,16 +9,18 @@ CloudOS.Preload = (function(){
 	    this.logo = $("<div>",{style:"position:absolute;display:none;"});
 	    this.img = $("<img>",{
 	        src:"assets/images/logo.png",
-	        style:"position:absolute;left:-22px;top:-24px;"
+	        style:"position:absolute;max-width:50px;max-height:50px;"
 	    }).appendTo(this.logo);
 	    this.logo.appendTo(this.view);
 	    $(window).on("resize",resizeHandler);
 	    this.img.get(0).onload = function()
 	    {
 	        self.logo.fadeIn("slow");
+	    	self.img.css("left",-self.img.width()*0.5);
+	    	self.img.css("top",-self.img.height()*0.5);
 	    }
 	
-	    document.body.onload = function()
+	    window.onload = function()
 	    {
 	    	self.logo.fadeOut("fast",function(){
                 self.destroy();

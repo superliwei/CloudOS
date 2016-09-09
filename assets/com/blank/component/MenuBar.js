@@ -102,12 +102,13 @@ CloudOS.MenuBar = (function(){
 		this.data = _data;
 		this.menuBar = _menuBar;
 		this.view = $("<div>",{'class':"IconItem"});
+		this.view.height(this.menuBar.source.height);
+		var span = $("<span>");
+		span.appendTo(this.view);
 		this.icon = $("<img>",{
 			src:this.data.img,
 			onDragStart:"return false;"
-		}).appendTo(this.view);
-		this.view.height(this.menuBar.source.height);
-		this.icon.css("margin-top",(this.menuBar.source.height - 20)*0.5);
+		}).appendTo(span);
 	}
 	
 	MenuBar.IconItem.prototype.select = function(value)

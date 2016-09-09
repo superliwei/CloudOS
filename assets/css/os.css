@@ -37,11 +37,16 @@ html,body
 	float:left;
 	padding-left:10px;
 	padding-right:10px;
-	vertical-align: middle;
-	display: table-cell;
+	display: table;
 }
 
-.CloudOS.MenuBar .IconItem img
+.CloudOS.MenuBar .IconItem span
+{
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.CloudOS.MenuBar .IconItem span img
 {
 	max-width:20px;
 	max-height:20px;
