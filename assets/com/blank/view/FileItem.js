@@ -6,30 +6,13 @@ CloudOS.FileItem = (function(){
 	function FileItem(_option)
 	{
 		var self = this;
-		this.option = _option == undefined?{}:_option;
-		this.mode = this.option.mode !=undefined?this.option.mode:"A";
+		this.option = _option || {};
+		this.mode = this.option.mode || "A";
 	    this.file = new CloudOS.File(this.option);
-		this.view = $("<div>",{
-			style:"position:absolute;width:100px;height:100px;"
-		});
-	
-		this.imgBox = $("<div>",{
-			style:"position:absolute;border:solid 1px transparent;"
-		});
-		var maxSize = 70;
-		this.imgBox.css("width",maxSize);
-		this.imgBox.css("height",maxSize);
-		this.imgBox.css("left",(this.view.width()-maxSize)*0.5);
+	    this.view = $("<div>",{'class':"CloudOS FileItem"});
+		this.imgBox = $("<div>",{'class':"imgBox"});
 		this.imgBox.appendTo(this.view);
-	
-		this.imgPlaceHolder = $("<div>",{style:"position:absolute"});
-		var padding = 5;
-		this.imgPlaceHolder.css("width",maxSize-padding*2);
-		this.imgPlaceHolder.css("height",maxSize-padding*2);
-		this.imgPlaceHolder.css("left",padding);
-		this.imgPlaceHolder.css("top",padding);
-		this.imgPlaceHolder.css("border","dashed 1px #666666");
-		this.imgPlaceHolder.css("border-radius",10);
+		this.imgPlaceHolder = $("<div>",{'class':"imgPlaceHolder"});
 		this.imgPlaceHolder.appendTo(this.imgBox);
 	
 		var img = new Image();
@@ -37,26 +20,15 @@ CloudOS.FileItem = (function(){
 		img.onload = function()
 		{
 	        $(img).attr("onDragStart","return false;");
-			$(img).css("max-width",self.imgPlaceHolder.width());
-			$(img).css("max-height",self.imgPlaceHolder.height());
 			$(img).appendTo(self.imgPlaceHolder);
 			self.imgPlaceHolder.css("border","none");
 		}
-	
-		this.labelBox = $("<div>",{
-			style:"position:absolute;font-size:14px;display:none;padding-top:3px;padding-bottom:3px;padding-left:6px;padding-right:6px;"
-		}).appendTo("body");
-	
-		this.label = $("<div>",{
-			style:"position:absolute;font-size:14px;padding-top:3px;padding-bottom:3px;padding-left:6px;padding-right:6px;text-align:center;"
-		});
-		this.label.css("color",this.option.color!=undefined?this.option.color:"#ffffff");
-		this.label.css("text-shadow",this.option.textShadow!=undefined?this.option.textShadow:"1px 1px 2px #000");
-		this.label.text(this.getCurrentLabelStr(this.labelBox,this.file.name,this.view.width()));
-		this.label.css("left",(this.view.outerWidth()-this.labelBox.outerWidth())*0.5);
-		this.label.css("top",maxSize+(this.view.outerHeight()-maxSize-this.labelBox.outerHeight())*0.5);
+		
+		this.label = $("<div>",{'class':"label"});
+		this.setLabel(this.file.name);
+		if(this.option.color!=undefined)this.label.css("color",this.option.color);
+		if(this.option.textShadow!=undefined)this.label.css("text-shadow",this.option.textShadow);
 		this.label.appendTo(this.view);
-		this.labelBox.remove();
 	
 		switch(this.mode)
 		{
@@ -69,33 +41,25 @@ CloudOS.FileItem = (function(){
 		}
 	}
 	
-	FileItem.prototype.getCurrentLabelStr = function(label,str,maxW)
+	FileItem.prototype.setLabel = function(str)
 	{
-		var result;
-		label.text(str);
-		if(label.outerWidth()<maxW)
+		this.label.text(str);
+		this.label.addClass('CloudOS-FileItem-label');
+		this.label.appendTo('body');
+		var maxW = 100;
+		var w = this.label.outerWidth();
+		if(w > maxW)
 		{
-			result = str;
+			this.label.outerWidth(maxW);
+			this.label.css("left",0);
+			this.label.addClass("multiline");
 		}
 		else
 		{
-			check(str);
+			this.label.css("left",(maxW-w)*0.5);
 		}
-		return result;
-	
-		function check(_str)
-		{
-			label.text(_str+"...");
-			if(label.outerWidth()>maxW)
-			{
-				_str = _str.substr(0,_str.length-1);
-				check(_str);
-			}
-			else
-			{
-				result = _str+"...";
-			}
-		}
+		this.label.remove();
+		this.label.removeClass('CloudOS-FileItem-label');
 	}
 	
 	FileItem.prototype.moveTo = function(_x,_y)
@@ -186,24 +150,9 @@ CloudOS.FileItem = (function(){
 	
 	FileItem.prototype.select = function(value)
 	{
-		if(value)
-		{
-			this.imgBox.css("background-image","url(assets/images/blackAlphaBg.png)");
-			this.imgBox.css("border","solid 1px #000");
-			this.imgBox.css("border-radius",5);
-			this.label.css("background-color","#333366");
-			this.label.css("border-radius",9);
-			this.label.css("text-shadow","none");
-			this.label.css("color","#fff");
-		}
-		else
-		{
-			this.imgBox.css("background-image","none");
-			this.imgBox.css("border","solid 1px transparent");
-			this.label.css("background","none");
-			this.label.css("color",this.option.color!=undefined?this.option.color:"#ffffff");
-			this.label.css("text-shadow",this.option.textShadow!=undefined?this.option.textShadow:"1px 1px 2px #000");
-		}
+		this.view[value ? "addClass" : "removeClass"]("selected");
+		if(this.option.color!=undefined)this.label.css("color",value ? '' : this.option.color);
+		if(this.option.textShadow!=undefined)this.label.css("text-shadow",value ? '' : this.option.textShadow);
 	}
 	
 	FileItem.prototype.destroy = function()

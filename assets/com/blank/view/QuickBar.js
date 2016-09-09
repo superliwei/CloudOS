@@ -302,7 +302,7 @@ CloudOS.QuickBar = (function(){
 		this.imgPlaceHolder.css("left",_w*(1-ts)*0.5);
 		this.imgPlaceHolder.css("top",0);
 		this.light.css("top",_h-2);
-	    this.light.css("left",(_w-this.light.width())*0.5);
+	    this.light.css("left",_w*0.5-2);
 		this.updateImg();
 		this.updateIcon();
 	}
@@ -352,6 +352,7 @@ CloudOS.QuickBar = (function(){
 			thisGroup = QuickBar.instance().getGroupIdx(self.item);
 			self.mousedownEffect();
 	        var offset = $(this).offset();
+	        $(this).addClass("CloudOS-QuickBar-ImageItem");
 			$(this).appendTo("body");
 			$(this).offset(offset);
 	
@@ -466,6 +467,7 @@ CloudOS.QuickBar = (function(){
 			$(document).unbind("mouseup",mouseupHandler);
 			CloudOS.Dragger.stopDrag();
 			var offset = self.view.offset();
+			self.view.removeClass("CloudOS-QuickBar-ImageItem");
 			self.view.appendTo(QuickBar.instance().iconLayer);
 			self.view.offset(offset);
 			if(moved)

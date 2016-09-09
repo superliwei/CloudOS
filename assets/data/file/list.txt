@@ -1,7 +1,7 @@
 [
     {
         "url":"/desktop/文件夹A",
-        "name":"文件夹A",
+        "name":"文件夹有很长很长很长很长的名字",
         "type":"directory"
     },
     {

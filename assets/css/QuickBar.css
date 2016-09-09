@@ -58,12 +58,12 @@
 /**
  * ImageItem会被添加到body,所有不能有前缀
  */
-.ImageItem
+.CloudOS.QuickBar .ImageItem,.CloudOS-QuickBar-ImageItem
 {
 	position:absolute;
 }
 
-.ImageItem .imgPlaceHolder
+.CloudOS.QuickBar .ImageItem .imgPlaceHolder,.CloudOS-QuickBar-ImageItem .imgPlaceHolder
 {
 	position:absolute;
 	border:dashed 1px #666666;

@@ -1,4 +1,4 @@
-.Win
+.CloudOS.Win
 {
 	position: absolute;
 	border: solid 1px #666699;
@@ -6,13 +6,13 @@
 	border-radius:5px;
 }
 
-.Win .content
+.CloudOS.Win .content
 {
 	position: absolute;
 	background-color: #ffffff;
 }
 
-.Win .closeBt
+.CloudOS.Win .closeBt
 {
 	position: absolute;
 	width: 40px;
@@ -20,7 +20,7 @@
 	background-color: #fb6266;
 }
 
-.Win .closeBt .icon
+.CloudOS.Win .closeBt .icon
 {
 	width: 22px;
 	height: 22px;
@@ -28,17 +28,17 @@
 	margin-left: 9px;
 }
 
-.Win .closeBt_over
+.CloudOS.Win .closeBt_over
 {
 	background-color: #ffaa00;
 }
 
-.Win .closeBt_down
+.CloudOS.Win .closeBt_down
 {
 	background-color: #ff3300;
 }
 
-.Win .minBt .icon
+.CloudOS.Win .minBt .icon
 {
 	width: 22px;
 	height: 22px;
@@ -46,12 +46,12 @@
 	margin-left: 4px;
 }
 
-.Win .minBt .icon_over
+.CloudOS.Win .minBt .icon_over
 {
 	background-image: url(../images/min_w.png);
 }
 
-.Win .maxBt .icon
+.CloudOS.Win .maxBt .icon
 {
 	width: 22px;
 	height: 22px;
@@ -59,36 +59,37 @@
 	margin-left: 4px;
 }
 
-.Win .minBt,.maxBt
+.CloudOS.Win .minBt,.maxBt
 {
 	position: absolute;
 	width: 30px;
 	height: 22px;
 }
 
-.Win .minBt_over,.maxBt_over
+.CloudOS.Win .minBt_over,.maxBt_over
 {
 	background-color: #5555ff;
 }
 
-.Win .minBt_down,.maxBt_down
+.CloudOS.Win .minBt_down,.maxBt_down
 {
 	background-color: #222299;
 }
 
-.Win .minBt_disable,.maxBt_disable
+.CloudOS.Win .minBt_disable,.maxBt_disable
 {
 	opacity: 0.2;
 }
 
-.Win .title
+.CloudOS.Win .title
 {
 	position: absolute;
 	font-size: 16px;
 	overflow: hidden;
+	cursor: default;
 }
 
-.Win .winIcon
+.CloudOS.Win .winIcon
 {
 	position: absolute;
 	left: 5px;

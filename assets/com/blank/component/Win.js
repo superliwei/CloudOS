@@ -56,7 +56,7 @@ CloudOS.Win = (function(){
 			if(this.option.icon!=undefined)this.icon = this.option.icon;
 		}
 	
-		this.view = $("<div class='Win'>");
+		this.view = $("<div class='CloudOS Win'>");
 	
 		this.content = $("<div class='content'>");
 		this.content.appendTo(this.view);

@@ -30,7 +30,7 @@ CloudOS.TopBar = (function(){
 			height:26
 		};
 		source.items.push({img:"assets/images/logo.png",children:[
-			{label:"关于Zoolon CloudOS"},
+			{label:"关于CloudOS"},
 	        {type:"separator"},
 			{label:"终端",icon:"assets/images/icons/16/Terminal.png"},
 	        {label:"系统偏好设置",icon:"assets/images/icons/16/setting.png"},
