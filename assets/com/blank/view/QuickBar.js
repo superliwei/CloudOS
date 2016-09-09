@@ -5,24 +5,23 @@
 CloudOS.QuickBar = (function(){
 	function QuickBar()
 	{
+		QuickBar.tip = $("<div>",{'class':"tip"});
 		this.init();
-		this.test();
 	}
 	
 	QuickBar.prototype.init = function()
 	{
-		this.view = $("<div class='QuickBar'>");
+		var self = this;
+		this.view = $("<div class='CloudOS QuickBar'>");
 		this.data = new QuickBar.Data();
 		this.minH = 30;
 		this.maxH = 64;
 		this.padding = 5;
 		this.itemLayer = $("<div>",{style:"position:absolute"});
 		this.iconLayer = $("<div>",{style:"position:absolute"});
-		QuickBar.tip = $("<div>",{style:"position:absolute;border-radius:15px;background-color:#000;color:#fff;padding-top:5px;padding-bottom:5px;padding-left:8px;padding-right:8px;font-size:14px;font-weight:bold;text-align:center;word-break:keep-all;white-space:nowrap;opacity:0"});
 		this.itemLayer.appendTo(this.view);
 		this.iconLayer.appendTo(this.view);
 		this.items = [];
-		var self = this;
 		initItems();
 	
 		$(window).resize(function(){
@@ -177,9 +176,7 @@ CloudOS.QuickBar = (function(){
 	QuickBar.Item = function()
 	{
 		this.icon = null;
-		this.view = $("<div>",{
-			style:"position:absolute;"
-		});
+		this.view = $("<div>",{'class':"Item"});
 	}
 	
 	QuickBar.Item.prototype.resize = function(_w,_h)
@@ -215,10 +212,8 @@ CloudOS.QuickBar = (function(){
 	
 	QuickBar.Separator = function()
 	{
-		this.view = $("<div>",{
-			style:"position:absolute;width:10px"
-		});
-		this.line = $("<div>",{style:"position:absolute;background-color:#000000;width:1px;opacity:0.5;"});
+		this.view = $("<div>",{'class':"Separator"});
+		this.line = $("<div>",{'class':"vline"});
 		this.line.appendTo(this.view);
 	}
 	
@@ -243,15 +238,9 @@ CloudOS.QuickBar = (function(){
 	{
 		this.data = _data;
 		this.item = null;
-		this.view = $("<div>",{
-			style:"position:absolute"
-		});
-		this.imgMask = this.view.clone();
-		this.imgPlaceHolder = $("<div>",{style:"position:absolute"});
-		this.imgPlaceHolder.css("border","dashed 1px #666666");
-		this.imgPlaceHolder.css("border-radius",10);
+		this.view = $("<div>",{'class':"ImageItem"});
+		this.imgPlaceHolder = $("<div>",{'class':"imgPlaceHolder"});
 		this.imgPlaceHolder.appendTo(this.view);
-		this.imgMask.appendTo(this.view);
 	
 		this.img = null;
 		this.icon = null;
@@ -284,9 +273,9 @@ CloudOS.QuickBar = (function(){
 	    this.light = $("<div class='light'>");
 	    this.lightState = "off";
 	
-		this.initEvents();
-	
 		QuickBar.ImageItem.depth++;
+	
+		this.initEvents();
 	}
 	
 	QuickBar.ImageItem.prototype.lightOn = function()
@@ -312,9 +301,7 @@ CloudOS.QuickBar = (function(){
 		this.imgPlaceHolder.css("height",_h*ts);
 		this.imgPlaceHolder.css("left",_w*(1-ts)*0.5);
 		this.imgPlaceHolder.css("top",0);
-		this.imgMask.width(_w);
-		this.imgMask.height(_h);
-	    this.light.css("top",_h-2);
+		this.light.css("top",_h-2);
 	    this.light.css("left",(_w-this.light.width())*0.5);
 		this.updateImg();
 		this.updateIcon();
@@ -324,6 +311,7 @@ CloudOS.QuickBar = (function(){
 	{
 		if(this.img!=null)
 		{
+			this.img.attr("ondragstart","return false");
 			this.img.css("max-width",this.imgPlaceHolder.width());
 			this.img.css("max-height",this.imgPlaceHolder.height());
 		}
@@ -333,6 +321,7 @@ CloudOS.QuickBar = (function(){
 	{
 		if(this.icon!=null)
 		{
+			this.icon.attr("ondragstart","return false");
 			this.icon.css("left",this.imgPlaceHolder.width()-16);
 			this.icon.css("top",this.imgPlaceHolder.height()-16);
 		}
@@ -364,7 +353,7 @@ CloudOS.QuickBar = (function(){
 			self.mousedownEffect();
 	        var offset = $(this).offset();
 			$(this).appendTo("body");
-	        $(this).offset(offset);
+			$(this).offset(offset);
 	
 			moved = false;
 			CloudOS.Dragger.startDrag($(this),e);
@@ -379,31 +368,26 @@ CloudOS.QuickBar = (function(){
 	        moved = true;
 			self.hideTip();
 	        self.lightOff();
-			var ty = self.view.offset().top;
-			var tx = self.view.offset().left;
-			var minY = QuickBar.instance().view.offset().top - self.view.height()*0.6;
-			if(ty<minY) //移出区域
-			{
-				if(self.item == null)return;
-				var items = QuickBar.instance().items;
-				self.data.lastIdx = items.indexOf(self.item);
-				items.splice(self.data.lastIdx,1);
-				self.item.icon = null;
-				self.item.view.remove();
-				self.item = null;
-				QuickBar.instance().resizeHandler();
-			}
-			else 
-			{
-				var sortableItems = QuickBar.instance().getSortableItems(thisGroup);
-				var centerX = self.view.offset().left + self.view.width()*0.5;
-				if(self.item == null)//移进了区域
-				{
-					var insertIdx = -1;
+	        var p = {
+	        	x:self.imgPlaceHolder.offset().left + self.imgPlaceHolder.width()*0.5,
+	        	y:self.imgPlaceHolder.offset().top + self.imgPlaceHolder.height()*0.5
+	        };
+	        var rect = new CloudOS.Rect(
+	        	QuickBar.instance().view.offset().left,
+	        	QuickBar.instance().view.offset().top,
+	        	QuickBar.instance().view.width(),
+	        	QuickBar.instance().view.height()
+	        );
+	        if(rect.contains(p))
+	        {
+	        	var sortableItems = QuickBar.instance().getSortableItems(thisGroup);
+	        	if(self.item == null)//移进了区域
+	        	{
+	        		var insertIdx = -1;
 					for(var i=0;i<sortableItems.length;i++)
 					{
 						var item = sortableItems[i];
-						if(centerX<item.view.offset().left+item.view.width()*0.5)
+						if(p.x<item.view.offset().left+item.view.width()*0.5)
 						{
 							insertIdx = i;
 							break;
@@ -423,16 +407,16 @@ CloudOS.QuickBar = (function(){
 						newItem.put(self);
 						QuickBar.instance().resizeHandler();
 					}
-				}
-				else//平移
-				{
-					if(thisGroup == 0)sortableItems.pop();//移除分割线
+	        	}
+	        	else//平移
+	        	{
+	        		if(thisGroup == 0)sortableItems.pop();//移除分割线
 					var _thisIdx = sortableItems.indexOf(self.item);
 					var switchItem = null;
 					for(var i=_thisIdx;i<sortableItems.length;i++)
 					{
 						var item = sortableItems[i];
-						if(item!=self.item && centerX>item.view.offset().left+item.view.width()*0.5)
+						if(item!=self.item && p.x>item.view.offset().left+item.view.width()*0.5)
 						{
 							switchItem = item;
 							break;
@@ -443,7 +427,7 @@ CloudOS.QuickBar = (function(){
 						for(i=_thisIdx;i>-1;i--)
 						{
 							item = sortableItems[i];
-							if(item!=self.item && centerX<item.view.offset().left+item.view.width()*0.5)
+							if(item!=self.item && p.x<item.view.offset().left+item.view.width()*0.5)
 							{
 								switchItem = item;
 								break;
@@ -460,8 +444,19 @@ CloudOS.QuickBar = (function(){
 						self.item.icon.updataLightState();
 						switchItem.put(self);
 					}
-				}
-			}
+	        	}
+	        }
+	        else //移出区域
+	        {
+	        	if(self.item == null)return;
+				var items = QuickBar.instance().items;
+				self.data.lastIdx = items.indexOf(self.item);
+				items.splice(self.data.lastIdx,1);
+				self.item.icon = null;
+				self.item.view.remove();
+				self.item = null;
+				QuickBar.instance().resizeHandler();
+	        }
 		}
 	
 		function mouseupHandler(e)
@@ -475,13 +470,29 @@ CloudOS.QuickBar = (function(){
 			self.view.offset(offset);
 			if(moved)
 			{
-				
-				var ty = self.view.offset().top;
-				var minY = QuickBar.instance().view.offset().top - self.view.height()*0.6;
-				if(ty<minY)//在外面放开
-				{
-					trace("在外面放开");
-					if(self.data.app!=undefined)
+				var p = {
+		        	x:self.imgPlaceHolder.offset().left + self.imgPlaceHolder.width()*0.5,
+		        	y:self.imgPlaceHolder.offset().top + self.imgPlaceHolder.height()*0.5
+		        };
+		        var rect = new CloudOS.Rect(
+		        	QuickBar.instance().view.offset().left,
+		        	QuickBar.instance().view.offset().top,
+		        	QuickBar.instance().view.width(),
+		        	QuickBar.instance().view.height()
+		        );
+		        if(rect.contains(p))
+		        {
+		        	if(self.item!=null)
+					{
+						self.view.offset(self.item.view.offset());
+						self.showTip();
+						self.updataLightState();
+					}
+		        }
+		        else//在外面放开
+		        {
+		        	trace("在外面放开");
+		        	if(self.data.app!=undefined)
 					{
 						var newItem = new QuickBar.Item();
 						newItem.view.appendTo(QuickBar.instance().itemLayer);
@@ -494,16 +505,7 @@ CloudOS.QuickBar = (function(){
 					{
 						self.destroy();
 					}
-				}
-				else
-				{
-					if(self.item!=null)
-					{
-						self.view.offset(self.item.view.offset());
-						self.showTip();
-						self.updataLightState();
-					}
-				}
+		        }
 			}
 			else
 			{
@@ -514,9 +516,8 @@ CloudOS.QuickBar = (function(){
 	
 	QuickBar.ImageItem.prototype.initClickAction = function()
 	{
-		var moved;
 		var self = this;
-		var dp;
+		var moved,dp;
 		this.view.mousedown(function(e){
 			self.mousedownEffect();
 			moved = false;
@@ -527,7 +528,7 @@ CloudOS.QuickBar = (function(){
 	
 		function mousemoveHandler(e)
 		{
-	        if(e.clientX - dp.x == 0 && e.clientY - dp.y == 0)return;
+			if(e.clientX - dp.x == 0 && e.clientY - dp.y == 0)return;
 			moved = true;
 		}
 	
@@ -665,6 +666,7 @@ CloudOS.QuickBar = (function(){
 				if(folder.win.title == _title)
 				{
 					target = folder;
+					break;
 				}
 			}
 			return target;
@@ -770,15 +772,6 @@ CloudOS.QuickBar = (function(){
 	    };
 	    this.items.push(trash);
 	}
-	
-	/**
-	 * 测试
-	 */
-	
-	 QuickBar.prototype.test = function()
-	 {
-		
-	 }
 	 
 	 return QuickBar;
 })();

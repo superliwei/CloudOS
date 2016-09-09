@@ -7,6 +7,11 @@ CloudOS.Rect = (function(){
 	    this.height = _height;
 	}
 	
+	Rect.prototype.contains = function(point)
+	{
+		return (point.x >= this.x && point.x <= this.x+this.width) && (point.y >= this.y && point.y <= this.y+this.height);
+	}
+	
 	
 	/**
 	 * 判断两个矩形是否相交

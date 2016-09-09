@@ -29,7 +29,7 @@ CloudOS.Desktop = function()
 	{
 		super_appendTo.call(this,container);
 		self.init();
-		test();
+		//test();
 	}
 	
 	this.init = function()

@@ -1,4 +1,4 @@
-.QuickBar
+.CloudOS.QuickBar
 {
 	position: absolute;
 	border: solid 1px #666699;
@@ -9,11 +9,63 @@
 	box-shadow:0px 15px 50px rgba(0,0,0,0.5);
 }
 
-.QuickBar .light
+.CloudOS.QuickBar .light
 {
 	width: 4px;
 	height: 4px;
 	border-radius: 4px;
 	background-color: #000000;
 	position: absolute;
+}
+
+.CloudOS.QuickBar .tip
+{
+	position:absolute;
+	border-radius:15px;
+	background-color:#000;
+	color:#fff;
+	padding-top:5px;
+	padding-bottom:5px;
+	padding-left:8px;
+	padding-right:8px;
+	font-size:14px;
+	font-weight:bold;
+	text-align:center;
+	word-break:keep-all;
+	white-space:nowrap;
+	opacity:0;
+}
+
+.CloudOS.QuickBar .Separator
+{
+	position:absolute;
+	width:10px;
+}
+
+.CloudOS.QuickBar .Separator .vline
+{
+	position:absolute;
+	background-color:#000000;
+	width:1px;
+	opacity:0.5;
+}
+
+.CloudOS.QuickBar .Item
+{
+	position:absolute;
+}
+
+/**
+ * ImageItem会被添加到body,所有不能有前缀
+ */
+.ImageItem
+{
+	position:absolute;
+}
+
+.ImageItem .imgPlaceHolder
+{
+	position:absolute;
+	border:dashed 1px #666666;
+	border-radius:10px;
 }
