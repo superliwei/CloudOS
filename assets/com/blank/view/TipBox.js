@@ -12,30 +12,32 @@ CloudOS.TipBox = (function(){
 	
 	TipBox.prototype.init = function()
 	{
-		this.option = this.option == undefined?{}:this.option;
-		this.width = this.option.width == undefined?620:this.option.width;
-		this.height = this.option.height == undefined?380:this.option.height;
+		var self = this;
+		this.option = this.option || {};
+		this.width = 100;
+		this.height = 50;
+		
 		this.target = this.option.target;
 		this.parentView = this.option.parentView;
 		
-		this.view = $("<div>",{style:"position:absolute;border:solid 1px #fff;border-radius:10px;"});
-		this.view.css("background-image","url(assets/images/blackAlphaBg0.png)");
-		this.view.css("box-shadow","2px 2px 10px #000");
+		this.view = $("<div>",{'class':"CloudOS TipBox"});
 		this.view.appendTo(this.parentView);
 		this.view.css("z-index",Number(this.target.view.css("z-index")+1));
 		
-		this.titleTf = $("<div>",{style:"position:absolute;text-align:center;font-size:14px;color:#fff;"});
+		this.titleTf = $("<div>",{'class':"title"});
 		this.titleTf.appendTo(this.view);
 		this.titleTf.text(this.target.data.title);
 	
-		this.ct = $("<div>",{style:"position:absolute;overflow-X:hidden;overflow-Y:auto"});
+		this.ct = $("<div>",{'class':"body"});
 		this.ct.appendTo(this.view);
 	
-		this.arrow = $("<div>",{style:"position:absolute;background-image:url(assets/images/arrowDown.png);width:48px;height:21px;"});
+		this.arrow = $("<div>",{'class':"arrow"})
 		this.arrow.appendTo(this.view);
+		
 	
 		this.gridLayout = new CloudOS.AutoGridLayout();
 		this.gridLayout.view.appendTo(this.ct);
+		this.gridLayout.view.css("overflow-x","hidden");
 		
 		this.targetMask = $("<div>",{style:"position:absolute;"});
 		this.targetMaskIcon = $("<img>",{
@@ -49,7 +51,41 @@ CloudOS.TipBox = (function(){
 		this.target.view.css("opacity",0);
 	
 		this.resize();
-	    this.gridLayout.loadStart(this.option.target.data.list);
+	    this.gridLayout.loadStart(this.option.target.data.list,function(_data){
+	    	if(_data.length == 0)return;
+	    	var size = (function(len){
+	    		var _w,_h;
+	    		if(len <= 2)
+	    		{
+	    			_w = 120*len + 10;
+	    			_h = 120 + 40;
+	    		}
+	    		else if(len <= 4)
+	    		{
+	    			_w = 120*2 + 10;
+	    			_h = 120*2 + 40;
+	    		}
+	    		else if(len <= 9)
+	    		{
+	    			_w = 120*3 + 10;
+	    			_h = 120*Math.ceil(len/3) + 40;
+	    		}
+	    		else if(len <= 12)
+	    		{
+	    			_w = 120*4 + 10;
+	    			_h = 120*Math.ceil(len/4) + 40;
+	    		}
+	    		else
+	    		{
+	    			_w = 120*4 + 10;
+	    			_h = 120*3 + 40;
+	    		}
+	    		return {width:_w,height:_h};
+	    	})(_data.length);
+	    	self.width = size.width;
+	    	self.height = size.height;
+	    	self.resize();
+	    });
 		
 		$(window).bind("resize",this,this.resizeHandler);
 		$(document).bind("mousedown",this,this.destroy);
@@ -57,7 +93,6 @@ CloudOS.TipBox = (function(){
 		this.view.mousedown(function(e){
 			e.stopPropagation();
 		});
-		var self = this;
 		this.targetMask.mousedown(function(){
 			$(this).css("-webkit-filter","brightness(0.5)");
 			$(document).bind("mouseup",mouseupHandler);
@@ -85,19 +120,15 @@ CloudOS.TipBox = (function(){
 	{
 		this.view.width(this.width);
 		this.view.height(this.height);
-		this.titleTf.width(this.width-10);
-		this.titleTf.css("top",5);
-		this.titleTf.css("left",5);
-		this.ct.width(this.width - 10);
-		this.ct.height(this.height - 15 - this.titleTf.height());
-		this.ct.css("left",5);
-		this.ct.css("top",10+this.titleTf.height());
+		
 		var tx = this.target.view.offset().left - (this.width-this.target.view.width())*0.5;
 		var ty = this.target.view.offset().top - this.height - 25;
 		this.view.offset({left:tx,top:ty});
 		
-		var ax = this.target.view.offset().left + (this.target.view.width() - this.arrow.width())*0.5;
-		var ay = this.target.view.offset().top - this.arrow.height() - 3;
+		var arrowWidth = parseInt(this.arrow.css("border-left-width"))*2;
+		var arrowHeight = parseInt(this.arrow.css("border-top-width"));
+		var ax = this.target.view.offset().left + (this.target.view.width()-arrowWidth)*0.5;
+		var ay = this.target.view.offset().top - 25;
 		this.arrow.offset({left:ax,top:ay});
 	
 		this.gridLayout.resize(this.ct.width(),this.ct.height());

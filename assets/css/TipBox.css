@@ -1,0 +1,40 @@
+.CloudOS.TipBox
+{
+	position:absolute;
+	border-radius:10px;
+	background:rgba(0,0,0,0.5);
+	-webkit-filter: drop-shadow(2px 2px 10px rgba(0,0,0,0.5));
+}
+
+.CloudOS.TipBox .title
+{
+	position:absolute;
+	text-align:center;
+	font-size:14px;
+	color:#fff;
+	cursor: default;
+	width: 100%;
+	line-height: 30px;
+	overflow: hidden;
+}
+
+.CloudOS.TipBox .body
+{
+	position:absolute;
+	overflow: hidden;
+	
+	width: calc(100% - 10px);
+	height: calc(100% - 35px);
+	margin: 5px;
+	margin-top: 30px;
+}
+
+.CloudOS.TipBox .arrow
+{
+	position:absolute;
+	width: 0;
+	height: 0;
+	border-left: 13px solid transparent;
+	border-right: 13px solid transparent;
+	border-top: 13px solid rgba(0,0,0,0.5);
+}

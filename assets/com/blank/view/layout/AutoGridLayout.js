@@ -23,9 +23,9 @@ CloudOS.AutoGridLayout = (function(){
 		this.layout();
 	}
 	
-	AutoGridLayout.prototype.loadStart = function(_url)
+	AutoGridLayout.prototype.loadStart = function(_url,onComplete)
 	{
-	    CloudOS.GridLayout.prototype.loadStart.call(this,_url);
+	    CloudOS.GridLayout.prototype.loadStart.call(this,_url,onComplete);
 	}
 	
 	AutoGridLayout.prototype.createItems = function(_ds)

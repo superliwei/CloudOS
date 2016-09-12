@@ -22,7 +22,7 @@ CloudOS.GridLayout = (function(){
 	
 	GridLayout.prototype = new CloudOS.BasicLayout();
 
-	GridLayout.prototype.loadStart = function(_url)
+	GridLayout.prototype.loadStart = function(_url,onComplete)
 	{
 	    this.clear();
 	    var self = this;
@@ -33,6 +33,7 @@ CloudOS.GridLayout = (function(){
 	        self.layout();
 	        file.destroy();
 	        self.loading.hide();
+	        if(onComplete!=undefined)onComplete(_data);
 	    });
 	    file.getDirectoryListing();
 	}
