@@ -3,24 +3,33 @@
  */
 
 CloudOS.GridLayout = (function(){
+
+	GridLayout.prototype = new CloudOS.BasicLayout();
 	function GridLayout()
 	{
-		this.view = this.view.clone();
+		CloudOS.BasicLayout.call(this);
 
 		this.itemLayer = this.view.clone();
 		this.itemLayer.appendTo(this.view);
 	
 		this.view.css("overflow","auto");
 	
-	    this.loading = new CloudOS.SimulateLoading();
-	    this.loading.view.appendTo(this.view);
+	    this.initLoading();
 	
 		this.items = [];
-	
+		this.initSelection();
+	}
+
+	GridLayout.prototype.initLoading = function()
+	{
+		this.loading = new CloudOS.SimulateLoading();
+	    this.loading.view.appendTo(this.view);
+	}
+
+	GridLayout.prototype.initSelection = function()
+	{
 		CloudOS.SelectManager.regist(this);
 	}
-	
-	GridLayout.prototype = new CloudOS.BasicLayout();
 
 	GridLayout.prototype.loadStart = function(_url,onComplete)
 	{

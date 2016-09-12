@@ -1,31 +1,27 @@
+/**
+ * 自动格子布局(用于显示文件夹)
+ */
 CloudOS.AutoGridLayout = (function(){
+
+	AutoGridLayout.prototype = new CloudOS.GridLayout();
 	
 	function AutoGridLayout()
 	{
-		this.view = this.view.clone();
-	
-		this.itemLayer = this.view.clone();
-		this.itemLayer.appendTo(this.view);
-	
-		this.view.css("overflow","auto");
-	
-	    this.loading = new CloudOS.SimulateLoading({color:"#999999"});
-	    this.loading.view.appendTo(this.view);
-	
-		this.items = [];
+		CloudOS.GridLayout.call(this);
 	}
-	
-	AutoGridLayout.prototype = new CloudOS.BasicLayout();
+
+	AutoGridLayout.prototype.initLoading = function()
+	{
+		this.loading = new CloudOS.SimulateLoading({color:"#999999"});
+	    this.loading.view.appendTo(this.view);
+	}
+
+	AutoGridLayout.prototype.initSelection = function(){}
 	
 	AutoGridLayout.prototype.resize = function(_w,_h)
 	{
 		CloudOS.GridLayout.prototype.resize.call(this,_w,_h);
 		this.layout();
-	}
-	
-	AutoGridLayout.prototype.loadStart = function(_url,onComplete)
-	{
-	    CloudOS.GridLayout.prototype.loadStart.call(this,_url,onComplete);
 	}
 	
 	AutoGridLayout.prototype.createItems = function(_ds)
@@ -40,16 +36,6 @@ CloudOS.AutoGridLayout = (function(){
 	        item.view.appendTo(this.itemLayer);
 	        this.items.push(item);
 	    }
-	}
-	
-	AutoGridLayout.prototype.clear = function()
-	{
-	    CloudOS.GridLayout.prototype.clear.call(this);
-	}
-	
-	AutoGridLayout.prototype.layout = function()
-	{
-		CloudOS.GridLayout.prototype.layout.call(this);
 	}
 	
 	return AutoGridLayout;

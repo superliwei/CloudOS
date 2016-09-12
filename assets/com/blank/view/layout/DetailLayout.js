@@ -3,28 +3,10 @@
  */
 
 CloudOS.DetailLayout = (function(){
-	var DetailLayout = function()
+	DetailLayout.prototype = new CloudOS.GridLayout();
+	function DetailLayout()
 	{
-	    this.view = this.view.clone();
-	
-	    this.itemLayer = this.view.clone();
-	    this.itemLayer.appendTo(this.view);
-	
-	    this.view.css("overflow","auto");
-	
-	    this.loading = new CloudOS.SimulateLoading();
-	    this.loading.view.appendTo(this.view);
-	
-	    this.items = [];
-	
-	    CloudOS.SelectManager.regist(this);
-	}
-	
-	DetailLayout.prototype = new CloudOS.BasicLayout();
-	
-	DetailLayout.prototype.loadStart = function(_url)
-	{
-	    CloudOS.GridLayout.prototype.loadStart.call(this,_url);
+		CloudOS.GridLayout.call(this);
 	}
 	
 	DetailLayout.prototype.createItems = function(_ds)
@@ -42,11 +24,6 @@ CloudOS.DetailLayout = (function(){
 	    }
 	}
 	
-	DetailLayout.prototype.resize = function(_w,_h)
-	{
-	    CloudOS.GridLayout.prototype.resize.call(this,_w,_h);
-	}
-	
 	DetailLayout.prototype.layout = function()
 	{
 	    var len = this.items.length;
@@ -57,17 +34,6 @@ CloudOS.DetailLayout = (function(){
 	        item.view.get(0).style.top = null;
 	        item.view.get(0).style.position = null;
 	    }
-	}
-	
-	DetailLayout.prototype.clear = function()
-	{
-	    CloudOS.GridLayout.prototype.clear.call(this);
-	}
-	
-	DetailLayout.prototype.destroy = function()
-	{
-	    this.clear();
-	    this.view.remove();
 	}
 	
 	return DetailLayout;
