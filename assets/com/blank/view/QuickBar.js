@@ -587,12 +587,12 @@ CloudOS.QuickBar = (function(){
 	
 	QuickBar.ImageItem.prototype.clickHandler = function()//点击运行
 	{
-		this.showTip();
 		if(this.data.list!=undefined)
 		{
 			this.popFolder();
 			return;
 		}
+		this.showTip();
 		if(this.data.app!=undefined)
 		{
 			showMinimizedWin(this);
