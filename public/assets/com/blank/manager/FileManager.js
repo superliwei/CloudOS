@@ -6,8 +6,7 @@ CloudOS.FileManager = (function(){
 
 	FileManager.open = function(file)
 	{
-		trace(file.option);
-	    if(file.type == "directory")
+		if(file.type == "directory")
 	    {
 	        if(file.option.target == "_parent")
 	        {
