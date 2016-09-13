@@ -18,7 +18,14 @@ CloudOS.File = (function(){
 	File.prototype.getDirectoryListing = function()
 	{
 	    var self = this;
-	    $.getJSON(CloudOS.Request.File.getDirectoryListing,{url:this.url},function(_data){
+	    var vars = {
+	    	url:this.url,
+	    	user:{
+	    		name:CloudOS.User.currentUser.name,
+	    		token:CloudOS.User.currentUser.token
+	    	}
+	    };
+	    $.getJSON(CloudOS.Request.File.getDirectoryListing,vars,function(_data){
 	        self.dispatcher.trigger(File.COMPLETE,[_data]);
 	    });
 	}

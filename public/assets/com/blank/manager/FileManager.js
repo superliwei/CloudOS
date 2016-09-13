@@ -6,16 +6,25 @@ CloudOS.FileManager = (function(){
 
 	FileManager.open = function(file)
 	{
+		trace(file.option);
 	    if(file.type == "directory")
 	    {
-	        openFolder();
+	        if(file.option.target == "_parent")
+	        {
+	        	var cmd = "open "+file.url+" _parent";
+	        	CloudOS.Terminal.run(cmd);
+	        }
+	        else
+	        {
+	        	openFolderFromDesktop();
+	        }
 	    }
 	    else
 	    {
 	        openFile();
 	    }
 	
-	    function openFolder()
+	    function openFolderFromDesktop()
 	    {
 	        //1.判断是不是已经打开，如果打开了，然后判断是不是最小化了
 	        var _a = isFolderOpen();
@@ -34,10 +43,6 @@ CloudOS.FileManager = (function(){
 	        else
 	        {
 	            var cmd = "open "+file.url;
-	            if(file.option.target != undefined)
-	            {
-	                cmd += " "+file.option.target;
-	            }
 	            CloudOS.Terminal.run(cmd);
 	        }
 	    }
@@ -58,7 +63,7 @@ CloudOS.FileManager = (function(){
 	            var pop = CloudOS.PopUpManager.pops[i];
 	            if(pop instanceof CloudOS.Folder && pop.option.url == file.url)
 	            {
-	                action.result = true;
+	            	action.result = true;
 	                action.pop = pop;
 	                break;
 	            }

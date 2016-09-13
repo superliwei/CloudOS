@@ -4,76 +4,83 @@
 const fs = require('fs');
 const Error = require('./Error');
 const Settings = require('./Settings');
+const User = require('./User');
 
 function FS(){}
 
-FS.readdir = function(onComplete)
+FS.readdir = function(user,url,onComplete)
 {
-	var user = "guest";
-	var userRoot = Settings.rootDir + "/" + user;
-	var inputPath = "/";
-	var path = userRoot + inputPath;
-	fs.readdir(path,function(err,files){
-		if(err)return onComplete(Error.READDIR);
-		var infos = [];
-		if(files.length > 0)
-		{
-			readInfo(0);
-		}
-		else
-		{
-			onComplete(undefined,infos);
-		}
-		function readInfo(idx)
-		{
-			if(idx == files.length)
+	User.isTokenOk(user,function(err){
+		if(err)return onComplete(Error.TokenError);
+		var userRoot = Settings.rootDir + "/" + user.name + "/root";
+		var inputPath = url;
+		if(inputPath.charAt(inputPath.length-1) != "/")inputPath+="/"; //补全/
+		var path = userRoot + inputPath;
+		fs.readdir(path,function(err,files){
+			if(err)return onComplete(Error.ReadDirError);
+			var infos = [];
+			if(files.length > 0)
 			{
-				allComplete();
+				readInfo(0);
 			}
-			var fileName = files[idx];
-			var filePath = path+fileName;
-			fs.stat(filePath,function(err,stats){
-				if(err)return readInfo(idx+1); //出现权限读写错误时跳过
-				var info = {
-					name : fileName,
-					type : getFileType(fileName,stats),
-					url : inputPath+fileName
-				};
-				infos.push(info);
-				readInfo(idx+1);
-			});
-		}
-		
-		function getFileType(fileName,stats)
-		{
-			if(stats.isDirectory())
+			else
 			{
-				return "directory";
+				onComplete(undefined,infos);
 			}
-			else if(stats.isFile())
+			function readInfo(idx)
 			{
-				var arr = fileName.split(".");
-				var len = arr.length;
-				if(len > 1)
+				if(idx == files.length)
 				{
-					var _type = arr[len-1];
-					return _type.toLowerCase();
+					allComplete();
+					return;
+				}
+				var fileName = files[idx];
+				var filePath = path+fileName;
+				fs.stat(filePath,function(err,stats){
+					if(!err) //出现权限读写错误时跳过
+					{
+						var info = {
+							name : fileName,
+							type : getFileType(fileName,stats),
+							url : inputPath+fileName
+						};
+						infos.push(info);
+					}
+					readInfo(idx+1);
+				});
+			}
+			
+			function getFileType(fileName,stats)
+			{
+				if(stats.isDirectory())
+				{
+					return "directory";
+				}
+				else if(stats.isFile())
+				{
+					var arr = fileName.split(".");
+					var len = arr.length;
+					if(len > 1)
+					{
+						var _type = arr[len-1];
+						return _type.toLowerCase();
+					}
+					else
+					{
+						return "unknown";
+					}
 				}
 				else
 				{
 					return "unknown";
 				}
 			}
-			else
+			
+			function allComplete()
 			{
-				return "unknown";
+				onComplete(undefined,infos);
 			}
-		}
-		
-		function allComplete()
-		{
-			onComplete(undefined,infos);
-		}
+		});
 	});
 }
 

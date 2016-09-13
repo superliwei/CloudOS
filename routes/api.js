@@ -5,15 +5,15 @@ const FS = require('../modules/FS');
 const User = require('../modules/User');
 
 router.get('/user/login', function(req, res, next) {
-	User.login(req.query.email,req.query.password,new ResultHandle(res).handler);
+	User.login(req.query.name,req.query.password,new ResultHandle(res).handler);
 });
 
 router.get('/user/config', function(req, res, next) {
-	User.getConfig(req.query.email,req.query.token,new ResultHandle(res).handler);
+	User.getConfig(req.query.name,req.query.token,new ResultHandle(res).handler);
 });
 
 router.get('/fs/readdir', function(req, res, next) {
-	FS.readdir(new ResultHandle(res).handler);
+	FS.readdir(req.query.user,req.query.url,new ResultHandle(res).handler);
 });
 
 /**

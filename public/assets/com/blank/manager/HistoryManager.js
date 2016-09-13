@@ -92,8 +92,17 @@ CloudOS.HistoryManager = (function(){
 	
 	HistoryManager.prototype.add = function(_option)
 	{
-	    this.list.push(_option);
-	    this.go(this.list.length-1);
+		if(this.index < this.list.length-1)
+		{
+			this.list.splice(this.index+1,this.list.length-this.index-1);
+		}
+		this.list.push(_option);
+		this.go(this.list.length-1);
+	}
+
+	HistoryManager.prototype.refresh = function()
+	{
+		this.go(this.index);
 	}
 	
 	return HistoryManager;

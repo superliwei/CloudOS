@@ -93,6 +93,7 @@ CloudOS.Folder = (function(){
 	    this.historyManager = new CloudOS.HistoryManager({
 	        controlBts:[this.leftBt,this.rightBt],
 	        handler:function(_url){
+	        	self.win.setTitle(_url);
 	            self.layout.loadStart(_url);
 	        }
 	    });
@@ -137,7 +138,7 @@ CloudOS.Folder = (function(){
 	    this.layout = new layouts[_idx]();
 	    this.layout.view.appendTo(this.win.content);
 	    this.resizeHandler();
-	    this.layout.loadStart();
+	    this.historyManager.refresh();
 	}
 	
 	/**

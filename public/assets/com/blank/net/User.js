@@ -4,16 +4,16 @@
 
 CloudOS.User = (function(){
 
-	function User(_email,_token)
+	function User(_name,_token)
 	{
-	    this.email = _email;
+	    this.name = _name;
 	    this.token = _token;
 	}
 	
 	User.prototype.read = function(_onComplete)
 	{
 	    var self = this;
-	    $.getJSON(CloudOS.Request.User.config,{email:this.email,token:this.token},function(_data){
+	    $.getJSON(CloudOS.Request.User.config,{name:this.name,token:this.token},function(_data){
 	        if(_data.status == "success")
 	        {
 	        	self.config = _data.result;
@@ -24,12 +24,12 @@ CloudOS.User = (function(){
 	
 	User.currentUser = null;
 	
-	User.login = function(_email,_password,_onSuccess,_onFail)
+	User.login = function(_name,_password,_onSuccess,_onFail)
 	{
-	    $.getJSON(CloudOS.Request.login,{email:_email,password:_password},function(_data){
+	    $.getJSON(CloudOS.Request.login,{name:_name,password:_password},function(_data){
 	    	if(_data.status == "success")
 	        {
-	            User.currentUser = new User(_email,_data.result.token);
+	            User.currentUser = new User(_name,_data.result.token);
 	            _onSuccess();
 	        }
 	    });
