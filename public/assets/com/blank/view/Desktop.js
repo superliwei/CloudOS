@@ -46,7 +46,7 @@ CloudOS.Desktop = function()
 		this.gridLayout = new CloudOS.DesktopGridLayout();
 		this.gridLayout.view.appendTo(this.bgLayer);
 		this.gridLayout.moveTo(0,this.topBar.view.height());
-		this.gridLayout.loadStart("/");
+		this.gridLayout.loadStart("/desktop");
 		
 		resizeHandler();
 		$(window).resize(resizeHandler);

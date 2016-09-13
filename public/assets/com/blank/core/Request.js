@@ -6,7 +6,7 @@ CloudOS.Request = (function(){
 	Request.User.config = "api/user/config";
 	
 	Request.File = {};
-	Request.File.getDirectoryListing = "assets/data/file/list.txt";
+	Request.File.getDirectoryListing = "api/fs/readdir";
 	
 	return Request;
 })();

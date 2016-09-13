@@ -38,11 +38,19 @@ CloudOS.GridLayout = (function(){
 	    var file = new CloudOS.File({url:_url});
 	    this.loading.show();
 	    file.dispatcher.bind(CloudOS.File.COMPLETE,function(e,_data){
-	        self.createItems(_data);
-	        self.layout();
-	        file.destroy();
-	        self.loading.hide();
-	        if(onComplete!=undefined)onComplete(_data);
+	    	if(_data.status == "success")
+	    	{
+	    		self.createItems(_data.result);
+		        self.layout();
+		        file.destroy();
+		        self.loading.hide();
+		        if(onComplete!=undefined)onComplete(_data.result);
+	    	}
+	    	else
+	    	{
+	    		file.destroy();
+		        self.loading.hide();
+	    	}
 	    });
 	    file.getDirectoryListing();
 	}
