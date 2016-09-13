@@ -1,10 +1,9 @@
 CloudOS.Request = (function(){
 	var Request = {};
-	
-	Request.login = "assets/data/login.txt";
+	Request.login = "api/user/login";
 	
 	Request.User = {};
-	Request.User.config = "assets/data/user/config.txt";
+	Request.User.config = "api/user/config";
 	
 	Request.File = {};
 	Request.File.getDirectoryListing = "assets/data/file/list.txt";

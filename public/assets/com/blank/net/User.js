@@ -14,8 +14,11 @@ CloudOS.User = (function(){
 	{
 	    var self = this;
 	    $.getJSON(CloudOS.Request.User.config,{email:this.email,token:this.token},function(_data){
-	        self.config = _data;
-	        _onComplete();
+	        if(_data.status == "success")
+	        {
+	        	self.config = _data.result;
+	        	_onComplete();
+	        }
 	    });
 	}
 	
@@ -24,9 +27,9 @@ CloudOS.User = (function(){
 	User.login = function(_email,_password,_onSuccess,_onFail)
 	{
 	    $.getJSON(CloudOS.Request.login,{email:_email,password:_password},function(_data){
-	        if(_data.token!=undefined)
+	    	if(_data.status == "success")
 	        {
-	            User.currentUser = new User(_email,_data.token);
+	            User.currentUser = new User(_email,_data.result.token);
 	            _onSuccess();
 	        }
 	    });
