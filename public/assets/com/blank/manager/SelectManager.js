@@ -22,6 +22,7 @@ CloudOS.SelectManager = (function(){
 		var dp = {};
 	
 		layout.view.mousedown(function(e){
+			if(e.target !== layout.view.get(0))return;//过滤文件图标拖动
 			dp.x = e.clientX;
 			dp.y = e.clientY;
 	        dp.scrollLeft = layout.view.scrollLeft();

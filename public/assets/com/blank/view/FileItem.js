@@ -72,8 +72,6 @@ CloudOS.FileItem = (function(){
 	{
 		var self = this;
 		this.view.bind("mousedown",function(e){
-			e.stopPropagation();
-			$(document).trigger(CloudOS.CoreEvent.DOCUMENT_DOWN,self.option.flag);
 			var idx = FileItem.selectedItems.indexOf(self);
 			if(FileItem.selectedItems.length<2 || idx==-1)
 			{

@@ -93,6 +93,7 @@ CloudOS.Folder = (function(){
 	    this.historyManager = new CloudOS.HistoryManager({
 	        controlBts:[this.leftBt,this.rightBt],
 	        handler:function(_url){
+	        	self.option.url = _url;
 	        	self.win.setTitle(_url);
 	            self.layout.loadStart(_url);
 	        }
@@ -219,8 +220,7 @@ CloudOS.Folder = (function(){
 		var folder = new Folder({
 	        url:_url,
 			win:{
-				parentView:CloudOS.CoreSystem.desktop.winLayer,
-				title:_url
+				parentView:CloudOS.CoreSystem.desktop.winLayer
 			}
 		});
 		folder.open();
