@@ -7,6 +7,7 @@ CloudOS.DesktopGridLayout = (function(){
 	function DesktopGridLayout()
 	{
 		CloudOS.GridLayout.call(this);
+		this.view.css("overflow","hidden");
 	}
 
 	DesktopGridLayout.prototype.resize = function(_w,_h)

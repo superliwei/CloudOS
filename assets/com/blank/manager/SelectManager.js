@@ -11,10 +11,7 @@ CloudOS.SelectManager = (function(){
 	{
 		if(SelectManager._selectBox == null)
 		{
-			SelectManager._selectBox = $("<div>",{
-				style:"position:absolute;border:solid 1px;"
-			});
-			SelectManager._selectBox.css("background-image","url(assets/images/blueAlphaBg0.png)");
+			SelectManager._selectBox = $("<div>",{'class':"CloudOS SelectBox"});
 		}
 		return SelectManager._selectBox;
 	}

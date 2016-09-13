@@ -13,6 +13,16 @@ html,body
 }
 
 /**
+ * 选择框
+ */
+.CloudOS.SelectBox
+{
+	position:absolute;
+	border:solid 1px;
+	background-image:url(../images/blueAlphaBg0.png);
+}
+
+/**
  * 顶部工具条
  */
 .CloudOS.TopBar
