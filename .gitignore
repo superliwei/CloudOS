@@ -1,4 +1,4 @@
 ﻿
 node_modules/
-space/
 .Ds_Store
+npm-debug.log
