@@ -5,23 +5,7 @@
 CloudOS.Win = (function(){
 	function Win(_option)
 	{
-		this.option = _option;
-		this.parentView = null;
-		this.width = 500;
-		this.height = 400;
-		this.minWidth = 150;
-		this.minHeight = 100;
-		this.x = 0;
-		this.y = 0;
-		this.thick = 5;
-		this.barHeight = 25;
-		this.minimizeAble = true;
-		this.maximizeAble = true;
-		this.resizeAble = true;
-		this.dragAble = true;
-		this.title = "窗体标题";
-		this.icon = "assets/images/icons/16/app.png";
-		this.maximizing = false;
+		this.option = _option || {};
 		this.init();
 	}
 	
@@ -39,22 +23,20 @@ CloudOS.Win = (function(){
 	
 	Win.prototype.init = function()
 	{
-		if(this.option!=undefined)
-		{
-			if(this.option.parentView!=undefined)this.parentView = this.option.parentView;
-			if(this.option.width!=undefined)this.width = this.option.width;
-			if(this.option.height!=undefined)this.height = this.option.height;
-			if(this.option.thick!=undefined)this.thick = this.option.thick;
-			if(this.option.barHeight!=undefined)this.barHeight = this.option.barHeight;
-			if(this.option.minWidth!=undefined)this.minWidth = this.option.minWidth;
-			if(this.option.minHeight!=undefined)this.minHeight = this.option.minHeight;
-			if(this.option.minimizeAble!=undefined)this.minimizeAble = this.option.minimizeAble;
-			if(this.option.maximizeAble!=undefined)this.maximizeAble = this.option.maximizeAble;
-			if(this.option.resizeAble!=undefined)this.resizeAble = this.option.resizeAble;
-			if(this.option.dragAble!=undefined)this.dragAble = this.option.dragAble;
-			if(this.option.title!=undefined)this.title = this.option.title;
-			if(this.option.icon!=undefined)this.icon = this.option.icon;
-		}
+		this.parentView = this.option.parentView || null;
+		this.width = this.option.width || 500;
+		this.height = this.option.height || 400;
+		this.thick = this.option.thick || 5;
+		this.barHeight = this.option.barHeight || 25;
+		this.minWidth = this.option.minWidth || 150;
+		this.minHeight = this.option.minHeight || 100;
+		this.minimizeAble = this.option.minimizeAble || true;
+		this.maximizeAble = this.option.maximizeAble || true;
+		this.resizeAble = this.option.resizeAble || true;
+		this.dragAble = this.option.dragAble || true;
+		this.title = this.option.title || "窗体标题";
+		this.icon = this.option.icon || "assets/images/icons/16/app.png";
+		this.maximizing = false;
 	
 		this.view = $("<div class='CloudOS Win'>");
 	
@@ -98,11 +80,6 @@ CloudOS.Win = (function(){
 		this.minBt.view.css("left",this.maxBt.view.position().left - this.minBt.view.width());
 		this.dragFrame.resize();
 		this.titleTf.resize();
-	    if(this.mask!=undefined)
-	    {
-	        this.mask.width(this.view.outerWidth());
-	        this.mask.height(this.view.outerHeight());
-	    }
 		this.view.trigger(new CloudOS.Event(Win.RESIZE));
 	}
 	
@@ -122,20 +99,7 @@ CloudOS.Win = (function(){
 	
 	Win.prototype.mouseEnable = function(value)
 	{
-	    if(!value)
-	    {
-	        if(this.mask == undefined)
-	        {
-	            this.mask = $("<div>",{style:"position:absolute;left:-1px;top:-1px;"});
-	        }
-	        this.mask.width(this.view.outerWidth());
-	        this.mask.height(this.view.outerHeight());
-	        this.mask.appendTo(this.view);
-	    }
-	    else
-	    {
-	        if(this.mask!=undefined)this.mask.remove();
-	    }
+		this.view.css("pointer-events",value?"":"none");
 	}
 	
 	Win.prototype.moveTo = function(_x,_y)
