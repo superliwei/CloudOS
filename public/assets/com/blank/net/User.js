@@ -19,6 +19,10 @@ CloudOS.User = (function(){
 	        	self.config = _data.result;
 	        	_onComplete();
 	        }
+	        else
+	        {
+	        	trace(_data);
+	        }
 	    });
 	}
 	
@@ -31,6 +35,10 @@ CloudOS.User = (function(){
 	        {
 	            User.currentUser = new User(_name,_data.result.token);
 	            _onSuccess();
+	        }
+	        else
+	        {
+	        	_onFail(_data);
 	        }
 	    });
 	}

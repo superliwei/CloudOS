@@ -9,11 +9,13 @@ function User(){}
 
 User.login = function(name,password,onComplete)
 {
+	//onComplete(Error.LoginError);
 	onComplete(undefined,{token:"LKSDFJSLKDJFKLSJDLKFJSDLKJF"});
 }
 
 User.isTokenOk = function(user,onComplete)
 {
+	//onComplete(Error.TokenError);
 	onComplete();
 }
 

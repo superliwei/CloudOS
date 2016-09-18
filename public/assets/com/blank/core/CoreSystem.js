@@ -11,6 +11,8 @@ CloudOS.CoreSystem = (function(){
 				CoreSystem.desktop = new CloudOS.Desktop();
 				CoreSystem.desktop.view.appendTo('body');
 	    	});
+	    },function(err){
+	    	trace(err);
 	    });
 	}
 	return CoreSystem;

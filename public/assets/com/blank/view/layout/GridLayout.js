@@ -50,6 +50,7 @@ CloudOS.GridLayout = (function(){
 	    	{
 	    		file.destroy();
 		        self.loading.hide();
+		        trace(_data);
 	    	}
 	    });
 	    file.getDirectoryListing();
