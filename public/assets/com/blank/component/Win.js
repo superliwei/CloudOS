@@ -407,6 +407,7 @@ CloudOS.Win = (function(){
 	Win.TitleField.prototype.setTitle = function(_title)
 	{
 		this.view.css("width","auto");
+		this.view.css("left",0);
 		this.view.text(_title);
 		this.temp = null;
 		this.resize();
@@ -417,7 +418,7 @@ CloudOS.Win = (function(){
 		if(this.temp == null)
 		{
 			this.temp = {};
-			this.temp.width = this.view.width();
+			this.temp.width = this.view.innerWidth();
 			this.temp.height = this.view.height();
 		}
 		this.view.css("top",this.win.thick);
