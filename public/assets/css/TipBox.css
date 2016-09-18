@@ -38,3 +38,10 @@
 	border-right: 13px solid transparent;
 	border-top: 13px solid rgba(0,0,0,0.5);
 }
+
+.CloudOS.TipBox .targetMask
+{
+	position:absolute;
+	background-image: url(../images/arrowPlaceHolder.png);
+	background-size: contain;
+}

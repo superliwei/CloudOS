@@ -31,7 +31,7 @@ CloudOS.TipBox = (function(){
 		this.ct = $("<div>",{'class':"body"});
 		this.ct.appendTo(this.view);
 	
-		this.arrow = $("<div>",{'class':"arrow"})
+		this.arrow = $("<div>",{'class':"arrow"});
 		this.arrow.appendTo(this.view);
 		
 	
@@ -39,12 +39,7 @@ CloudOS.TipBox = (function(){
 		this.gridLayout.view.appendTo(this.ct);
 		this.gridLayout.view.css("overflow-x","hidden");
 		
-		this.targetMask = $("<div>",{style:"position:absolute;"});
-		this.targetMaskIcon = $("<img>",{
-			src:"assets/images/arrowPlaceHolder.png",
-			onDragStart:"return false"
-		});
-		this.targetMaskIcon.appendTo(this.targetMask);
+		this.targetMask = $("<div>",{'class':"targetMask"});
 		this.targetMask.appendTo(this.view);
 		this.target.hideTip();
 		CloudOS.QuickBar.ImageItem.showTipAble = false;
@@ -135,8 +130,6 @@ CloudOS.TipBox = (function(){
 		this.targetMask.width(this.target.view.width());
 		this.targetMask.height(this.target.view.height());
 		this.targetMask.offset(this.target.view.offset());
-		this.targetMaskIcon.css("max-width",this.targetMask.width());
-		this.targetMaskIcon.css("max-height",this.targetMask.height());
 	}
 	
 	TipBox.prototype.destroy = function(e,flag)
