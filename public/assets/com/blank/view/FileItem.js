@@ -16,7 +16,7 @@ CloudOS.FileItem = (function(){
 		this.imgPlaceHolder.appendTo(this.imgBox);
 	
 		var img = new Image();
-	    img.src = CloudOS.IconMap.getIcon(this.file.type);
+		img.src = CloudOS.IconMap.getIcon(this.file.type);
 		img.onload = function()
 		{
 	        $(img).attr("onDragStart","return false;");
