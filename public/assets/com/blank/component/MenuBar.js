@@ -35,6 +35,7 @@ CloudOS.MenuBar = (function(){
 	{
 		if(this.selectedItem!=null)
 		{
+			if(this.selectedItem === _item)return;
 			this.selectedItem.select(false);
 		}
 		if(_item!=null)_item.select(true);
