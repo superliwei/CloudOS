@@ -366,7 +366,7 @@ CloudOS.Win = (function(){
 	
 	    function mouseoutHandler()
 	    {
-	        self.view.removeClass("maxBt_over");
+	    	self.view.removeClass("maxBt_over");
 	        self.view.removeClass("maxBt_down");
 	        self.icon.css("background-image",self.win.maximizing?"url(assets/images/max_b0.png)":"url(assets/images/max_b.png)");
 	    }

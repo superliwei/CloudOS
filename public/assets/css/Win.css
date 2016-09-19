@@ -26,6 +26,7 @@
 	height: 22px;
 	background-image: url(../images/close.png);
 	margin-left: 9px;
+	pointer-events:none;
 }
 
 .CloudOS.Win .closeBt_over
@@ -44,6 +45,7 @@
 	height: 22px;
 	background-image: url(../images/min_b.png);
 	margin-left: 4px;
+	pointer-events:none;
 }
 
 .CloudOS.Win .minBt .icon_over
@@ -57,6 +59,7 @@
 	height: 22px;
 	background-image: url(../images/max_b.png);
 	margin-left: 4px;
+	pointer-events:none;
 }
 
 .CloudOS.Win .minBt,.maxBt
