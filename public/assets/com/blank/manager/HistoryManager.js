@@ -19,8 +19,8 @@ CloudOS.HistoryManager = (function(){
 	
 	HistoryManager.prototype.initControlBts = function()
 	{
-	    this.leftBt.view.bind(CloudOS.Button.CLICK,this,this.preHandler);
-	    this.rightBt.view.bind(CloudOS.Button.CLICK,this,this.nextHandler);
+	    this.leftBt.view.bind('click',this,this.preHandler);
+	    this.rightBt.view.bind('click',this,this.nextHandler);
 	    this.updateControlBts();
 	}
 	

@@ -34,7 +34,7 @@ CloudOS.NavTab = (function(){
 				bt.view.css("border-radius",0);
 			}
 	        this.tabs.push(bt);
-	        bt.view.bind(CloudOS.Button.CLICK,[this,bt],this.btClickHandler);
+	        bt.view.bind('click',[this,bt],this.btClickHandler);
 		}
 	    this.selectIdx(this.selectedIdx);
 	}

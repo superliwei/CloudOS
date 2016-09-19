@@ -39,7 +39,7 @@ CloudOS.ComboBox = (function(){
 	
 	ComboBox.prototype.initEvents = function()
 	{
-	    this.arrowBt.view.bind(CloudOS.Button.CLICK,this,this.downHandler);
+	    this.arrowBt.view.bind('click',this,this.downHandler);
 	}
 	
 	ComboBox.prototype.downHandler = function(e)
