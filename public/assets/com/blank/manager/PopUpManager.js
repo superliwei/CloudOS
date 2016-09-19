@@ -10,8 +10,8 @@ CloudOS.PopUpManager = (function(){
 	PopUpManager.pops = [];
 	PopUpManager.popup = function(Ipop)
 	{
-		Ipop.win.open();
 		PopUpManager.move(Ipop);
+		Ipop.win.open();
 		PopUpManager.pops.unshift(Ipop);
 		PopUpManager.selectPop(Ipop);
 	}
@@ -60,6 +60,7 @@ CloudOS.PopUpManager = (function(){
 		}
 		Ipop.win.moveTo(tx,ty);
 	}
+	
 	PopUpManager.CHANGE = "PopUpManager_change";
 	PopUpManager.change = function()
 	{
