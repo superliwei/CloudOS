@@ -17,6 +17,7 @@ CloudOS.AppLoader = (function(){
 	
 	AppLoader.prototype.init = function()
 	{
+		this.menuManager = new AppLoader.MenuManager(this.config);
 		this.config.win.parentView = this.option.parentView;
 		this.win = new CloudOS.Win(this.config.win);
 		this.frame = $("<iframe>",{
@@ -96,6 +97,22 @@ CloudOS.AppLoader = (function(){
 		return target;
 	}
 	
+	/**
+	 * 菜单
+	 */
+	AppLoader.MenuManager = function(config)
+	{
+		CloudOS.MenuManager.call(this);
+		
+		this.getCustomMenuSource = function()
+		{
+			return [
+				{label:config.win.title,bold:"true",children:[
+					{label:"关于"+config.win.title}
+				]}
+			];
+		}
+	}
 	return AppLoader;
 
 })();

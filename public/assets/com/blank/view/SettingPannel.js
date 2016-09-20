@@ -1,6 +1,8 @@
 CloudOS.SettingPannel = (function(){
 	function SettingPannel(_option)
 	{
+		this.menuManager = new SettingPannel.MenuManager();
+		
 		this.option = _option;
 		this.option.win = this.option.win == undefined?{}:this.option.win;
 		if(this.option.win.icon == undefined)
@@ -106,6 +108,23 @@ CloudOS.SettingPannel = (function(){
 		this.toolBar.width(tw+this.win.thick*2>this.win.width?this.win.width-this.win.thick*2:tw);
 		this.searchBar.moveTo(this.win.width-this.searchBar.view.width() - this.win.thick,30);
 	    this.loading.resize(this.win.content.width());
+	}
+	
+	/**
+	 * 菜单
+	 */
+	SettingPannel.MenuManager = function()
+	{
+		CloudOS.MenuManager.call(this);
+		
+		this.getCustomMenuSource = function()
+		{
+			return [
+				{label:"偏好设置",bold:"true",children:[
+					{label:"关于偏好设置"}
+				]}
+			];
+		}
 	}
 	
 	return SettingPannel;

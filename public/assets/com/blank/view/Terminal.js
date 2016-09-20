@@ -5,6 +5,8 @@
 CloudOS.Terminal = (function(){
 	function Terminal(_option)
 	{
+		this.menuManager = new Terminal.MenuManager();
+		
 		this.option = _option;
 		this.option.win = this.option.win == undefined?{}:this.option.win;
 		if(this.option.win.icon == undefined)
@@ -95,6 +97,23 @@ CloudOS.Terminal = (function(){
 	{
 		var arr = cmd.split(" ");
 		CloudOS.AppLoader.newLoader(arr[1]);
+	}
+	
+	/**
+	 * 菜单
+	 */
+	Terminal.MenuManager = function()
+	{
+		CloudOS.MenuManager.call(this);
+		
+		this.getCustomMenuSource = function()
+		{
+			return [
+				{label:"Terminal",bold:"true",children:[
+					{label:"关于Terminal"}
+				]}
+			];
+		}
 	}
 	
 	return Terminal;
