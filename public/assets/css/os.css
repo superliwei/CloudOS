@@ -138,6 +138,12 @@ html,body
 	background-image:url(../images/arrowR1.png);
 }
 
+.CloudOS.Menu .LabelItem.disabled
+{
+	opacity: 0.5;
+	pointer-events: none;
+}
+
 /*
  * Button
  */

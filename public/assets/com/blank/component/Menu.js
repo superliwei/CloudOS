@@ -90,7 +90,14 @@ CloudOS.Menu = (function(){
 			this.arrow = $("<div>",{'class':"arrow"});
 			this.arrow.appendTo(this.view);
 		}
+		var enabled = this.data.enabled != undefined ? this.data.enabled : true;
+		this.setEnabled(enabled);
 		this.initEvents();
+	}
+	
+	Menu.LabelItem.prototype.setEnabled = function(value)
+	{
+		this.view[value ? "removeClass" : "addClass"]("disabled");
 	}
 	
 	Menu.LabelItem.prototype.setIcon = function(_url)
