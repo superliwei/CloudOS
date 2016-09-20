@@ -253,7 +253,7 @@ CloudOS.QuickBar = (function(){
 					self.img= $(imgLoader.image);
 					self.updateImg();
 					self.img.appendTo(self.imgPlaceHolder);
-					self.imgPlaceHolder.css("border","none");
+					self.imgPlaceHolder.css("border-color","transparent");
 				}
 			});
 		}

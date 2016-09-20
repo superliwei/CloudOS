@@ -22,7 +22,7 @@ CloudOS.FileItemTypeC = (function(){
 	    {
 	        $(img).attr("onDragStart","return false;");
 	        $(img).appendTo(self.imgBox);
-	        self.imgBox.css("border","none");
+	        self.imgBox.css("border-color","transparent");
 	    }
 	    
 	   	this.label = $("<div>",{'class':"label"});
