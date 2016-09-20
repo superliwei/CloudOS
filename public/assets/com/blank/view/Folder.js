@@ -61,26 +61,33 @@ CloudOS.Folder = (function(){
 	            {label:"反选"},
 	            {label:"取消选择"},
 	            {type:"separator"},
+	            {label:"新建"},
+	            {label:"重命名"},
+	            {label:"删除"},
+	            {type:"separator"},
 	            {label:"复制"},
 	            {label:"剪切"},
-	            {label:"粘贴"},
-	            {label:"删除"},
-	            {label:"重命名"},
-	            {type:"separator"},
-	            {label:"排序方式",children:[
-	                {label:"名称"},
-	                {label:"修改日期"},
-	                {label:"类型"},
-	                {label:"大小"},
-	            ]}
+	            {label:"粘贴"}
 	        ]
 		});
 		this.settingCb.moveTo(110,0);
 		this.settingCb.view.on(CloudOS.ComboBox.OPEN,function(){
-			self.settingCb.option.menu[0].enabled = false;
+			$.each(self.settingCb.option.menu, function(){
+				this.enabled = false;
+				switch(this.label)
+				{
+					case "":
+					break;
+				}
+			});
 		});
 		this.settingCb.view.on(CloudOS.Menu.ITEM_CLICK,function(e,item){
-			trace(item.data);
+			switch(item.data.label)
+			{
+				case "整理":
+					self.arrange();
+				break;
+			}
 		});
 	
 		this.layout = new CloudOS.GridLayout();

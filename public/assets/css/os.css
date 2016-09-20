@@ -189,3 +189,28 @@ html,body
 	border-top-left-radius : 0px;
 	border-bottom-left-radius : 0px;
 }
+
+/*
+ * NavTab
+ */
+.CloudOS.NavTab
+{
+	position:absolute;
+}
+
+.CloudOS.NavTab .Button
+{
+	border-radius : 0px;
+}
+
+.CloudOS.NavTab .Button:first-child
+{
+	border-top-left-radius : 3px;
+	border-bottom-left-radius : 3px;
+}
+
+.CloudOS.NavTab .Button:last-child
+{
+	border-top-right-radius : 3px;
+	border-bottom-right-radius : 3px;
+}

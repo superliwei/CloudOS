@@ -9,30 +9,16 @@ CloudOS.NavTab = (function(){
 	
 	NavTab.prototype.init = function()
 	{
-	    this.selectedIdx = this.option.selectedIdx!=undefined?this.option.selectedIdx:-1;
+	    this.selectedIdx = this.option.selectedIdx || -1;
 	    this.tabs = [];
 	
-		this.view = $("<div>",{style:"position:absolute"});
+		this.view = $("<div>",{'class':"CloudOS NavTab"});
 	
 		for(i=0,len=this.option.tabs.length;i<len;i++)
 		{
 			var bt = new CloudOS.Button(this.option.tabs[i]);
 			bt.view.appendTo(this.view);
 			bt.moveTo(bt.view.width()*i,0);
-			if(i == 0)
-			{
-				bt.view.css("border-top-right-radius",0);
-				bt.view.css("border-bottom-right-radius",0);
-			}
-			else if(i == len-1)
-			{
-				bt.view.css("border-top-left-radius",0);
-				bt.view.css("border-bottom-left-radius",0);
-			}
-			else
-			{
-				bt.view.css("border-radius",0);
-			}
 	        this.tabs.push(bt);
 	        bt.view.bind('click',[this,bt],this.btClickHandler);
 		}
