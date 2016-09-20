@@ -21,9 +21,10 @@ CloudOS.Folder = (function(){
 	
 		this.win = new CloudOS.Win(this.option.win);
 	
-		this.toolBar = $("<div>",{style:"position:absolute;overflow:hidden"});
+		this.toolBar = $("<div>",{style:"position:absolute;overflow:hidden;"});
 		this.toolBar.css("left",this.win.thick);
 		this.toolBar.css("top",30);
+		this.toolBar.width("calc(100% - "+this.win.thick*2+"px)");
 		this.toolBar.height(24);
 		
 		this.leftBt = new CloudOS.Button({
@@ -119,8 +120,6 @@ CloudOS.Folder = (function(){
 	
 	Folder.prototype.resizeHandler = function()
 	{
-	    var tw = this.settingCb.view.position().left + this.settingCb.width;
-	    this.toolBar.width(tw+this.win.thick*2>this.win.width?this.win.width-this.win.thick*2:tw);
 	    this.searchBar.moveTo(this.win.width-this.searchBar.view.width() - this.win.thick,30);
 	    this.layout.resize(this.win.content.width(),this.win.content.height());
 	}
