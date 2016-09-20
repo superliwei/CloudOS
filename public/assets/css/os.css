@@ -163,3 +163,23 @@ html,body
 {
 	-webkit-filter:brightness(0.5);
 }
+
+/**
+ * ComboBox
+ */
+.CloudOS.ComboBox
+{
+	position:absolute;
+}
+
+.CloudOS.ComboBox .Button:first-child
+{
+	border-top-right-radius : 0px;
+	border-bottom-right-radius : 0px;
+}
+
+.CloudOS.ComboBox .Button:last-child
+{
+	border-top-left-radius : 0px;
+	border-bottom-left-radius : 0px;
+}

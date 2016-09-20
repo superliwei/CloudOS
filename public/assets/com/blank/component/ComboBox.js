@@ -5,23 +5,19 @@ CloudOS.ComboBox = (function(){
 		this.init();
 	}
 	
+	ComboBox.OPEN = "ComboBox_open";
+	
 	ComboBox.prototype.init = function()
 	{
-		this.view = $("<div>",{
-			style:"position:absolute"
-		});
+		this.view = $("<div>",{'class':"CloudOS ComboBox"});
 	
 		this.bt = new CloudOS.Button(this.option);
 		this.bt.view.appendTo(this.view);
-		this.bt.view.css("border-top-right-radius",0);
-		this.bt.view.css("border-bottom-right-radius",0);
 		this.arrowBt = new CloudOS.Button({
 			icon:"assets/images/arrowD.png",
 			width:14,
 			height:24
 		});
-		this.arrowBt.view.css("border-top-left-radius",0);
-		this.arrowBt.view.css("border-bottom-left-radius",0);
 		this.arrowBt.view.appendTo(this.view);
 		this.arrowBt.moveTo(this.bt.view.width(),0);
 		
@@ -45,6 +41,8 @@ CloudOS.ComboBox = (function(){
 	ComboBox.prototype.downHandler = function(e)
 	{
 	    var self = e.data;
+		self.view.trigger(ComboBox.OPEN);
+		
 	    var menu = new CloudOS.Menu(self.option.menu);
 	    menu.view.bind(CloudOS.Menu.ITEM_CLICK,itemClickHandler);
 	    menu.show();

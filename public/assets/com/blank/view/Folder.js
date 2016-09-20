@@ -76,6 +76,10 @@ CloudOS.Folder = (function(){
 	        ]
 		});
 		this.settingCb.moveTo(110,0);
+		this.settingCb.view.on(CloudOS.ComboBox.OPEN,function(){
+			self.settingCb.option.menu[0].enbled = false;
+			trace(self.settingCb.option.menu);
+		});
 	
 		this.layout = new CloudOS.GridLayout();
 		this.layout.view.appendTo(this.win.content);
