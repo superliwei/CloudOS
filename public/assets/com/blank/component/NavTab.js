@@ -9,7 +9,7 @@ CloudOS.NavTab = (function(){
 	
 	NavTab.prototype.init = function()
 	{
-	    this.selectedIdx = this.option.selectedIdx || -1;
+	    this.selectedIdx = this.option.selectedIdx != undefined ? this.option.selectedIdx : -1;
 	    this.tabs = [];
 	
 		this.view = $("<div>",{'class':"CloudOS NavTab"});

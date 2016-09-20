@@ -4,13 +4,13 @@
 CloudOS.SimulateLoading = (function(){
 	function SimulateLoading(_option)
 	{
-	    this.option = _option == undefined?{}:_option;
+	    this.option = _option || {};
 	    this.view = $("<div>",{style:"position:absolute;display:none"});
 	    this.bg = $("<div>",{style:"position:absolute;height:3px;"});
 	    this.bg.appendTo(this.view);
 	    this.bar = $("<div>",{style:"position:absolute;height:3px;"});
 	    this.bar.appendTo(this.view);
-	    this.bar.css("background-color",this.option.color!=undefined?this.option.color:"#0000ff");
+	    this.bar.css("background-color",this.option.color || "#0000ff");
 	}
 	
 	SimulateLoading.prototype.resize = function(_w)

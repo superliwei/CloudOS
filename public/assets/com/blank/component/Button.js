@@ -34,7 +34,7 @@ CloudOS.Button = (function(){
 	        this.label.css("line-height",this.option.height+"px");
 		}
 	    
-	    this.enable(this.option.enabled || true);
+	    this.enable(this.option.enabled != undefined ? this.option.enabled : true);
 	}
 	
 	Button.prototype.setIcon = function(_url)

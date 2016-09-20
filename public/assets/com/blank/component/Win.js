@@ -24,16 +24,16 @@ CloudOS.Win = (function(){
 	Win.prototype.init = function()
 	{
 		this.parentView = this.option.parentView || null;
-		this.width = this.option.width || 500;
-		this.height = this.option.height || 400;
-		this.thick = this.option.thick || 5;
-		this.barHeight = this.option.barHeight || 25;
-		this.minWidth = this.option.minWidth || 150;
-		this.minHeight = this.option.minHeight || 100;
-		this.minimizeAble = this.option.minimizeAble || true;
-		this.maximizeAble = this.option.maximizeAble || true;
-		this.resizeAble = this.option.resizeAble || true;
-		this.dragAble = this.option.dragAble || true;
+		this.width = this.option.width != undefined ? this.option.width : 500;
+		this.height = this.option.height != undefined ? this.option.height : 400;
+		this.thick = this.option.thick != undefined ? this.option.thick : 5;
+		this.barHeight = this.option.barHeight != undefined ? this.option.barHeight : 25;
+		this.minWidth = this.option.minWidth != undefined ? this.option.minWidth : 150;
+		this.minHeight = this.option.minHeight != undefined ? this.option.minHeight : 100;
+		this.minimizeAble = this.option.minimizeAble != undefined ? this.option.minimizeAble : true;
+		this.maximizeAble = this.option.maximizeAble != undefined ? this.option.maximizeAble : true;
+		this.resizeAble = this.option.resizeAble != undefined ? this.option.resizeAble : true;
+		this.dragAble = this.option.dragAble != undefined ? this.option.dragAble : true;
 		this.title = this.option.title || "窗体标题";
 		this.icon = this.option.icon || "assets/images/icons/16/app.png";
 		this.maximizing = false;
