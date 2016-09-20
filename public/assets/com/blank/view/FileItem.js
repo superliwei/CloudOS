@@ -99,8 +99,7 @@ CloudOS.FileItem = (function(){
 		}
 	
 		this.view.dblclick(function(){
-			//trace("双击");
-	        self.file.openWithDefaultApplication();
+			self.file.openWithDefaultApplication();
 		});
 	}
 	
@@ -127,8 +126,7 @@ CloudOS.FileItem = (function(){
 		{
 			if(!moved)
 			{
-				//trace("点击");
-	            self.file.openWithDefaultApplication();
+				self.file.openWithDefaultApplication();
 			}
 			mouseupEffect();
 			$(document).unbind("mousemove",mousemoveHandler);

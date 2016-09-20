@@ -10,8 +10,7 @@ CloudOS.FileManager = (function(){
 	    {
 	        if(file.option.target == "_parent")
 	        {
-	        	var cmd = "open "+file.url+" _parent";
-	        	CloudOS.Terminal.run(cmd);
+	        	openFolder(file.url,"_parent");
 	        }
 	        else
 	        {
@@ -41,9 +40,20 @@ CloudOS.FileManager = (function(){
 	        }
 	        else
 	        {
-	            var cmd = "open "+file.url;
-	            CloudOS.Terminal.run(cmd);
+	            openFolder(file.url);
 	        }
+	    }
+
+	    function openFolder(url,target)
+	    {
+	    	if(target == "_parent")
+	    	{
+	    		CloudOS.Folder.currentOpen(url);
+	    	}
+	    	else
+	    	{
+	    		CloudOS.Folder.newOpen(url);
+	    	}
 	    }
 	
 	    function openFile()

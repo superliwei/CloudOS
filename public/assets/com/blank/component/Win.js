@@ -400,38 +400,22 @@ CloudOS.Win = (function(){
 	{
 		this.win = _win;
 		this.view = $("<div class='title'>");
-		this.view.text(this.win.title);
-		this.temp = null;
+		this.label = $("<div class='label'>");
+		this.label.appendTo(this.view);
+		this.label.text(this.win.title);
+		this.view.css("top",this.win.thick);
 	}
 	
 	Win.TitleField.prototype.setTitle = function(_title)
 	{
-		this.view.css("width","auto");
-		this.view.css("left",0);
-		this.view.text(_title);
-		this.temp = null;
+		this.label.text(_title);
 		this.resize();
 	}
 	
 	Win.TitleField.prototype.resize = function()
 	{
-		if(this.temp == null)
-		{
-			this.temp = {};
-			this.temp.width = this.view.innerWidth();
-			this.temp.height = this.view.height();
-		}
-		this.view.css("top",this.win.thick);
-		this.view.css("left",(this.win.width-this.view.width())*0.5);
-		if(this.view.position().left+this.temp.width >= this.win.minBt.view.position().left - this.win.thick)
-		{
-			this.view.width(this.win.minBt.view.position().left - this.win.thick - this.view.position().left);
-		}
-		else
-		{
-			this.view.width(this.temp.width);
-		}
-		this.view.height(this.temp.height);
+		var tx = (this.view.width() - this.label.width())*0.5+25;
+		this.label.css("left",tx);
 	}
 	
 	/**
