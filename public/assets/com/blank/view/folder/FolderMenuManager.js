@@ -12,10 +12,10 @@ CloudOS.FolderMenuManager = function()
 				{label:"关于Finder"}
 			]},
 			{label:"文件",children:[
-		        {label:"新建"},
+		        {label:"新建",cmd:"Ctrl+N"},
 		        {type:"separator"},
-		        {label:"关闭当前"},
-		        {label:"关闭所有"},
+		        {label:"关闭当前",cmd:"Ctrl+W"},
+		        {label:"关闭所有",cmd:"Ctrl+Alt+W"},
 		        {type:"separator"},
 		        {label:"偏好设置"}
 		    ]},

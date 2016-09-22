@@ -92,6 +92,12 @@ html,body
 	box-shadow:0px 10px 15px rgba(0,0,0,0.5);
 }
 
+.CloudOS.Menu .itemContainter
+{
+	display:flex;
+	flex-direction:column;
+}
+
 .CloudOS.Menu .Separator
 {
 	border-top:solid 1px #e3e3e3;
@@ -101,30 +107,40 @@ html,body
 .CloudOS.Menu .LabelItem
 {
 	line-height:24px;
-	padding-left:24px;
-	padding-right:24px;
 	cursor: default;
+	display:flex;
+	flex-direction:row;
+}
+
+.CloudOS.Menu .LabelItem .iconContainer
+{
+	width:24px;
+}
+
+.CloudOS.Menu .LabelItem .cmdContainer
+{
+	flex-grow:1;
+	text-align: right;
+	padding-left: 10px;
 }
 
 .CloudOS.Menu .LabelItem .arrow
 {
-	float:right;
 	width:7px;
 	height:10px;
-	margin-top:7px;
-	margin-right:-17px;
 	background-image:url(../images/arrowR0.png);
-	left:0px;
-	top:0px;
+	margin: auto;
+	margin-top: 7px;
 }
 
-.CloudOS.Menu .LabelItem img
+.CloudOS.Menu .LabelItem  .iconContainer .icon
 {
+	width: 16px;
+	height: 16px;
 	float:left;
-	margin-left:-20px;
-	margin-top:4px;
-	max-width:16px;
-	max-height:16px;
+	margin-left: 4px;
+	margin-top: 4px;
+	background-size: contain;
 }
 
 .CloudOS.Menu .LabelItem.selected

@@ -9,7 +9,7 @@ CloudOS.Menu = (function(){
 	Menu.prototype.init = function()
 	{
 		this.selectedItem = null;
-		this.ct = $("<div>");
+		this.ct = $("<div>",{'class':"itemContainter"});
 		this.ct.appendTo(this.view);
 		var len = this.data.length;
 		for(var i=0;i<len;i++)
@@ -80,7 +80,21 @@ CloudOS.Menu = (function(){
 		this.data = _data;
 		this.menu = _menu;
 		this.view = $("<div>",{'class':"LabelItem"});
-		this.view.text(this.data.label);
+		//图标
+		this.iconDiv = $("<div>",{'class':"iconContainer"});
+		this.iconDiv.appendTo(this.view);
+		//文字
+		this.labelDiv = $("<div>");
+		this.labelDiv.appendTo(this.view);
+		this.labelDiv.text(this.data.label);
+		//快捷键
+		this.rightDiv = $("<div>",{'class':"cmdContainer"});
+		this.rightDiv.appendTo(this.view);
+		this.rightDiv.text(this.data.cmd);
+		//箭头
+		this.arrowDiv = $("<div>",{'class':"iconContainer"});
+		this.arrowDiv.appendTo(this.view);
+		
 	    if(this.data.icon!=undefined)
 	    {
 	        this.setIcon(this.data.icon);
@@ -88,7 +102,7 @@ CloudOS.Menu = (function(){
 		if(this.data.children!=undefined)
 		{
 			this.arrow = $("<div>",{'class':"arrow"});
-			this.arrow.appendTo(this.view);
+			this.arrow.appendTo(this.arrowDiv);
 		}
 		var enabled = this.data.enabled != undefined ? this.data.enabled : true;
 		this.setEnabled(enabled);
@@ -106,11 +120,9 @@ CloudOS.Menu = (function(){
 	    {
 	        this.icon.remove();
 	    }
-	    this.icon = $("<img>",{
-	   		src:_url,
-	   		onDragStart:"return false;"
-	   	});
-	    this.icon.appendTo(this.view);
+	    this.icon = $("<div>",{'class':"icon"});
+	   	this.icon.css("background-image","url("+_url+")");
+	    this.icon.appendTo(this.iconDiv);
 	}
 	
 	Menu.LabelItem.prototype.initEvents = function()
