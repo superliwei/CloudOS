@@ -10,7 +10,7 @@ CloudOS.Background = function()
 	
 	this.img = null;
 	
-	var imgLoader = new CloudOS.ImageLoader("assets/images/bg/0.jpg",{
+	var imgLoader = new CloudOS.ImageLoader(CloudOS.User.currentUser.config.backgroundImage,{
 		onComplete:function(){
 			self.img = $(imgLoader.image);
 			self.img.css("position","absolute");

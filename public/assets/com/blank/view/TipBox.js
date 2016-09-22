@@ -46,7 +46,7 @@ CloudOS.TipBox = (function(){
 		this.target.view.css("opacity",0);
 	
 		this.resize();
-	    this.gridLayout.loadStart(this.option.target.data.list,function(_data){
+	    this.gridLayout.loadStart(this.option.target.data.target,function(_data){
 	    	if(_data.length == 0)return;
 	    	var size = (function(len){
 	    		var _w,_h;

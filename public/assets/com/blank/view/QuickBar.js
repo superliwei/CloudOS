@@ -566,28 +566,50 @@ CloudOS.QuickBar = (function(){
 		function updateHandler()
 		{
 			if(self.item == null)return;
-			if(self.data.class != undefined)
+			if(self.data.type == "tipBox")return;
+			if(self.data.type == "folder" && self.data.target == "/trash")return;
+			var AppClass = self.getAppClass();
+			if(AppClass == undefined)return;
+			var _on = false;
+			if(AppClass == CloudOS.AppLoader)
 			{
-				var _on = false;
-				if(self.data.class == CloudOS.AppLoader)
-				{
-					_on = CloudOS.AppLoader.getLoaderByName(self.data.name) == null?false:true;
-				}
-				else
-				{
-					_on = (self.data.class.instances == undefined || self.data.class.instances.length == 0)?false:true;
-				}
-	
-	            _on?self.lightOn():self.lightOff();
+				_on = CloudOS.AppLoader.getLoaderByName(CloudOS.PathUtil.getFileName(self.data.target)) == null?false:true;
 			}
+			else
+			{
+				_on = (AppClass.instances == undefined || AppClass.instances.length == 0)?false:true;
+			}
+			_on?self.lightOn():self.lightOff();
 		}
 	
 		this.updataLightState = updateHandler;
 	}
 	
+	/**
+	 * 获取对应的类
+	 */
+	QuickBar.ImageItem.prototype.getAppClass = function()
+	{
+		var AppClass;
+		if(this.data.type == "folder")
+		{
+			AppClass = CloudOS.Folder;
+		}
+		else if(this.data.type == "sysApp")
+		{
+			var sysAppName = this.data.target.split(".")[0];
+			AppClass = CloudOS[sysAppName];
+		}
+		else if(this.data.type == "customApp")
+		{
+			AppClass = CloudOS.AppLoader;
+		}
+		return AppClass;
+	}
+	
 	QuickBar.ImageItem.prototype.clickHandler = function()//点击运行
 	{
-		if(this.data.list!=undefined)
+		if(this.data.type == "tipBox")
 		{
 			this.popFolder();
 			return;
@@ -598,47 +620,63 @@ CloudOS.QuickBar = (function(){
 			showMinimizedWin(this);
 			return;
 		}
-		if(this.data.cmd == undefined)return;
-	    if(this.lightState == "off")
+		if(this.lightState == "off")
 		{
-			var trash = getFolderByTitle(this.data.title);
-			if(trash == null) //废纸篓不能重复打开
+			if(this.data.type == "folder")
 			{
-				CloudOS.Terminal.run(this.data.cmd);
-			}
-			else
-			{
-				var arr = CloudOS.PopUpManager.pops;
-				for(var i=0,len=arr.length;i<len;i++)
+				//1.废纸篓不能重复打开
+				//2.如果废纸篓已经打开，选中
+				//3.如果已经打开并最小化,选中并显示
+				var trash = getFolderByTitle("/trash");
+				if(trash != null)
 				{
-					var _app = CloudOS.PopUpManager.pops[i];
-					if(_app == trash)
+					var arr = QuickBar.instance().getSortableItems(1);
+					for(var i=0,len=arr.length;i<len;i++)
 					{
-						CloudOS.PopUpManager.selectPop(_app);
-						break;
+						var _item = arr[i];
+						if(_item.icon.data.title == "/trash")
+						{
+							showMinimizedWin(_item.icon);
+							break;
+						}
 					}
+					if(CloudOS.PopUpManager.currentPop !== trash)CloudOS.PopUpManager.selectPop(trash);
 				}
-				var arr = QuickBar.instance().getSortableItems(1);
-				for(var i=0,len=arr.length;i<len;i++)
+				else
 				{
-					var _item = arr[i];
-					if(_item.icon.data.title == this.data.title)
-					{
-						showMinimizedWin(_item.icon);
-					}
+					CloudOS.Folder.newOpen(this.data.target);
 				}
 			}
+			else if(this.data.type == "sysApp")
+			{
+				var sysAppName = this.data.target.split(".")[0];
+				switch(sysAppName)
+				{
+					case "Terminal":
+					CloudOS.Terminal.newTerminal();
+					break;
+					case "SettingPannel":
+					CloudOS.SettingPannel.newSettingPannel();
+					break;
+				}
+			}
+			else if(this.data.type == "customApp")
+			{
+				CloudOS.AppLoader.newLoader(this.data.target);
+			}
+			
 		}
 		else
 		{
-			if(this.data.class == undefined)return;
+			var AppClass = this.getAppClass();
+			if(AppClass == undefined)return;
 			var arr = CloudOS.PopUpManager.pops;
 			for(var i=0,len=arr.length;i<len;i++)
 			{
 				var _app = CloudOS.PopUpManager.pops[i];
-				if(_app instanceof this.data.class)
+				if(_app instanceof AppClass)
 				{
-					if(this.data.class!=CloudOS.AppLoader || (this.data.class == CloudOS.AppLoader && _app.config.name == this.data.name))
+					if(AppClass != CloudOS.AppLoader || (AppClass == CloudOS.AppLoader && _app.config.name == CloudOS.PathUtil.getFileName(this.data.target)))
 					{
 						CloudOS.PopUpManager.selectPop(_app);
 					}
@@ -648,9 +686,9 @@ CloudOS.QuickBar = (function(){
 			for(var i=0,len=arr.length;i<len;i++)
 			{
 				var _item = arr[i];
-				if(_item.icon.data.app!=undefined && _item.icon.data.app instanceof this.data.class)
+				if(_item.icon.data.app != undefined && _item.icon.data.app instanceof AppClass)
 				{
-					if(this.data.class!=CloudOS.AppLoader || (this.data.class == CloudOS.AppLoader && _item.icon.data.app.config.name == this.data.name))
+					if(AppClass != CloudOS.AppLoader || (AppClass == CloudOS.AppLoader && _item.icon.data.app.config.name == CloudOS.PathUtil.getFileName(this.data.target)))
 					{
 						showMinimizedWin(_item.icon);
 					}
@@ -752,25 +790,17 @@ CloudOS.QuickBar = (function(){
 	        title:"Folder",
 	        img:"assets/images/icons/128/folder.png",
 	        fixed:true,
-	        cmd:"open /",
-	        class:CloudOS.Folder
+	        type:"folder",
+	        target:"/"
 	    };
 	    this.items.push(folder);
-	    var len = CloudOS.User.currentUser.config.quickBar.items.length;
-	    for(var i= 0;i<len;i++)
-	    {
-	        var item = CloudOS.User.currentUser.config.quickBar.items[i];
-	        if(item.class != undefined)
-	        {
-	            item.class = eval(item.class);
-	        }
-	        this.items.push(item);
-	    }
+	   	this.items = this.items.concat(CloudOS.User.currentUser.config.quickBar.items);
 	    var trash = {
 	        title:"废纸篓",
 	        img:"assets/images/icons/128/trash0.png",
 	        fixed:true,
-	        cmd:"open 废纸篓"
+	        type:"folder",
+	        target:"/trash"
 	    };
 	    this.items.push(trash);
 	}

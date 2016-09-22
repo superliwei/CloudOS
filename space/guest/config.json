@@ -5,21 +5,20 @@
             {
             	"title":"终端",
             	"img":"assets/images/icons/128/terminal.png",
-            	"cmd":"open Terminal",
-            	"class":"CloudOS.Terminal"
+            	"type":"sysApp",
+            	"target":"Terminal.app"
             },
             {
             	"title":"图片查看器",
             	"img":"assets/apps/ImageViewer.app/icon.png",
-            	"cmd":"load assets/apps/ImageViewer.app",
-            	"class":"CloudOS.AppLoader",
-            	"name":"ImageViewer"
+            	"type":"customApp",
+            	"target":"assets/apps/ImageViewer.app"
             },
             {
             	"title":"偏好设置",
             	"img":"assets/images/icons/128/setting.png",
-            	"cmd":"open SettingPannel",
-            	"class":"CloudOS.SettingPannel"
+            	"type":"sysApp",
+            	"target":"SettingPannel.app"
             },
             {
             	"type":"separator"
@@ -27,12 +26,14 @@
             {
             	"title":"我的音乐",
             	"img":"assets/images/icons/128/musicFolder.png",
-            	"list":"/music"
+            	"type":"tipBox",
+            	"target":"/music"
             },
             {
             	"title":"应用程序",
             	"img":"assets/images/icons/128/app.png",
-            	"list":"/apps"
+            	"type":"tipBox",
+            	"target":"/apps"
             }
         ]
     }
