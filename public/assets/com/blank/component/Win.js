@@ -124,7 +124,7 @@ CloudOS.Win = (function(){
 	Win.prototype.maximize = function()
 	{
 	    var self = this;
-		this.maxBt.icon.css("background-image","url(assets/images/max_b0.png)");
+		this.maxBt.icon.css("background-position-x","-44px");
 		this.tmp = {
 			x:this.x,
 			y:this.y,
@@ -157,7 +157,7 @@ CloudOS.Win = (function(){
 	{
 	    var self = this;
 		this.maximizing = false;
-		this.maxBt.icon.css("background-image","url(assets/images/max_b.png)");
+		this.maxBt.icon.css("background-position-x","-22px");
 		$(window).unbind("resize",this.windowResizeHandler);
 	
 	    var time = drag == undefined?0.5:0;
@@ -237,15 +237,14 @@ CloudOS.Win = (function(){
 	{
 		if(value!=undefined)
 		{
+			this.view[value ? "addClass" : "removeClass"]("active");
 			if(value)
 			{
-				this.view.css("background-image","url(assets/images/blueAlphaBg.png)");
 				this.view.unbind("mousedown",this.mousedownHandler);
 				this.view.trigger(new CloudOS.Event(Win.ACTIVE));
 			}
 			else
 			{
-				this.view.css("background-image","url(assets/images/whiteAlphaBg.png)");
 				this.view.bind("mousedown",this.mousedownHandler);
 				this.view.trigger(new CloudOS.Event(Win.DISACTIVE));
 			}
@@ -359,7 +358,7 @@ CloudOS.Win = (function(){
 		this.view.mouseover(function()
 		{
 			$(this).addClass("maxBt_over");
-			self.icon.css("background-image",self.win.maximizing?"url(assets/images/max_w0.png)":"url(assets/images/max_w.png)");
+			self.icon.css("background-position-x",self.win.maximizing ? "-88px" : "-66px");
 	        self.view.unbind("mouseout");
 	        self.view.bind("mouseout",mouseoutHandler);
 		});
@@ -368,7 +367,7 @@ CloudOS.Win = (function(){
 	    {
 	    	self.view.removeClass("maxBt_over");
 	        self.view.removeClass("maxBt_down");
-	        self.icon.css("background-image",self.win.maximizing?"url(assets/images/max_b0.png)":"url(assets/images/max_b.png)");
+	        self.icon.css("background-position-x",self.win.maximizing ? "-44px" : "-22px");
 	    }
 		this.view.mousedown(function(){
 			$(this).addClass("maxBt_down");

@@ -19,7 +19,7 @@ html,body
 {
 	position:absolute;
 	border:solid 1px;
-	background-image:url(../images/blueAlphaBg0.png);
+	background-color: rgba(0,0,255,0.1);
 }
 
 /**
@@ -73,7 +73,7 @@ html,body
 .CloudOS.MenuBar .IconItem.selected,.CloudOS.MenuBar .LabelItem.selected
 {
 	color: #fff;
-	background-image:url(../images/blueAlphaBg1.png);
+	background-color: rgba(0,0,255,0.5);
 }
 
 /**
@@ -145,13 +145,14 @@ html,body
 
 .CloudOS.Menu .LabelItem.selected
 {
-	background-image:url(../images/blueAlphaBg1.png);
 	color: #fff;
+	background-color: rgba(0,0,255,0.5);
 }
 
 .CloudOS.Menu .LabelItem.selected .arrow
 {
-	background-image:url(../images/arrowR1.png);
+	background-image:url(../images/arrowR0.png);
+	background-position-x: -7px;
 }
 
 .CloudOS.Menu .LabelItem.disabled
@@ -204,6 +205,11 @@ html,body
 {
 	border-top-left-radius : 0px;
 	border-bottom-left-radius : 0px;
+}
+
+.CloudOS.ComboBox .Button:last-child.selected
+{
+	background-color:rgba(0,0,255,0.5);
 }
 
 /*

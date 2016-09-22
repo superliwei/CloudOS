@@ -51,7 +51,7 @@ CloudOS.ComboBox = (function(){
 	    menu.moveTo(tx,ty);
 	    self.arrowBt.enable(false);
 	    self.arrowBt.view.css("opacity",1);
-	    self.arrowBt.view.css("background-image","url(assets/images/blueAlphaBg1.png)");
+	    self.arrowBt.view.addClass("selected");
 	    self.arrowBt.setIcon("assets/images/arrowD0.png");
 	
 	    $(document).bind("mousedown",this,mousedownHandler);
@@ -62,7 +62,7 @@ CloudOS.ComboBox = (function(){
 	        if(from == "Menu")return;
 	        menu.destroy();
 	        self.arrowBt.enable(true);
-	        self.arrowBt.view.css("background-image","none");
+	        self.arrowBt.view.removeClass("selected");
 	        self.arrowBt.setIcon("assets/images/arrowD.png");
 	        $(document).unbind("mousedown",mousedownHandler);
 	        $(document).unbind(CloudOS.CoreEvent.DOCUMENT_DOWN,mousedownHandler);
