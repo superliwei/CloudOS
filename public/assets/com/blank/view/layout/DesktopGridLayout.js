@@ -21,10 +21,17 @@ CloudOS.DesktopGridLayout = (function(){
 	    var len = _ds.length;
 	    for(var i=0;i<len;i++)
 	    {
-	        var item = new CloudOS.FileItem(_ds[i]);
-	        item.view.appendTo(this.itemLayer);
-	        this.items.push(item);
+	        var option = _ds[i];
+	        var item = this.newItem(option);
+        	this.items.push(item);
 	    }
+	}
+	
+	DesktopGridLayout.prototype.newItem = function(option)
+	{
+		var item = new CloudOS.FileItem(option);
+        item.view.appendTo(this.itemLayer);
+        return item;
 	}
 	
 	DesktopGridLayout.prototype.layout = function()

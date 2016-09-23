@@ -12,7 +12,7 @@ FS.readdir = function(user,url,onComplete)
 {
 	User.isTokenOk(user,function(err){
 		if(err)return onComplete(Error.TokenError);
-		var userRoot = Settings.rootDir + "/" + user.name + "/root";
+		var userRoot = Settings.getUserRoot(user.name);
 		var inputPath = url;
 		if(inputPath.charAt(inputPath.length-1) != "/")inputPath+="/"; //补全/
 		var path = userRoot + inputPath;
@@ -79,6 +79,27 @@ FS.readdir = function(user,url,onComplete)
 			function allComplete()
 			{
 				onComplete(undefined,infos);
+			}
+		});
+	});
+}
+
+FS.createdir = function(user,url,onComplete)
+{
+	User.isTokenOk(user,function(err){
+		if(err)return onComplete(Error.TokenError)
+		var userRoot = Settings.getUserRoot(user.name);
+		var dirUrl = userRoot + url;
+		fs.exists(dirUrl,function(exists){
+			if(exists)
+			{
+				return onComplete(Error.FileExists);
+			}
+			else
+			{
+				fs.mkdir(dirUrl,function(){
+					onComplete();
+				});
 			}
 		});
 	});

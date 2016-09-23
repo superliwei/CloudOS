@@ -15,13 +15,19 @@ CloudOS.DetailLayout = (function(){
 	    for(var i=0;i<len;i++)
 	    {
 	        var option = _ds[i];
-	        option.color = "#000";
-	        option.textShadow = "1px 1px 2px #fff";
-	        option.target = "_parent";
-	        var item = new CloudOS.FileItemTypeC(option);
-	        item.view.appendTo(this.itemLayer);
-	        this.items.push(item);
+	        var item = this.newItem(option);
+        	this.items.push(item);
 	    }
+	}
+	
+	DetailLayout.prototype.newItem = function(option)
+	{
+		option.color = "#000";
+        option.textShadow = "1px 1px 2px #fff";
+        option.target = "_parent";
+        var item = new CloudOS.FileItemTypeC(option);
+        item.view.appendTo(this.itemLayer);
+        return item;
 	}
 	
 	DetailLayout.prototype.layout = function()

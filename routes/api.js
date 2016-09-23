@@ -16,6 +16,10 @@ router.get('/fs/readdir', function(req, res, next) {
 	FS.readdir(req.query.user,req.query.url,new ResultHandle(res).handler);
 });
 
+router.get('/fs/createdir', function(req, res, next) {
+	FS.createdir(req.query.user,req.query.url,new ResultHandle(res).handler);
+});
+
 /**
  * 统一处理输出结果
  */

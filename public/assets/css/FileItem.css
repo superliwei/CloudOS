@@ -111,3 +111,9 @@
 	text-shadow:none;
 	color:#FFFFFF;
 }
+
+.CloudOS.FileItem.disabled,.CloudOS.FileItemTypeC.disabled
+{
+	opacity: 0.5;
+	pointer-events: none;
+}

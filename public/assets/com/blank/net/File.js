@@ -40,6 +40,20 @@ CloudOS.File = (function(){
 	    delete this.dispatcher;
 	}
 	
+	File.createDirectory = function(url,onComplete)
+	{
+		var vars = {
+	    	url:url,
+	    	user:{
+	    		name:CloudOS.User.currentUser.name,
+	    		token:CloudOS.User.currentUser.token
+	    	}
+	    };
+		$.getJSON(CloudOS.Request.File.createDirectory,vars,function(_data){
+			onComplete(_data.status == "success" ? undefined : _data);
+		});
+	}
+	
 	return File;
 	
 })();

@@ -22,6 +22,18 @@ CloudOS.BasicLayout = (function(){
 		this.view.height(_h);
 	}
 	
+	/**
+	 * 使图标居中.
+	 */
+	BasicLayout.prototype.makeItemCenter = function(item)
+	{
+		var tx = (this.view.width() - item.view.width())*0.5;
+		var ty = (this.view.height() - item.view.height())*0.5;
+		item.view.css("position","absolute");
+		item.view.css("left",tx);
+		item.view.css("top",ty);
+	}
+	
 	return BasicLayout;
 	
 })();

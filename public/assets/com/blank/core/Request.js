@@ -7,6 +7,7 @@ CloudOS.Request = (function(){
 	
 	Request.File = {};
 	Request.File.getDirectoryListing = "api/fs/readdir";
+	Request.File.createDirectory = "api/fs/createdir";
 	
 	return Request;
 })();

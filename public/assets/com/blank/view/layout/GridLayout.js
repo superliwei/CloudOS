@@ -62,13 +62,19 @@ CloudOS.GridLayout = (function(){
 	    for(var i=0;i<len;i++)
 	    {
 	        var option = _ds[i];
-	        option.color = "#000";
-	        option.textShadow = "1px 1px 2px #fff";
-	        option.target = "_parent";
-	        var item = new CloudOS.FileItem(option);
-	        item.view.appendTo(this.itemLayer);
-	        this.items.push(item);
+	        var item = this.newItem(option);
+        	this.items.push(item);
 	    }
+	}
+	
+	GridLayout.prototype.newItem = function(option)
+	{
+		option.color = "#000";
+        option.textShadow = "1px 1px 2px #fff";
+        option.target = "_parent";
+        var item = new CloudOS.FileItem(option);
+        item.view.appendTo(this.itemLayer);
+        return item;
 	}
 	
 	GridLayout.prototype.resize = function(_w,_h)

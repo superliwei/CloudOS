@@ -154,7 +154,54 @@ CloudOS.Folder = (function(){
 	 */
 	Folder.prototype.newFolder = function()
 	{
-		//...
+		var layout = this.layout;
+		var newFolderName = this.getNewFolderName();
+		var newFolderUrl = this.option.url + "/" + newFolderName;
+		var newFolderItem = layout.newItem({
+			name : newFolderName,
+			type : "directory",
+			url : newFolderUrl
+		});
+		layout.makeItemCenter(newFolderItem);
+		newFolderItem.view.addClass("disabled");
+		CloudOS.File.createDirectory(newFolderUrl,function(err){
+			if(err)
+			{
+				trace(err);
+				newFolderItem.destroy();
+				return;
+			}
+			layout.items.push(newFolderItem);
+			newFolderItem.view.removeClass("disabled");
+		});
+	}
+	
+	Folder.prototype.getNewFolderName = function()
+	{
+		var items = this.layout.items;
+		var len = items.length;
+		var idx = 0;
+		checkFolderName();
+		return getNewFolderNameByIdx(idx);
+		
+		function checkFolderName()
+		{
+			for(var i=0;i<len;i++)
+			{
+				var item = items[i];
+				if(item.option.name == getNewFolderNameByIdx(idx))
+				{
+					idx++;
+					checkFolderName();
+					break;
+				}
+			}
+		}
+		
+		function getNewFolderNameByIdx(_idx)
+		{
+			return "新建文件夹"+(_idx == 0 ? "" : "("+_idx+")");
+		}
 	}
 	
 	Folder.run = function(cmd)
