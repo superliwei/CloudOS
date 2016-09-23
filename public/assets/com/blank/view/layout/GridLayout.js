@@ -35,25 +35,20 @@ CloudOS.GridLayout = (function(){
 	{
 	    this.clear();
 	    var self = this;
-	    var file = new CloudOS.File({url:_url});
 	    this.loading.show();
-	    file.dispatcher.bind(CloudOS.File.COMPLETE,function(e,_data){
-	    	if(_data.status == "success")
+	    var file = new CloudOS.File({url:_url});
+	    file.getDirectoryListing(function(err,_data){
+	    	if(err)
 	    	{
-	    		self.createItems(_data.result);
-		        self.layout();
-		        file.destroy();
-		        self.loading.hide();
-		        if(onComplete!=undefined)onComplete(_data.result);
+	    		self.loading.hide();
+		        trace(err);
+		        return;
 	    	}
-	    	else
-	    	{
-	    		file.destroy();
-		        self.loading.hide();
-		        trace(_data);
-	    	}
+	    	self.createItems(_data);
+	        self.layout();
+	        self.loading.hide();
+	        if(onComplete!=undefined)onComplete(_data);
 	    });
-	    file.getDirectoryListing();
 	}
 	
 	GridLayout.prototype.createItems = function(_ds)

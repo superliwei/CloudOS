@@ -154,7 +154,6 @@ CloudOS.FileItem = (function(){
 	FileItem.prototype.destroy = function()
 	{
 	    this.view.remove();
-	    this.file.destroy();
 	}
 	
 	FileItem.prototype.getSelectRect = function()

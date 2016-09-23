@@ -10,14 +10,10 @@ CloudOS.File = (function(){
 	    this.url = this.option.url;
 	    this.name = this.option.name;
 	    this.type = this.option.type;
-	    this.dispatcher = $("<div>");
 	}
 	
-	File.COMPLETE = "File_complete";
-	
-	File.prototype.getDirectoryListing = function()
+	File.prototype.getDirectoryListing = function(onComplete)
 	{
-	    var self = this;
 	    var vars = {
 	    	url:this.url,
 	    	user:{
@@ -25,19 +21,12 @@ CloudOS.File = (function(){
 	    		token:CloudOS.User.currentUser.token
 	    	}
 	    };
-	    $.getJSON(CloudOS.Request.File.getDirectoryListing,vars,function(_data){
-	        self.dispatcher.trigger(File.COMPLETE,[_data]);
-	    });
+	    return new CloudOS.Loader(CloudOS.Request.File.getDirectoryListing,vars,onComplete);
 	}
 	
 	File.prototype.openWithDefaultApplication = function()
 	{
 	    CloudOS.FileManager.open(this);
-	}
-	
-	File.prototype.destroy = function()
-	{
-	    delete this.dispatcher;
 	}
 	
 	File.createDirectory = function(url,onComplete)
@@ -48,10 +37,8 @@ CloudOS.File = (function(){
 	    		name:CloudOS.User.currentUser.name,
 	    		token:CloudOS.User.currentUser.token
 	    	}
-	    };
-		$.getJSON(CloudOS.Request.File.createDirectory,vars,function(_data){
-			onComplete(_data.status == "success" ? undefined : _data);
-		});
+	  	};
+		return new CloudOS.Loader(CloudOS.Request.File.createDirectory,vars,onComplete);
 	}
 	
 	return File;
