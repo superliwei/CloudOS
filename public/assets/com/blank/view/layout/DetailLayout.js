@@ -32,14 +32,12 @@ CloudOS.DetailLayout = (function(){
 	
 	DetailLayout.prototype.layout = function()
 	{
-	    var len = this.items.length;
-	    for(i=0;i<len;i++)
-	    {
-	        var item = this.items[i];
-	        item.view.get(0).style.left = null;
-	        item.view.get(0).style.top = null;
-	        item.view.get(0).style.position = null;
-	    }
+	    //donothing...
+	}
+
+	DetailLayout.prototype.getArrangeAble = function()
+	{
+		return false;
 	}
 	
 	return DetailLayout;

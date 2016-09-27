@@ -28,7 +28,11 @@ CloudOS.FileItem = (function(){
 		this.setLabel(this.file.name);
 		if(this.option.color!=undefined)this.label.css("color",this.option.color);
 		if(this.option.textShadow!=undefined)this.label.css("text-shadow",this.option.textShadow);
-		this.label.appendTo(this.view);
+		
+		//添加编辑框
+		this.isRenaming = false;
+		this.renameInput = $("<input>");
+		this.renameInput.appendTo(this.view);
 	
 		switch(this.mode)
 		{
@@ -60,6 +64,7 @@ CloudOS.FileItem = (function(){
 		}
 		this.label.remove();
 		this.label.removeClass('CloudOS-FileItem-label');
+		this.label.appendTo(this.view);
 	}
 	
 	FileItem.prototype.moveTo = function(_x,_y)
@@ -162,7 +167,43 @@ CloudOS.FileItem = (function(){
 	    var rect = new CloudOS.Rect(target.offset().left,target.offset().top,target.width(),target.height());
 	    return rect;
 	}
-	
+
+	FileItem.prototype.enterToEditMode = function()
+	{
+		var self = this;
+		var oldName = this.file.name
+		this.renameInput.val(oldName);
+		this.renameInput.show();
+		this.renameInput.focus();
+		this.label.hide();
+
+		this.renameInput.mousedown(function(e){
+			e.stopPropagation();
+		});
+
+		this.renameInput.focusout(function(e){
+			var newName = $(this).val();
+			self.renameInput.hide();
+			self.label.show();
+			if(newName != oldName)
+			{
+				self.setLabel(newName);
+				self.label.css("opacity",0.5);
+				self.isRenaming = true;
+				self.file.rename(newName,function(err){
+					self.isRenaming = false;
+					self.label.css("opacity","");
+					if(err)
+					{
+						trace(err);
+						self.setLabel(oldName);
+						return;
+					}
+
+				});
+			}
+		});
+	}
 	
 	FileItem.selectedItems = [];
 	FileItem.selectItems = function(items)

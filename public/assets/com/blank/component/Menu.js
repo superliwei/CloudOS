@@ -128,11 +128,12 @@ CloudOS.Menu = (function(){
 	Menu.LabelItem.prototype.initEvents = function()
 	{
 		this.view.mouseover(this,function(e){
-			e.data.menu.selectItem(e.data);
+			e.data.menu.selectItem(e.data.view.hasClass("disabled") ? null : e.data);
 		});
 		if(this.data.children == undefined)
 		{
 			this.view.click(this,function(e){
+				if(e.data.view.hasClass("disabled"))return;
 	            e.data.menu.view.trigger(Menu.ITEM_CLICK, e.data);
 			});
 		}

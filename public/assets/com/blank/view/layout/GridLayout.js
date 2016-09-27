@@ -9,7 +9,7 @@ CloudOS.GridLayout = (function(){
 	{
 		CloudOS.BasicLayout.call(this);
 
-		this.itemLayer = this.view.clone();
+		this.itemLayer = $("<div>",{style:"width:100%;height:100%;"});
 		this.itemLayer.appendTo(this.view);
 	
 		this.view.css("overflow","auto");
@@ -105,6 +105,11 @@ CloudOS.GridLayout = (function(){
 			item.view.css("left",tx+(w-item.view.width())*0.5);
 			item.view.css("top",ty+(h-item.view.height())*0.5);
 		}
+	}
+
+	GridLayout.prototype.getArrangeAble = function()
+	{
+		return this.items.length > 0;
 	}
 	
 	GridLayout.prototype.destroy = function()

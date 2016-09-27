@@ -60,17 +60,45 @@ CloudOS.Folder = (function(){
 			height:24,
 	        menu:[
 	            {label:"新建文件夹"},
+	            {label:"移到废纸篓"},
+	            {label:"重命名"},
 	            {type:"separator"},
 	            {label:"整理"}
 	        ]
 		});
 		this.settingCb.moveTo(110,0);
+
+		this.settingCb.view.on(CloudOS.ComboBox.OPEN,function(e){
+			$.each(self.settingCb.option.menu,function(){
+				switch(this.label)
+				{
+					case "移到废纸篓":
+					var selectedItems = self.getSelectedItems();
+					this.enabled = selectedItems.length > 0;
+					break;
+					case "重命名":
+					var selectedItems = self.getSelectedItems();
+					this.enabled = selectedItems.length == 1 && !selectedItems[0].isRenaming;
+					break;
+					case "整理":
+					this.enabled = self.layout.getArrangeAble();
+					break;
+				}
+			});
+		});
 		
 		this.settingCb.view.on(CloudOS.Menu.ITEM_CLICK,function(e,item){
 			switch(item.data.label)
 			{
 				case "整理":
 					self.arrange();
+				break;
+				case "移到废纸篓":
+					self.moveSelectedItemToTrash();
+				break;
+				case "重命名":
+					var selectedItem = self.getSelectedItems()[0];
+					selectedItem.enterToEditMode();
 				break;
 				case "新建文件夹":
 					self.newFolder();
@@ -203,7 +231,70 @@ CloudOS.Folder = (function(){
 			return "新建文件夹"+(_idx == 0 ? "" : "("+_idx+")");
 		}
 	}
-	
+
+	Folder.prototype.getSelectedItems = function()
+	{
+		var selectedItems = [];
+		var globalSelectedItems = CloudOS.FileItem.selectedItems;
+		var itemsInFolder = this.layout.items;
+		if(globalSelectedItems.length > 0 && itemsInFolder.length > 0)
+		{
+			$.each(itemsInFolder,function(){
+				if(globalSelectedItems.indexOf(this) > -1)selectedItems.push(this);
+			});
+		}
+		return selectedItems;
+	}
+
+	Folder.prototype.moveSelectedItemToTrash = function()
+	{
+		var self = this;
+		var selectedItems = this.getSelectedItems();
+		CloudOS.FileItem.selectItems([]);
+		$.each(selectedItems,function(){
+			removeItemFromLayoutItems(this);
+			this.view.addClass("disabled");
+		});
+		var fileUrls = getUrlsOfSelectedItems();
+		CloudOS.File.moveToTrash(fileUrls,function(err){
+			if(err)
+			{
+				trace(err);
+				$.each(selectedItems,function(){
+					self.layout.items.push(this);
+					this.view.removeClass("disabled");
+				});
+				return;
+			}
+			destroySelectedItems();
+		});
+
+		function removeItemFromLayoutItems(item)
+		{
+			var idx = self.layout.items.indexOf(item);
+			self.layout.items.splice(idx,1);
+		}
+
+		function getUrlsOfSelectedItems()
+		{
+			var urls = [];
+			$.each(selectedItems,function(){
+				urls.push(this.file.url);
+			});
+			return urls;
+		}
+
+		function destroySelectedItems()
+		{
+			while(selectedItems.length > 0)
+			{
+				var item = selectedItems[0];
+				item.destroy();
+				selectedItems.shift();
+			}
+		}
+	}
+
 	Folder.run = function(cmd)
 	{
 	    var arr = cmd.split(" ");

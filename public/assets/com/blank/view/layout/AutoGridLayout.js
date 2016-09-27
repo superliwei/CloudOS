@@ -1,5 +1,5 @@
 /**
- * 自动格子布局(用于显示文件夹)
+ * 自动格子布局(用于TipBox显示文件夹)
  */
 CloudOS.AutoGridLayout = (function(){
 
