@@ -9,12 +9,10 @@ CloudOS.GridLayout = (function(){
 	{
 		CloudOS.BasicLayout.call(this);
 
-		this.itemLayer = $("<div>",{style:"width:100%;height:100%;position:absolute;"});
+		this.itemLayer = $("<div>",{style:"position:absolute;width:100%;height:100%;overflow:auto;"});
 		this.itemLayer.appendTo(this.view);
 	
-		this.view.css("overflow","auto");
-	
-	    this.initLoading();
+		this.initLoading();
 	
 		this.items = [];
 		this.initSelection();
@@ -39,15 +37,14 @@ CloudOS.GridLayout = (function(){
 	    var file = new CloudOS.File({url:_url});
 	    if(this.loader != undefined)this.loader.abort();
 	    this.loader = file.getDirectoryListing(function(err,_data){
+	    	self.loading.hide();
 	    	if(err)
 	    	{
-	    		self.loading.hide();
 		        trace(err);
 		        return;
 	    	}
 	    	self.createItems(_data);
 	        self.layout();
-	        self.loading.hide();
 	        if(onComplete!=undefined)onComplete(_data);
 	    });
 	}
@@ -84,8 +81,15 @@ CloudOS.GridLayout = (function(){
 	    while(this.items.length>0)
 	    {
 	        var item = this.items[0];
+	        removeSelectedItem(item);
 	        item.destroy();
 	        this.items.shift();
+	    }
+	    
+	    function removeSelectedItem(item)
+	    {
+	    	var idx = CloudOS.FileItem.selectedItems.indexOf(item);
+	    	CloudOS.FileItem.selectedItems.splice(idx,1);
 	    }
 	}
 	

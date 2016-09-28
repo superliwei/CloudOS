@@ -88,7 +88,7 @@ CloudOS.Win = (function(){
 		this.view.appendTo(this.parentView);
 		this.resizeHandler();
 		var self = this;
-	    TweenLite.from(this.view,0.5,{alpha:0,rotationX:30,z:-300,ease:Cubic.easeInOut,onStart:function(){
+		TweenLite.from(this.view,0.5,{alpha:0,rotationX:30,z:-300,ease:Cubic.easeInOut,onStart:function(){
 	        self.mouseEnable(false);
 	    },onComplete:function(){
 	        self.mouseEnable(true);

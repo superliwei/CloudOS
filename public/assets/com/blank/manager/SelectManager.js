@@ -20,15 +20,16 @@ CloudOS.SelectManager = (function(){
 		var layout = _layout;
 		var box = SelectManager.selectBox();
 		var dp = {};
+		var moved = false;
 	
-		layout.view.mousedown(function(e){
-			if(e.target !== layout.view.get(0) && e.target !== layout.view.children().get(0))return;//过滤文件图标拖动
+		var container = layout.itemLayer;
+		container.mousedown(function(e){
+			if(e.target !== container.get(0))return;//过滤文件图标拖动
+			moved = false;
 			dp.x = e.clientX;
 			dp.y = e.clientY;
-	        dp.scrollLeft = layout.view.scrollLeft();
-	        dp.scrollTop = layout.view.scrollTop();
-			box.appendTo(layout.view);
-			box.offset({left:dp.x,top:dp.y});
+	        dp.scrollLeft = container.scrollLeft();
+	        dp.scrollTop = container.scrollTop();
 			$(document).bind("mousemove",mousemoveHandler);
 			$(document).bind("mouseup",mouseupHandler);
 			CloudOS.FileItem.selectItems([]);
@@ -36,8 +37,14 @@ CloudOS.SelectManager = (function(){
 	
 		function mousemoveHandler(e)
 		{
-			var tw = e.clientX - dp.x + layout.view.scrollLeft() - dp.scrollLeft;
-			var th = e.clientY - dp.y + layout.view.scrollTop() - dp.scrollTop;
+			if(!moved)
+			{
+				box.appendTo(container);
+				box.offset({left:dp.x,top:dp.y});
+				moved = true;
+			}
+			var tw = e.clientX - dp.x + container.scrollLeft() - dp.scrollLeft;
+			var th = e.clientY - dp.y + container.scrollTop() - dp.scrollTop;
 			if(tw>=0)
 			{
 				box.width(tw);
