@@ -54,15 +54,24 @@ CloudOS.File = (function(){
 	 */
 	File.moveToTrash = function(urls,onComplete)
 	{
-		var vars = {
-			urls : urls,
-			user:{
-	    		name:CloudOS.User.currentUser.name,
-	    		token:CloudOS.User.currentUser.token
-	    	}
-		};
-
-		//...
+		this.moveFiles(urls,"/trash",onComplete);
+	}
+	
+	/**
+	 * 移动文件到其它的文件夹
+	 */
+	File.moveFiles = function(urls,dir,onComplete)
+	{
+		//trace(urls);
+		//trace(dir);
+		//....
+		setTimeout(function(){
+			onComplete();
+		},1000);
+	}
+	
+	File.copyFiles = function(urls,dir,onComplete)
+	{
 		setTimeout(function(){
 			onComplete();
 		},1000);

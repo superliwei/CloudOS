@@ -141,6 +141,7 @@ html,body
 	margin-left: 4px;
 	margin-top: 4px;
 	background-size: contain;
+	background-repeat: no-repeat;
 }
 
 .CloudOS.Menu .LabelItem.selected

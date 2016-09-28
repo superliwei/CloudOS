@@ -59,13 +59,17 @@ CloudOS.Folder = (function(){
 			width:24,
 			height:24,
 	        menu:[
-	        	{label:"刷新"},
+	        	{icon:"assets/images/icons/16/refresh.png",label:"刷新"},
+	        	{type:"separator"},
+	            {label:"整理"},
 	        	{type:"separator"},
 	            {label:"新建文件夹"},
-	            {label:"移到废纸篓"},
+	            {icon:"assets/images/icons/16/trash.png",label:"移到废纸篓"},
 	            {label:"重命名"},
 	            {type:"separator"},
-	            {label:"整理"}
+	            {icon:"assets/images/icons/16/copy.png",label:"复制"},
+	            {icon:"assets/images/icons/16/cut.png",label:"剪切"},
+	            {icon:"assets/images/icons/16/paste.png",label:"粘贴"}
 	        ]
 		});
 		this.settingCb.moveTo(110,0);
@@ -85,6 +89,17 @@ CloudOS.Folder = (function(){
 					case "整理":
 					this.enabled = self.layout.getArrangeAble();
 					break;
+					case "复制":
+					var selectedItems = self.getSelectedItems();
+					this.enabled = selectedItems.length > 0;
+					break;
+					case "剪切":
+					var selectedItems = self.getSelectedItems();
+					this.enabled = selectedItems.length > 0;
+					break;
+					case "粘贴":
+					this.enabled = CloudOS.Folder.ClipBoard.targets.length > 0;
+					break;
 				}
 			});
 		});
@@ -93,7 +108,7 @@ CloudOS.Folder = (function(){
 			switch(item.data.label)
 			{
 				case "刷新":
-					self.historyManager.refresh();
+					self.refresh();
 				break;
 				case "整理":
 					self.arrange();
@@ -107,6 +122,17 @@ CloudOS.Folder = (function(){
 				break;
 				case "新建文件夹":
 					self.newFolder();
+				break;
+				case "复制":
+					var selectedItems = self.getSelectedItems();
+					CloudOS.Folder.ClipBoard.setCopy(selectedItems,self);
+				break;
+				case "剪切":
+					var selectedItems = self.getSelectedItems();
+					CloudOS.Folder.ClipBoard.setCut(selectedItems,self);
+				break;
+				case "粘贴":
+					CloudOS.Folder.ClipBoard.pasteTo(self);
 				break;
 			}
 		});
@@ -157,6 +183,11 @@ CloudOS.Folder = (function(){
 	    this.layout.resize(this.win.content.width(),this.win.content.height());
 	}
 	
+	Folder.prototype.refresh = function()
+	{
+		this.historyManager.refresh();
+	}
+	
 	/**
 	 * 切换视图
 	 */
@@ -171,7 +202,7 @@ CloudOS.Folder = (function(){
 	    this.layout = new layouts[_idx]();
 	    this.layout.view.appendTo(this.win.content);
 	    this.resizeHandler();
-	    this.historyManager.refresh();
+	    this.refresh();
 	}
 	
 	/**
