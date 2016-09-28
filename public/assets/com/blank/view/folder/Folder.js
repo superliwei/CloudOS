@@ -59,6 +59,8 @@ CloudOS.Folder = (function(){
 			width:24,
 			height:24,
 	        menu:[
+	        	{label:"刷新"},
+	        	{type:"separator"},
 	            {label:"新建文件夹"},
 	            {label:"移到废纸篓"},
 	            {label:"重命名"},
@@ -90,6 +92,9 @@ CloudOS.Folder = (function(){
 		this.settingCb.view.on(CloudOS.Menu.ITEM_CLICK,function(e,item){
 			switch(item.data.label)
 			{
+				case "刷新":
+					self.historyManager.refresh();
+				break;
 				case "整理":
 					self.arrange();
 				break;

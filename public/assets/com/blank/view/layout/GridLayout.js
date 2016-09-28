@@ -37,7 +37,8 @@ CloudOS.GridLayout = (function(){
 	    var self = this;
 	    this.loading.show();
 	    var file = new CloudOS.File({url:_url});
-	    file.getDirectoryListing(function(err,_data){
+	    if(this.loader != undefined)this.loader.abort();
+	    this.loader = file.getDirectoryListing(function(err,_data){
 	    	if(err)
 	    	{
 	    		self.loading.hide();
