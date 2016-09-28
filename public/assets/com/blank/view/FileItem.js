@@ -187,6 +187,7 @@ CloudOS.FileItem = (function(){
 			self.label.show();
 			if(newName != oldName)
 			{
+				if(newName == "")return;
 				self.setLabel(newName);
 				self.label.css("opacity",0.5);
 				self.isRenaming = true;

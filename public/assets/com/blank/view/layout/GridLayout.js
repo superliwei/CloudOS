@@ -9,7 +9,7 @@ CloudOS.GridLayout = (function(){
 	{
 		CloudOS.BasicLayout.call(this);
 
-		this.itemLayer = $("<div>",{style:"width:100%;height:100%;"});
+		this.itemLayer = $("<div>",{style:"width:100%;height:100%;position:absolute;"});
 		this.itemLayer.appendTo(this.view);
 	
 		this.view.css("overflow","auto");
