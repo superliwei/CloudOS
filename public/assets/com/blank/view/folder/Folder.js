@@ -220,7 +220,7 @@ CloudOS.Folder = (function(){
 	{
 		var layout = this.layout;
 		var newFolderName = this.getNewFolderName();
-		var newFolderUrl = this.option.url + "/" + newFolderName;
+		var newFolderUrl = (this.option.url == "/" ? this.option.url : this.option.url + "/") + newFolderName;
 		var newFolderItem = layout.newItem({
 			name : newFolderName,
 			type : "directory",

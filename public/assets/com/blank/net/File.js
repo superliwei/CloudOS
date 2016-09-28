@@ -26,10 +26,25 @@ CloudOS.File = (function(){
 
 	File.prototype.rename = function(newName,onComplete)
 	{
-		//....
-		setTimeout(function(){
-			onComplete();
-		},1000);
+		var newUrl = CloudOS.PathUtil.getNewFileUrl(this,newName);
+
+		var vars = {
+	    	oldurl:this.url,
+	    	newurl:newUrl,
+	    	user:{
+	    		name:CloudOS.User.currentUser.name,
+	    		token:CloudOS.User.currentUser.token
+	    	}
+	    };
+
+	    var self = this;
+
+	    return new CloudOS.Loader(CloudOS.Request.File.rename,vars,function(err){
+	    	if(err) return onComplete(err);
+	    	self.url = newUrl;
+	    	self.name = newName;
+	    	onComplete();
+	    });
 	}
 	
 	File.prototype.openWithDefaultApplication = function()
@@ -62,19 +77,37 @@ CloudOS.File = (function(){
 	 */
 	File.moveFiles = function(urls,dir,onComplete)
 	{
-		//trace(urls);
-		//trace(dir);
-		//....
-		setTimeout(function(){
-			onComplete();
-		},1000);
+		var vars = {
+	    	oldurls:urls,
+	    	newurls:getNewUrls(),
+	    	user:{
+	    		name:CloudOS.User.currentUser.name,
+	    		token:CloudOS.User.currentUser.token
+	    	}
+	  	};
+	  	return new CloudOS.Loader(CloudOS.Request.File.moveFiles,vars,onComplete);
+
+	  	function getNewUrls()
+	  	{
+	  		var arr = [];
+	  		$.each(urls,function(){
+	  			arr.push(dir + "/" + CloudOS.PathUtil.getFullFileName(this));
+	  		});
+	  		return arr;
+	  	}
 	}
 	
 	File.copyFiles = function(urls,dir,onComplete)
 	{
-		setTimeout(function(){
-			onComplete();
-		},1000);
+		var vars = {
+	    	urls:urls,
+	    	dir:dir,
+	    	user:{
+	    		name:CloudOS.User.currentUser.name,
+	    		token:CloudOS.User.currentUser.token
+	    	}
+	  	};
+	  	return new CloudOS.Loader(CloudOS.Request.File.copy,vars,onComplete);
 	}
 	
 	return File;

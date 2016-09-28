@@ -5,6 +5,7 @@ const fs = require('fs');
 const Error = require('./Error');
 const Settings = require('./Settings');
 const User = require('./User');
+const copy = require('copy');
 
 function FS(){}
 
@@ -97,10 +98,64 @@ FS.createdir = function(user,url,onComplete)
 			}
 			else
 			{
-				fs.mkdir(dirUrl,function(){
+				fs.mkdir(dirUrl,function(err){
+					if(err)return onComplete(Error.MkdirError);
 					onComplete();
 				});
 			}
+		});
+	});
+}
+
+FS.rename = function(user,oldUrl,newUrl,onComplete)
+{
+	this.moveFiles(user,[oldUrl],[newUrl],onComplete);
+}
+
+FS.moveFiles = function(user,oldUrls,newUrls,onComplete)//有问题,无法移动不为空的目录
+{
+	User.isTokenOk(user,function(err){
+		if(err)return onComplete(Error.TokenError);
+		var userRoot = Settings.getUserRoot(user.name);
+		var len = oldUrls.length;
+		moveFile(0);
+		function moveFile(idx)
+		{
+			if(idx == len)
+			{
+				return onComplete();
+			}
+			var oldPath = userRoot + oldUrls[idx];
+			var newPath = userRoot + newUrls[idx];
+			fs.rename(oldPath,newPath,function(err){
+				if(err)console.log(err);
+				if(err)return onComplete(Error.RenameError);
+				moveFile(idx+1);
+			});
+		}
+	});
+}
+
+FS.copy = function(user,urls,dir,onComplete)//有问题
+{
+	User.isTokenOk(user,function(err){
+		if(err)return onComplete(Error.TokenError);
+		var userRoot = Settings.getUserRoot(user.name);
+		var paths = [];
+		for(var i=0;i<urls.length;i++)
+		{
+			paths.push(userRoot + urls[i]);
+		}
+		var dist = userRoot + dir;
+		console.log(paths);
+		console.log(dist);
+		return;
+		//.......
+
+		copy.each(paths,dist,function(err,files){
+			if(err)console.log(err);
+			if(err)return onComplete(Error.CopyError);
+			onComplete();
 		});
 	});
 }
