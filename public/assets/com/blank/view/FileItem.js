@@ -29,10 +29,7 @@ CloudOS.FileItem = (function(){
 		if(this.option.color!=undefined)this.label.css("color",this.option.color);
 		if(this.option.textShadow!=undefined)this.label.css("text-shadow",this.option.textShadow);
 		
-		//添加编辑框
-		this.isRenaming = false;
-		this.renameInput = $("<input>");
-		this.renameInput.appendTo(this.view);
+		this.initRenameInput();
 	
 		switch(this.mode)
 		{
@@ -43,6 +40,44 @@ CloudOS.FileItem = (function(){
 				this.initEventsB();
 				break;
 		}
+	}
+	
+	FileItem.prototype.initRenameInput = function()
+	{
+		//添加编辑框
+		var self = this;
+		this.isRenaming = false;
+		this.renameInput = $("<input>");
+		this.renameInput.appendTo(this.view);
+		
+		this.renameInput.mousedown(function(e){
+			e.stopPropagation();
+		});
+
+		this.renameInput.focusout(function(e){
+			var oldName = self.file.name;
+			var newName = $(this).val();
+			self.renameInput.hide();
+			self.label.show();
+			if(newName != oldName)
+			{
+				if(newName == "")return;
+				self.setLabel(newName);
+				self.label.css("opacity",0.5);
+				self.isRenaming = true;
+				self.file.rename(newName,function(err){
+					self.isRenaming = false;
+					self.label.css("opacity","");
+					if(err)
+					{
+						trace(err);
+						self.setLabel(oldName);
+						return;
+					}
+
+				});
+			}
+		});
 	}
 	
 	FileItem.prototype.setLabel = function(str)
@@ -170,40 +205,10 @@ CloudOS.FileItem = (function(){
 
 	FileItem.prototype.enterToEditMode = function()
 	{
-		var self = this;
-		var oldName = this.file.name
-		this.renameInput.val(oldName);
+		this.renameInput.val(this.file.name);
 		this.renameInput.show();
 		this.renameInput.focus();
 		this.label.hide();
-
-		this.renameInput.mousedown(function(e){
-			e.stopPropagation();
-		});
-
-		this.renameInput.focusout(function(e){
-			var newName = $(this).val();
-			self.renameInput.hide();
-			self.label.show();
-			if(newName != oldName)
-			{
-				if(newName == "")return;
-				self.setLabel(newName);
-				self.label.css("opacity",0.5);
-				self.isRenaming = true;
-				self.file.rename(newName,function(err){
-					self.isRenaming = false;
-					self.label.css("opacity","");
-					if(err)
-					{
-						trace(err);
-						self.setLabel(oldName);
-						return;
-					}
-
-				});
-			}
-		});
 	}
 	
 	FileItem.selectedItems = [];

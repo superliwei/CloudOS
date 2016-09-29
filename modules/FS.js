@@ -20,21 +20,10 @@ FS.readdir = function(user,url,onComplete)
 		fs.readdir(path,function(err,files){
 			if(err)return onComplete(Error.ReadDirError);
 			var infos = [];
-			if(files.length > 0)
-			{
-				readInfo(0);
-			}
-			else
-			{
-				onComplete(undefined,infos);
-			}
+			files.length > 0 ? readInfo(0) : onComplete(undefined,infos);
 			function readInfo(idx)
 			{
-				if(idx == files.length)
-				{
-					allComplete();
-					return;
-				}
+				if(idx == files.length)return onComplete(undefined,infos);
 				var fileName = files[idx];
 				var filePath = path+fileName;
 				fs.stat(filePath,function(err,stats){
@@ -76,11 +65,6 @@ FS.readdir = function(user,url,onComplete)
 					return "unknown";
 				}
 			}
-			
-			function allComplete()
-			{
-				onComplete(undefined,infos);
-			}
 		});
 	});
 }
@@ -112,7 +96,7 @@ FS.rename = function(user,oldUrl,newUrl,onComplete)
 	this.moveFiles(user,[oldUrl],[newUrl],onComplete);
 }
 
-FS.moveFiles = function(user,oldUrls,newUrls,onComplete)//有问题,无法移动不为空的目录
+FS.moveFiles = function(user,oldUrls,newUrls,onComplete)
 {
 	User.isTokenOk(user,function(err){
 		if(err)return onComplete(Error.TokenError);

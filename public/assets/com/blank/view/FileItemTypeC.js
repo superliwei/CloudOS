@@ -6,6 +6,7 @@ CloudOS.FileItemTypeC = (function(){
 	FileItemTypeC.prototype.select = CloudOS.FileItem.prototype.select;
 	FileItemTypeC.prototype.destroy = CloudOS.FileItem.prototype.destroy;
 	FileItemTypeC.prototype.getSelectRect = CloudOS.FileItem.prototype.getSelectRect;
+	FileItemTypeC.prototype.initRenameInput = CloudOS.FileItem.prototype.initRenameInput;
 	FileItemTypeC.prototype.enterToEditMode = CloudOS.FileItem.prototype.enterToEditMode;
 	
 	function FileItemTypeC(_option)
@@ -33,9 +34,7 @@ CloudOS.FileItemTypeC = (function(){
 		this.label.appendTo(this.view);
 
 		//添加编辑框
-		this.isRenaming = false;
-		this.renameInput = $("<input>");
-		this.renameInput.appendTo(this.view);
+		this.initRenameInput();
 	
 	    this.initEvents();
 	}
