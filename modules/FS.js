@@ -1,7 +1,7 @@
 /**
  * 文件系统
  */
-const fs = require('fs');
+const fs = require('fs-extra');
 const Error = require('./Error');
 const Settings = require('./Settings');
 const User = require('./User');
@@ -92,7 +92,16 @@ FS.createdir = function(user,url,onComplete)
 
 FS.rename = function(user,oldUrl,newUrl,onComplete)
 {
-	this.moveFiles(user,[oldUrl],[newUrl],onComplete);
+	User.isTokenOk(user,function(err){
+		if(err)return onComplete(Error.TokenError);
+		var userRoot = Settings.getUserRoot(user.name);
+		var oldPath = userRoot + oldUrl;
+		var newPath = userRoot + newUrl;
+		fs.rename(oldPath,newPath,function(err){
+			if(err)return onComplete(Error.RenameError);
+			onComplete();
+		});
+	});
 }
 
 FS.moveFiles = function(user,oldUrls,newUrls,onComplete)
@@ -110,29 +119,34 @@ FS.moveFiles = function(user,oldUrls,newUrls,onComplete)
 			}
 			var oldPath = userRoot + oldUrls[idx];
 			var newPath = userRoot + newUrls[idx];
-			fs.rename(oldPath,newPath,function(err){
-				if(err)console.log(err);
-				if(err)return onComplete(Error.RenameError);
+			fs.move(oldPath,newPath,function(err){
+				if(err)return onComplete(Error.MoveError);
 				moveFile(idx+1);
 			});
 		}
 	});
 }
 
-FS.copy = function(user,urls,dir,onComplete)
+FS.copy = function(user,oldUrls,newUrls,onComplete)
 {
 	User.isTokenOk(user,function(err){
 		if(err)return onComplete(Error.TokenError);
 		var userRoot = Settings.getUserRoot(user.name);
-		var paths = [];
-		for(var i=0;i<urls.length;i++)
+		var len = oldUrls.length;
+		copyFile(0);
+		function copyFile(idx)
 		{
-			paths.push(userRoot + urls[i]);
+			if(idx == len)
+			{
+				return onComplete();
+			}
+			var oldPath = userRoot + oldUrls[idx];
+			var newPath = userRoot + newUrls[idx];
+			fs.copy(oldPath,newPath,function(err){
+				if(err)return onComplete(Error.CopyError);
+				copyFile(idx+1);
+			});
 		}
-		var dist = userRoot + dir;
-		console.log(paths);
-		console.log(dist);
-		//....
 	});
 }
 

@@ -97,17 +97,29 @@ CloudOS.File = (function(){
 	  	}
 	}
 	
+	/**
+	 * 复制文件
+	 */
 	File.copyFiles = function(urls,dir,onComplete)
 	{
 		var vars = {
-	    	urls:urls,
-	    	dir:dir,
+	    	oldurls:urls,
+	    	newurls:getNewUrls(),
 	    	user:{
 	    		name:CloudOS.User.currentUser.name,
 	    		token:CloudOS.User.currentUser.token
 	    	}
 	  	};
 	  	return new CloudOS.Loader(CloudOS.Request.File.copy,vars,onComplete);
+	  	
+	  	function getNewUrls()
+	  	{
+	  		var arr = [];
+	  		$.each(urls,function(){
+	  			arr.push(dir + "/" + CloudOS.PathUtil.getFullFileName(this));
+	  		});
+	  		return arr;
+	  	}
 	}
 	
 	return File;

@@ -29,7 +29,7 @@ router.get('/fs/movefiles', function(req, res, next) {
 });
 
 router.get('/fs/copy', function(req, res, next) {
-	FS.copy(req.query.user,req.query.urls,req.query.dir,new ResultHandle(res).handler);
+	FS.copy(req.query.user,req.query.oldurls,req.query.newurls,new ResultHandle(res).handler);
 });
 
 /**
