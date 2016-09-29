@@ -5,7 +5,6 @@ const fs = require('fs');
 const Error = require('./Error');
 const Settings = require('./Settings');
 const User = require('./User');
-const copy = require('copy');
 
 function FS(){}
 
@@ -120,7 +119,7 @@ FS.moveFiles = function(user,oldUrls,newUrls,onComplete)
 	});
 }
 
-FS.copy = function(user,urls,dir,onComplete)//有问题
+FS.copy = function(user,urls,dir,onComplete)
 {
 	User.isTokenOk(user,function(err){
 		if(err)return onComplete(Error.TokenError);
@@ -133,14 +132,7 @@ FS.copy = function(user,urls,dir,onComplete)//有问题
 		var dist = userRoot + dir;
 		console.log(paths);
 		console.log(dist);
-		return;
-		//.......
-
-		copy.each(paths,dist,function(err,files){
-			if(err)console.log(err);
-			if(err)return onComplete(Error.CopyError);
-			onComplete();
-		});
+		//....
 	});
 }
 
