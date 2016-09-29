@@ -4,67 +4,72 @@
 
 CloudOS.PopUpManager = (function(){
 
-	var PopUpManager = {};
+	var PopUpManager = {
+		currentPop : null,
+		pops : [],
+		zIdx : 0,
+		CHANGE : "PopUpManager_change",
+		lastSelectedPop : null
+	};
 	
-	PopUpManager.currentPop = null;
-	PopUpManager.pops = [];
 	PopUpManager.popup = function(Ipop)
 	{
-		PopUpManager.move(Ipop);
+		this.move(Ipop);
 		Ipop.win.open();
-		PopUpManager.pops.unshift(Ipop);
-		PopUpManager.selectPop(Ipop);
+		this.pops.unshift(Ipop);
+		this.selectPop(Ipop);
 	}
 	
 	PopUpManager.selectPop = function(Ipop)
 	{
-		var tz = 0;
-		if(PopUpManager.currentPop!=null)
+		if(this.currentPop === Ipop)return;
+		if(this.currentPop!=null)this.currentPop.win.active(false);
+		if(Ipop != null)
 		{
-			PopUpManager.currentPop.win.active(false);
-			var _z = PopUpManager.currentPop.win.view.css("z-index");
-			_z = _z=="auto"?0:Number(_z);
-			tz = _z+1;
+			Ipop.win.active(true);
+			this.zIdx++;
+			Ipop.win.view.css("z-index",this.zIdx);
+			this.lastSelectedPop = Ipop;
 		}
-		Ipop.win.active(true);
-		Ipop.win.view.css("z-index",tz);
-		PopUpManager.currentPop = Ipop;
-		PopUpManager.change();
+		this.currentPop = Ipop;
+		this.change();
 	}
 	
 	PopUpManager.removePop = function(Ipop)
 	{
-		var idx = PopUpManager.pops.indexOf(Ipop);
-		PopUpManager.pops.splice(idx,1);
+		var idx = this.pops.indexOf(Ipop);
+		this.pops.splice(idx,1);
+
+		Ipop.win.view.remove();
+
+		if(this.lastSelectedPop === Ipop)this.lastSelectedPop = null;
 	
-		if(PopUpManager.pops.length>0)
+		if(this.pops.length>0)
 		{
-			PopUpManager.selectPop(PopUpManager.pops[0]);
+			this.selectPop(this.pops[0]);
 		}
 		else
 		{
-			PopUpManager.currentPop = null;
+			this.zIdx = 0;
+			this.selectPop(null);
 		}
-		Ipop.win.view.remove();
-		PopUpManager.change();
 	}
 	
 	PopUpManager.move = function(Ipop)
 	{
 		var tx = 10;
 		var ty = 36;
-		if(PopUpManager.currentPop!=null)
+		if(this.lastSelectedPop!=null)
 		{
-			tx = PopUpManager.currentPop.win.x + 30;
-			ty = PopUpManager.currentPop.win.y + 30;
+			tx = this.lastSelectedPop.win.x + 30;
+			ty = this.lastSelectedPop.win.y + 30;
 		}
 		Ipop.win.moveTo(tx,ty);
 	}
 	
-	PopUpManager.CHANGE = "PopUpManager_change";
 	PopUpManager.change = function()
 	{
-		CloudOS.BroadcastCenter.dispatchEvent(new CloudOS.Event(PopUpManager.CHANGE));
+		CloudOS.BroadcastCenter.dispatchEvent(new CloudOS.Event(this.CHANGE));
 	}
 	
 	return PopUpManager;

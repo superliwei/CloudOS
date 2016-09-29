@@ -47,6 +47,10 @@ CloudOS.Desktop = function()
 		this.gridLayout.view.appendTo(this.bgLayer);
 		this.gridLayout.moveTo(0,this.topBar.view.height());
 		this.gridLayout.loadStart("/desktop");
+
+		this.gridLayout.view.mouseup(function(){
+			CloudOS.PopUpManager.selectPop(null);
+		});
 		
 		resizeHandler();
 		$(window).resize(resizeHandler);
