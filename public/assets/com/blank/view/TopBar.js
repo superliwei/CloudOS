@@ -16,7 +16,7 @@ CloudOS.TopBar = (function(){
 	   		if(self.menuManager)self.menuManager.handleItemClick(item);
 	   	});
 	   	
-	   	this.menuBar.view.on(CloudOS.MenuBar.OPEN,function(e,item){
+	   	this.menuBar.view.on(CloudOS.Menu.OPEN,function(e,item){
 	   		if(self.menuManager)self.menuManager.handleMenuOpen(item);
 	   	});
 	
@@ -30,6 +30,7 @@ CloudOS.TopBar = (function(){
 	TopBar.prototype.updateMenuBar = function(_target)
 	{
 		_target = _target || CloudOS.Folder;
+		if(this.menuManager === _target.menuManager)return;
 		this.menuManager = _target.menuManager;
 	   	var source = this.menuManager.getMenuSource();
 		this.menuBar.setSource(source);

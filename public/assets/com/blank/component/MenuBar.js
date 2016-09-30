@@ -9,8 +9,6 @@ CloudOS.MenuBar = (function(){
 		this.init();
 	}
 	
-	MenuBar.OPEN = "MenuBar_open";
-	
 	MenuBar.prototype.init = function()
 	{
 		this.view = $("<div>",{'class':"CloudOS MenuBar"});
@@ -155,8 +153,9 @@ CloudOS.MenuBar = (function(){
 		{
 			if(value)
 			{
-				this.view.trigger(MenuBar.OPEN,this);
+				this.menuBar.view.trigger(CloudOS.Menu.OPEN,this);
 				this.submenu = new CloudOS.Menu(this.data.children);
+				this.submenu.view.data("owner",this.menuBar);
 				this.submenu.view.css("border-top-left-radius",0);
 				this.submenu.view.css("border-top-right-radius",0);
 				this.submenu.show();

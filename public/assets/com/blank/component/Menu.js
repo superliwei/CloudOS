@@ -6,6 +6,9 @@ CloudOS.Menu = (function(){
 		this.init();
 	}
 	
+	Menu.OPEN = "Menu_open";
+	Menu.ITEM_CLICK = "Menu_itemClick";
+	
 	Menu.prototype.init = function()
 	{
 		this.selectedItem = null;
@@ -63,8 +66,6 @@ CloudOS.Menu = (function(){
 		}
 		return item;
 	}
-	
-	Menu.ITEM_CLICK = "Menu_itemClick";
 	
 	/**
 	 * 菜单子项
@@ -154,7 +155,9 @@ CloudOS.Menu = (function(){
 		{
 			if(value)
 			{
+				this.menu.view.data("owner").view.trigger(Menu.OPEN,this);
 				this.submenu = new Menu(this.data.children);
+				this.submenu.view.data("owner",this.menu.view.data("owner"));
 				this.submenu.show();
 				var tx = this.view.offset().left + this.menu.ct.width();
 				var ty = this.view.offset().top;

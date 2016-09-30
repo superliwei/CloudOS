@@ -54,6 +54,7 @@ html,body
 {
 	display: table-cell;
 	vertical-align: middle;
+	pointer-events:none;
 }
 
 .CloudOS.MenuBar .IconItem span img
