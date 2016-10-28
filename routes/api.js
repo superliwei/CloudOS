@@ -13,24 +13,46 @@ router.get('/user/config', function(req, res, next) {
 });
 
 router.get('/fs/readdir', function(req, res, next) {
-	FS.readdir(req.query.user,req.query.url,new ResultHandle(res).handler);
+	checkToken(req,res,function(onComplete){
+		FS.readdir(req.query.user,req.query.url,onComplete);
+	});
 });
 
 router.get('/fs/createdir', function(req, res, next) {
-	FS.createdir(req.query.user,req.query.url,new ResultHandle(res).handler);
+	checkToken(req,res,function(onComplete){
+		FS.createdir(req.query.user,req.query.url,onComplete);
+	});
 });
 
 router.get('/fs/rename', function(req, res, next) {
-	FS.rename(req.query.user,req.query.oldurl,req.query.newurl,new ResultHandle(res).handler);
+	checkToken(req,res,function(onComplete){
+		FS.rename(req.query.user,req.query.oldurl,req.query.newurl,onComplete);
+	});
 });
 
 router.get('/fs/movefiles', function(req, res, next) {
-	FS.moveFiles(req.query.user,req.query.oldurls,req.query.newurls,new ResultHandle(res).handler);
+	checkToken(req,res,function(onComplete){
+		FS.moveFiles(req.query.user,req.query.oldurls,req.query.newurls,onComplete);
+	});
 });
 
 router.get('/fs/copy', function(req, res, next) {
-	FS.copy(req.query.user,req.query.oldurls,req.query.newurls,new ResultHandle(res).handler);
+	checkToken(req,res,function(onComplete){
+		FS.copy(req.query.user,req.query.oldurls,req.query.newurls,onComplete);
+	});
 });
+
+/**
+ * 检查token后执行
+ */
+function checkToken(req,res,handler)
+{
+	var onComplete = new ResultHandle(res).handler;
+	User.isTokenOk(req.query.user,function(err){
+		if(err)return onComplete(Error.TokenError);
+		handler(onComplete);
+	});
+}
 
 /**
  * 统一处理输出结果
